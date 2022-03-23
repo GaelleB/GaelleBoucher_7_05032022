@@ -2,10 +2,10 @@
   <footer>
       <div class="contact">
         <i class="far fa-envelope"></i>
-        <p>Aide et contact</p>
+        <a href="contact:administrateur@groupomania.com" aria-label="Contacter l'administrateur"> Aide et contact</a>
       </div>  
       <div class="copyright">
-      <p>2022 ©Groupomania ©Groupoman by Gaëlle </p>
+        <p>2022 ©Groupomania by Gaëlle B </p>
       </div>
   </footer>
 </template>
@@ -25,7 +25,7 @@ ul {
     list-style: none;
 }
 a, p {
-  font-size: 10px;
+  font-size: 12px;
   color: #000000;
   text-decoration: none;
 }
@@ -36,22 +36,11 @@ img {
     height: 150px;
 }
 .copyright{
-  font-size: 15px;
+  font-size: 1rem;
 }
 .contact{
   margin-top: 0px;
   padding-top: 0px;
   padding-bottom: 00px;
 }
-/*------------ desktop----------------
-@media screen and (min-width: 950px) {
-.contact{
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-.copyright{
-  padding-bottom: 0;
-}
-}
--*/
 </style>

@@ -5,19 +5,15 @@
 </template>
 
 <style>
-html{
-  background-color: rgba(207, 203, 203, 0.877);
-}
 body{
   margin: 0px;
   text-align: center;
-  background-color: rgba(207, 203, 203, 0.877);
+  background-color: rgb(101, 104, 101);
 }
 section{
   margin:0px;
 }
 .app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   text-align: center;
   color: #000000;
   background: rgba(207, 203, 203, 0.877);
@@ -26,12 +22,15 @@ h1 {
   width: 70%;
   font-size: 40px;
   margin: 0 auto 20px auto;
-  color: rgb(5, 5, 100);
+  color: black;
 }
 h2{
   font-size: 20px;
   margin: 0 auto 20px auto;
-  color: rgb(5, 5, 100);
+  color: white
+}
+textarea{
+  color: black
 }
 .button {
   margin: 20px 0 10px 0;
@@ -45,55 +44,57 @@ h2{
   cursor: pointer;
 }
 .btnSave{
-  background-color: rgb(105, 206, 105);
+  background-color: gray;
   font-weight: bolder;
   font-size: 15px;
   margin: 20px 0 10px 0;
   padding: 5px 30px ;
   border-radius: 10px;
   text-decoration: none;
-  color: #000000;
+  color: black;
   cursor: pointer;
 }
 .btnDelete{
-  background-color: indianred;
+  background-color: grey;
   font-weight: bolder;
   font-size: 15px;
   margin: 20px 0 10px 0;
   padding: 5px 30px ;
   border-radius: 10px;
   text-decoration: none;
-  color: #000000;
+  color: black;
   cursor: pointer;
 }
-.fa-home {
-  width: 50px;
-  height: 50px;
-  position: relative;
-  border-radius: 100%;
-  background: gray;
-  cursor: pointer; 
-  text-align: center;
-  color: white;   
-  display: flex;
-  justify-content: center; 
-  margin: 20px auto 0 auto;
-  align-items: center;
+.fa-home
+{
+    width: 50px;
+    height: 50px;
+    position: relative;
+    border-radius: 100%;
+    background: gray;
+    cursor: pointer; 
+    text-align: center;
+    color: white;   
+    display: flex;
+    justify-content: center; 
+    margin: 20px auto 0 auto;
+    align-items: center;
 }
-.fa-turn-down-left {
-  width: 100px;
-  height: 50px;
-  position: relative;
-  border-radius: 20px;
-  background: gray;
-  cursor: pointer; 
-  text-align: center;
-  color: white;   
-  display: flex;
-  justify-content: center; 
-  margin: 20px auto 0 auto;
-  align-items: center;
-}
+    .fa-turn-down-left
+    {
+    width: 100px;
+    height: 50px;
+    position: relative;
+    border-radius: 20px;
+    background: gray;
+    cursor: pointer; 
+    text-align: center;
+    color: white;   
+    display: flex;
+    justify-content: center; 
+    margin: 20px auto 0 auto;
+    align-items: center;
+    }
 @media screen and (max-width:1024px) {
   .app {
     padding: 0;
