@@ -3,7 +3,6 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Like extends Model {
         static associate(models) {
-            // define association here
             models.Like.belongsTo(models.User, {
                 foreignKey: {
                     allowNull: false
@@ -18,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
             });
         }
     };
-    Like.init({
+    Like.init ({
         UserId: DataTypes.INTEGER,
         PostId: DataTypes.INTEGER
     },

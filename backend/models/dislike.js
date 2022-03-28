@@ -3,7 +3,6 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Dislike extends Model {
         static associate(models) {
-            // define association here
             models.Like.belongsTo(models.User, {
                 foreignKey: {
                     allowNull: false

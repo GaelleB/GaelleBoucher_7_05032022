@@ -3,7 +3,6 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Post extends Model {
         static associate(models) {
-            // define association here
             models.Post.belongsTo(models.User, {
                 foreignKey:{
                     allowNull: false
@@ -15,8 +14,7 @@ module.exports = (sequelize, DataTypes) => {
             models.Post.hasMany(models.Comment);
         }
     };
-    Post.init({
-        
+    Post.init ({
         userId : DataTypes.INTEGER,
         title: DataTypes.STRING,
         content: DataTypes.STRING,
