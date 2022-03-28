@@ -3,6 +3,8 @@ const app = express();
 
 app.use(express.json());
 
+const { sequelize } = require('./models/index');
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
