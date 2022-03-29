@@ -1,141 +1,106 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const fs = require('fs')
-const models = require('../models')
-const User = models.User;
-const Post = models.Post;
+require('dotenv').config()
 
-// Regex
+const User = require('../models/user')
+const Post = require('../models/post')
+
+// REGEX
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const passwordRegex = /^(?=.*\d).{4,8}$/;
 
-// S'inscrire
+// Enregistrement d'un compte
 exports.signup = (req, res, next) => {
-    console.log("console log signup backend " + JSON.stringify(req.body));
-    const user = req.body;
-    const email = user.email;
-    const password = user.password;
-    const nom = user.nom;
-    const prenom = user.prenom;
-
-    if (email == null || password == null || nom == null || prenom == null) {
-        return res.status(400).json({ 'erreur': 'paramètres manquants' });
-    }
-    if (nom.length > 20 || nom.length < 2) {
-        return res.status(400).json({ 'erreur': 'prénom invalide (doit être entre 2 et 20 caractères)' })
-    }
-    if (prenom.length > 20 || prenom.length < 2) {
-        return res.status(400).json({ 'erreur': 'nom invalide (doit être entre 2 et 20 caractères)' })
-    }
-    if (!emailRegex.test(email)) {
-        return res.status(400).json({ 'erreur': 'email invalide' })
-    }
-    if (!passwordRegex.test(password)) {
-        return res.status(400).json({ 'erreur': 'mot de passe invalide (doit contenir entre 4 et 8 caractères et au moins un chiffre)' })
-    }
-
-    User.findOne({
-        attributes: ['email'],
-        where: { email: email }
+    // Crypte le mot de passe
+    bcrypt.hash(req.body.password, 10)
+    .then(hash => {
+        // Création d'un nouvel utilisteur (mail + mot de passe)
+        const user = new User({
+            email: email,
+            password: hash,
+            nom: nom,
+            prenom: prenom,
+            image: req.body.image || "",
+            role: 1
+        });
+        // Enregistrement de l'utilisateur 
+        user.save()
+            .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+            .catch(error => res.status(400).json({ error }));
     })
-        .then(user => {
-            if (!user) {
-                bcrypt.hash(password, 10)
-                    .then(hash => {
-                        const newUser = models.User.create({
-                            email: email,
-                            password: hash,
-                            nom: nom,
-                            prenom: prenom,
-                            image: req.body.image || "",
-                            role: 1
-
-                        })
-                            .then((newUser) => {
-                                return res.status(201).json({ 'userId': newUser.id })
-                            })
-                            .catch(err => {
-                                return res.status(500).json({ err })
-                            })
-                    }).catch(err => {
-                        return res.status(500).json({ err })
-                    })
-
-            } else {
-                return res.status(409).json({ 'error': 'user already exist' });
-            }
-        })
-        .catch(err => {
-            console.log("erreur signUp" + err);
-            return res.status(500).json({ err });
-        })
+    // Erreur server
+    .catch(error => res.status(500).json({ error }));
 };
 
-// Se connecter
+// Connexion au compte
 exports.login = (req, res, next) => {
-    console.log("console login backend debut" + JSON.stringify(req.body));
-    // const user= req.body.user;
-    const email = req.body.email;
-    const password = req.body.password;
-
-    if (email == null || password == null) {
-        return res.status(400).json({ 'erreur': 'paramètres manquants' });
-    }
-
-    User.findOne({
-        where: { email: email }
-    })
+    User.findOne({ email: req.body.email })
         .then(user => {
         if (!user) {
             return res.status(401).json({ error: 'Utilisateur non trouvé !' });
         }
-            bcrypt.compare(req.body.password, user.password)
-            .then(valid => {
-                if (!valid) {
+        // Comparaison du mot de passe entré avec celui enregistré
+        bcrypt.compare(req.body.password, user.password)
+        .then(valid => {
+            if (!valid) {
                 return res.status(401).json({ error: 'Mot de passe incorrect !' });
-                }
-                res.status(200).json({
+            }
+            // Contient l'identifiant de l'utilisateur et un token
+            res.status(200).json({
                 userId: user._id,
+                // Encode un nouveau token grâce à jswonwebtoken
                 token: jwt.sign(
                     { userId: user._id },
-                    'RANDOM_TOKEN_SECRET',
-                    { expiresIn: '24h' }
+                    'SECRET_TOKEN',
+                    { expiresIn: '24h' } // Reconnexion dans 24h
                 )
-                });
-            })
-            .catch(error => res.status(500).json({ error }));
+            });
         })
+        .catch(error => res.status(500).json({ error }));
+    })
     .catch(error => res.status(500).json({ error }));
-}
+};
 
 // Suppression utilisateur
 exports.deleteUser = (req, res, next) => {
-    console.log("delete user   " + req.params.id);
+    const headerAuth = req.headers['authorization'];
+    const userId = jwt.getUserId(headerAuth);
+    const role = jwt.getRoleUser(headerAuth);
+
     if (userId == req.params.id || role == 0) {
+
+       // User.findOne({ where: { id: req.params.id } })
         User.findOne({ where: { id:  req.params.id } })
             .then(user => {
-                if(user!= null) {
+               // console.log("user FindOne    " + user.id)
+                if(user!= null){
+
                     if (user.image != null) {
                         const filename = user.image.split('/images/profiles/')[1];
                         fs.unlink(`images/profiles/${filename}`, (error) => {
-                            console.log(error.message);
-                        });
-                    }
+                           // console.log(error.message);
+                            });
+                    } 
+
                     User.destroy({ where: { id: req.params.id } })
+                   // User.destroy({ where: { id: user.id } })
                     .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
                     .catch(error =>{ console.log(error); res.status(400).json({ message : error.message })});
+            
                 }
-                else{  console.log("user not found");
-                    res.status(404).json({ 'erreur': 'Utilisateur non trouvé !' })
-                }
-            } ).catch(error => {  res.status(500).json({ message : error.message }) })
+               else{  console.log("user not found");
+                res.status(404).json({ 'erreur': 'Utilisateur non trouvé !' })
+               }
+             } ).catch(error => {  res.status(500).json({ message : error.message }) })
 
     } else {
-        res.status(403).json({ message: 'Action non autorisée !' });
+        res.status(403).json({ message: 'Action non autorisé !' });
     }
-};
+    };
 
-// Affichage d'un utilisateur
+
+////// DISPLAY ONE USER
+
 exports.getOneUser = (req, res, next) => {
     const userId = req.params.id;
     User.findOne({
@@ -150,7 +115,9 @@ exports.getOneUser = (req, res, next) => {
     }).catch(err => res.status(500).json({ err }))
 }
 
-// Affichage de tous les utilisateurs
+
+////// DISPLAY ALL USERS
+
 exports.getAllUsers = (req, res, next) => {
     console.log("get all users" + JSON.stringify(req.body));
     User.findAll()
@@ -158,14 +125,19 @@ exports.getAllUsers = (req, res, next) => {
         .catch((error) => res.status(400).json(error))
 };
 
-// Modifier un utilisateur
+////// MODIFY USER AND UPDATE
 exports.modifyUser = (req, res, next) => {
     console.log("modif info users" + JSON.stringify(req.body));
+    const headerAuth = req.headers['authorization'];
+    const userId = jwtUtils.getUserId(headerAuth);
+    const role = jwtUtils.getRoleUser(headerAuth);
 
     const email = req.body.email
     const nom = req.body.nom;
     const prenom = req.body.prenom;
     const image = req.file ? `${req.protocol}://${req.get('host')}/images/profiles/${req.file.filename}` : null;
+   // const image = `${req.protocol}://${req.get('host')}/images/profiles/${req.file.filename}`;
+   
     
     User.findOne({
         attributes: ['id', 'email', 'nom', 'prenom', 'image'],
@@ -186,7 +158,7 @@ exports.modifyUser = (req, res, next) => {
                     });
                 };
 
-                // Mettre à jour l'utilsateur
+                // UPDATE PROFILE, new info
                 user.update({
                     email: (email ? email : user.email),
                     nom: (nom ? nom : user.nom),
@@ -212,10 +184,16 @@ exports.modifyUser = (req, res, next) => {
         })
     
 }
-// Modifier le mot de passe
+
+
+//MODIFY PASSWORD
 exports.modifyPassword = (req, res, next) => {
     console.log("modif password" + JSON.stringify(req.body));
-    User.findOne({ where: { id: userId } })
+    const headerAuth = req.headers['authorization'];
+    const userId = jwtUtils.getUserId(headerAuth);
+    const role = jwtUtils.getRoleUser(headerAuth);
+
+User.findOne({ where: { id: userId } })
         .then(user => {
             if(userId === user.id || role === 0) {
                 controle.log('oldPasword   ' + req.body.oldPassword),

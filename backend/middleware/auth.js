@@ -2,17 +2,16 @@ const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
     try {
+        console.log(req.body);
         const token = req.headers.authorization.split(' ')[1];
-        const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+        const decodedToken = jwt.verify(token, 'SECRET_KEY_TOKEN');
         const userId = decodedToken.userId;
-        if (req.body.userId && req.body.userId !== userId) {
-        throw 'Invalid user ID';
+        if(req.body.userId && req.body.userId !== userId) {
+            throw 'err middleware auth ID utilisateur incorrect !';
         } else {
-        next();
+            next();
         }
-    } catch {
-        res.status(401).json({
-        error: new Error('Requête invalide!')
-    });
+    } catch(error) {
+        res.status(401).json({error});
     }
-};
+}

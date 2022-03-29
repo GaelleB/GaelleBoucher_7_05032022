@@ -35,7 +35,7 @@
 
 <script>
 import axios from 'axios'
-import HeaderProfile from "../components/HeaderProfileCompo";
+import HeaderProfile from "../components/HeaderProfile";
 import Footer from "../components/FooterCompo";
 export default {
     name: 'NewPost',

@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import Home from '../views/Home.vue'
-import Signup from '../views/Signup.vue'
-import Login from '../views/Login.vue'
-import Profile from '../views/Profile.vue'
+import Home from '../views/HomeView.vue'
+import Signup from '../views/SignupView.vue'
+import Login from '../views/LoginView.vue'
+import Profile from '../views/ProfileView.vue'
 import Allposts from '../views/AllPosts.vue'
-import Post from '../views/Post.vue'
+import Post from '../views/PostView.vue'
 import NewPost from '../views/NewPost.vue'
-import ModifyPost from '../views/ModifPost.vue'
+import ModifyPost from '../views/ModifyPost.vue'
 
 //Vue.use(VueRouter)  idem ligne45 main.js
 const routes = [
