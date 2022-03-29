@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');  
 const path = require("path");
 const sequelize = require('./config/config');
+const mysql = require('mysql');
 
 //security
 const dotenv = require ('dotenv');

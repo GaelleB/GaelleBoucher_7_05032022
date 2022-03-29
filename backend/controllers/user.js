@@ -129,8 +129,8 @@ exports.getAllUsers = (req, res, next) => {
 exports.modifyUser = (req, res, next) => {
     console.log("modif info users" + JSON.stringify(req.body));
     const headerAuth = req.headers['authorization'];
-    const userId = jwtUtils.getUserId(headerAuth);
-    const role = jwtUtils.getRoleUser(headerAuth);
+    const userId = jwt.getUserId(headerAuth);
+    const role = jwt.getRoleUser(headerAuth);
 
     const email = req.body.email
     const nom = req.body.nom;
@@ -190,8 +190,8 @@ exports.modifyUser = (req, res, next) => {
 exports.modifyPassword = (req, res, next) => {
     console.log("modif password" + JSON.stringify(req.body));
     const headerAuth = req.headers['authorization'];
-    const userId = jwtUtils.getUserId(headerAuth);
-    const role = jwtUtils.getRoleUser(headerAuth);
+    const userId = jwt.getUserId(headerAuth);
+    const role = jwt.getRoleUser(headerAuth);
 
 User.findOne({ where: { id: userId } })
         .then(user => {
