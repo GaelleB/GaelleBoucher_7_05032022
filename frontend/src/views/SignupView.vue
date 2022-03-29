@@ -1,23 +1,25 @@
+
 <template>
   <div>
     <Header />
     <div class="signup">
       <h1>Inscription</h1>
       <h2>Nous sommes ravis de vous accueillir chez Groupomania.</h2>
-          <p>Pour vous inscrire, veuillez saisir les informations demandées</p>
+          <p>Veillez saisir les informations demander et outiliser votre email professionel</p> 
+          <p>par example: "jean.dupont@groupomania.com"</p>
       <form>
         <ul>
           <li>
-            <input type="text" v-model="nom" placeholder="Nom" size="50" required aria-label="Nom">
+            <input type="text" v-model="nom" placeholder="dupont" size="50" required aria-label="Nom">
           </li>
           <li>
-            <input type="text" v-model="prenom" placeholder="Prénom" size="50" required aria-label="Prénom">
+            <input type="text" v-model="prenom" placeholder="jean" size="50" required aria-label="Prénom">
           </li>
           <li>
-            <input type="email" v-model="email" placeholder="Adresse mail" size="50" required aria-label="Email">
+            <input type="email" v-model="email" placeholder="jean.dupont@groupomania.com" size="50" required aria-label="Email">
           </li>
           <li>
-            <input type="password" v-model="password" placeholder="Mot de passe" size="50" required aria-label="Mot de passe">
+            <input type="password" v-model="password" placeholder="Pass2word" size="50" required aria-label="Mot de passe">
           </li>
         </ul>
       </form>   
@@ -49,6 +51,24 @@ name: 'SignupView',
   methods: {
     //SIGNUP
     signup() {
+      const regexText = /^[a-zA-Z-\s]+$/;
+      const regexEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/; 
+      const regexPassword = /^(?=.*\d).{4,10}$/;
+      if (this.nom === "") {
+                alert("Veuillez saisir votre nom");
+            } else if (regexText.test(this.nom) === false) {
+                alert("Veuillez vérifier que l'écriture de votre nom soit uniquement en lettre");}
+            if (this.prenom === "") {
+                alert("Veuillez saisir votre prénom");
+            } else if (regexText.test(this.prenom) === false) {
+                alert("Veuillez vérifier que l'écriture de votre prénom soit uniquement en lettre");}
+            if (this.email === "") {
+                alert("Veuillez saisir votre adresse email ");
+            } else if (regexEmail.test(this.email) === false) {
+                alert("Veuillez saisir une adresse email valide xxxxx@groupomania.com");
+            } else if (regexPassword.test(this.password) === false) {
+                alert("Votre mot de passe doit contenir entre 4 et 10 caractères et au moins 1 lettre majuscule et 1 chiffre")
+            }
       let data = {
           nom: this.nom,
           prenom: this.prenom,
@@ -58,9 +78,9 @@ name: 'SignupView',
       {   
       axios.post("http://localhost:3000/api/auth/signup", data, {
           headers: { }
-      })
-          .then(() => {
-              alert("Inscription validée");
+                 })
+           .then(() => {
+              alert("Inscription accepter");
               this.$router.push("/login");
           })
           .catch(alert)
@@ -76,7 +96,7 @@ form{
     margin: 10px auto 10px auto;
 }
 h2{
-color: black;
+color:rgb(5, 5, 100);
 }
 p{
   font-size: 12px;
@@ -90,8 +110,8 @@ li {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin: 0 auto 0 auto;
-}
+   margin: 0 auto 0 auto;
+ }
 input {
   width: 90%;
   font-size: 1.2rem;
@@ -112,7 +132,7 @@ footer{
   }
 /*------------ desktop-----------------*/
 @media screen and (min-width: 950px) {
-  input {
+ input {
   width: 50%;
   font-size: 1.2rem;
   text-align: center;

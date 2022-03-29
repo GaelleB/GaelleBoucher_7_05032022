@@ -1,6 +1,6 @@
 <template>
-  <header id="Logo">
-      <a href=""><img id="Logo" src="frontend/src/assets/icon.png" alt="Logo Groupomania" /></a>
+  <header class="imgLogo">
+      <a href="/"><img class="imgLogo" src="../assets/icon.png" alt="Logo Groupomania" /></a>
   </header>
 </template>
 
@@ -11,7 +11,7 @@ header {
   align-items: center;
   justify-content: space-between;
 }
-#Logo {
+.imgLogo {
   width: 60%;
   display: block;
   padding-top: 10px;

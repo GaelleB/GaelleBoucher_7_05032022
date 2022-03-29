@@ -38,7 +38,7 @@ import axios from 'axios'
 import HeaderProfile from "../components/HeaderProfileCompo";
 import Footer from "../components/FooterCompo";
 export default {
-    name: 'NewPostView',
+    name: 'NewPost',
     components: {
         HeaderProfile,
         Footer

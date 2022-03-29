@@ -2,11 +2,11 @@
   <footer>
       <div class="contact">
         <i class="far fa-envelope"></i>
-        <a href="contact:administrateur@groupomania.com" aria-label="Contacter l'administrateur"> Aide et contact</a>
+        <a href="contact: administrateur@groupomania.com" aria-label="Envoyer mail à l'administrateur" > Aide et contact</a>
       </div>  
-      <div class="copyright">
-        <p>2022 ©Groupomania by Gaëlle B </p>
-      </div>
+    <div class="copyright">
+      <p>2022 ©Groupomania ©Groupoman by Gaëlle B </p>
+    </div>
   </footer>
 </template>
 

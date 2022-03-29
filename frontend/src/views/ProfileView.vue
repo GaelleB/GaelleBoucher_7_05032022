@@ -24,17 +24,6 @@
                     <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer la photo de profil"> <i class="far fa-trash-alt"></i></button>
                     <input type="file" accept="image/jpeg, image/jpg, image/png, image/webp" v-on:change="uploadFile" id="file" class="input-file" aria-label="Photo de profil">
                 </div>
-                <!--MODIFY PASSWORD 
-                <div class="modifyPassword">
-                    <button v-on:click="show" class="button">Modifier<br> mot de passe</button>
-                    <li v-if="button">
-                        <input v-model="oldPassword" type="text" placeholder="Ancien mot de passe" size="30" class="password">
-                        <input v-model="newPassword" type="text" placeholder="Nouveau mot de passe" size="30" class="password">
-                        <input v-model="confirmNewPassword" type="text" placeholder="Confirmer le mot de passe" size="30" class="password">
-                        <button @click.prevent="modifyPassword()" class="btnSave"><i class="fas fa-edit"></i>Enregistrer nouveau mot de passe</button>
-                    </li>
-                </div>
-            -->
             </nav>
 
                 <div class="submit">
@@ -53,7 +42,7 @@ import axios from 'axios'
 import HeaderProfile from "../components/HeaderProfileCompo";
 import Footer from "../components/FooterCompo";
 export default {
-    name: 'AccountView',
+    name: 'ProfileView',
     components: {
         HeaderProfile,
         Footer

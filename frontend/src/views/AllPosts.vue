@@ -1,21 +1,20 @@
 <template>
     <div>
         <HeaderProfile />
-        <h1>Le fil d'actualités de Groupomania</h1>
+        <h1>Le Flash Actu Groupomania</h1>
         <div class="getAllPosts">
-        <button 
-            @click="getAllPosts()" class="btnSave" aria-label="Bouton d'actualisation de la page" ><i class="fas fa-redo"></i>
-        </button>
+        <button @click="getAllPosts()" class="btnSave" aria-label="Bouton d'actualisation de la page" ><i class="fas fa-redo"></i></button>
         </div>
         <article v-if="post in posts">
             <p>Aucune publication pour instant!</p>
         </article>
-        <router-link to="/postnew" aria-label=" Création d'un post">
+
+        <!-- Création d'un post -->
+        <router-link to="/postnew" aria-label="Ouverture de creation d'un message">
         <button  class="button" >
-            <h2><i class="far fa-edit"></i><br>Rédiger une nouvelle publication</h2>
+            <h2><i class="far fa-edit"></i><br>Rédiger nouveau message</h2>
             </button>
             </router-link>
-        
         <table>
             <tr class = "card cardPost" v-bind:key="index" v-for="(post, index) in posts">
                 <td><input type="text" v-model="post.title" required aria-label="Titre" disabled></td>
@@ -33,27 +32,29 @@
                         le <b>{{ dateFormat(post.createdAt) }}</b>
                         à <b>{{ hourFormat(post.createdAt) }}</b><br>
                     </p>
-                    <p>  Modifié 
+                    
+                        <p>  Modifié le 
                         le <b>{{ dateFormat(post.updatedAt) }}</b>
                         à <b>{{ hourFormat(post.updatedAt) }}</b>
                     </p>
                 </td>
-                <td><img v-if="post.image" :src="post.image" alt="Image"></td>
+                <td><img class="imgPost" v-if="post.image" :src="post.image" alt="Image"></td>
             </tr>
-        </table>
+                </table>
+        <!--Posts -->
         <article v-if="posts.length == 0">
-            <p>Aucune publication pour instant!</p>
+            <p>Oups! Aucune publication pour instant!</p>
         </article>
-        <Footer />
+        <Footer/>
     </div>
 </template>
 
 <script>
 import axios from 'axios';
-import HeaderProfile from "../components/HeaderProfileCompo";
+import HeaderProfile from "../components/HeaderProfile";
 import Footer from "../components/FooterCompo";
 export default {
-    name: 'FilActuView',
+    name: 'AllPosts',
     props: ['post.id'],
     components: {
         HeaderProfile,
@@ -65,8 +66,6 @@ export default {
             props: ['post.id'],
             posts: [],
             users: [],
-           // image : image,
-            
         }
     },
     computed : {
@@ -77,6 +76,8 @@ export default {
         }
     },
     methods : {
+
+        // Tous les posts
         getAllPosts() {
             const token = localStorage.getItem("token")
             axios.get('http://localhost:3000/api/posts/', {
@@ -93,6 +94,8 @@ export default {
                 
             .catch(() => console.log('Impossible de récupérer les posts !'))
         },
+
+        // Date et heure 
         dateFormat (createdDate) {
             const date = new Date(createdDate)
             const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'};
@@ -103,6 +106,8 @@ export default {
             const options = { hour: 'numeric', minute:'numeric', second:'numeric'};
             return hour.toLocaleTimeString('fr-FR', options);
         },
+
+        // Suppression d'un post
         deletePost (index) {
             const token = localStorage.getItem("token")
             if (confirm("Voulez-vous vraiment supprimer votre message?") === true) {
@@ -115,12 +120,13 @@ export default {
                 .then(() => {
                     alert("Message supprimer")
                     console.log("message supprimer");
-            })
+                })
                 
-            .catch(() =>{ 
-                alert("Vous n'avez pas autorisation de supprimer ce message!!")
-                console.log('Vous n avez pas autorisation de supprimer ce message!!')
-            } )}
+                .catch(() =>{ 
+                    alert("Vous n'avez pas autorisation de supprimer ce message!!")
+                    console.log('Vous n avez pas autorisation de supprimer ce message!!')
+                    })
+            }
         },
         post () {
             this.$router.push("/post")
@@ -207,7 +213,7 @@ textarea{
     border: 2px solid black;
     border-radius: 30px;
 }
-img {
+.imgPost {
     width: 80%;
     height: 60%;
     margin : auto;
@@ -244,7 +250,7 @@ table {
 textarea{
     width: 90%
 }
-img {
+.imgPost {
     width: 20%;
     height: 30%;
     border-radius: 10px;

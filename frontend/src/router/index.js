@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/HomeView.vue'
-import Signup from '../views/SignupView.vue'
-import Login from '../views/LoginView.vue'
-import Account from '../views/AccountView.vue'
-import FilActu from '../views/FilActuView.vue'
-import Post from '../views/PostView.vue'
-import NewPost from '../views/NewPostView.vue'
-import ModifPost from '../views/ModifPostView.vue'
+
+import Home from '../views/Home.vue'
+import Signup from '../views/Signup.vue'
+import Login from '../views/Login.vue'
+import Profile from '../views/Profile.vue'
+import Allposts from '../views/AllPosts.vue'
+import Post from '../views/Post.vue'
+import NewPost from '../views/NewPost.vue'
+import ModifyPost from '../views/ModifPost.vue'
 
 //Vue.use(VueRouter)  idem ligne45 main.js
 const routes = [
@@ -27,9 +28,9 @@ const routes = [
   },
   
   {
-    path: '/filactu',
+    path: '/allposts',
     name: 'Allposts',
-    component: FilActu
+    component: Allposts
   },
   {
     path: '/post/:id',
@@ -37,10 +38,10 @@ const routes = [
     component: Post
   },
   
- {
+  {
     path: '/profile',
     name: 'Profile',
-    component: Account
+    component: Profile
   },
   {
     path: '/postnew',
@@ -50,15 +51,11 @@ const routes = [
   
   {
     path: '/postmodify/:id',
-    name: 'ModifPost',
-    component: ModifPost
+    name: 'ModifyPost',
+    component: ModifyPost
   }, 
   ]
 
-/*const router = new VueRouter({
-  routes
-})
-*/
 const router = createRouter({
   history: createWebHistory(),
   routes

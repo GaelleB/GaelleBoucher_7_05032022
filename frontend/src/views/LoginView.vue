@@ -48,14 +48,14 @@ export default {
         password: this.password
       })
       .then((res) => {
-                      localStorage.setItem('userId', parseInt(res.data.userId));
-                      localStorage.setItem('token', res.data.token);
-                      this.$router.push('/allposts')
-                  })
-                  .catch((err) => {
-                      console.log("erreur vuejs : " + err);
-                      this.loginFailure = true;
-                  })      
+        localStorage.setItem('userId', parseInt(res.data.userId));
+        localStorage.setItem('token', res.data.token);
+        this.$router.push('/allposts')
+      })
+      .catch((err) => {
+          console.log("erreur vuejs : " + err);
+          this.loginFailure = true;
+      })      
     }
   }
 }

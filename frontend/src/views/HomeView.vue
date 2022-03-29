@@ -2,15 +2,14 @@
   <div>
     <Header />
     <body>
-      <h1>Groupomania</h1>
-      <h2>Bienvenue sur le réseau social de l'entreprise</h2>
+      <h1>Bienvenue chez Groupomania</h1>
+      <h2>Le réseau social de notre entreprise</h2> 
       <nav class="routerLink">
         <router-link to="/signup" class="link" aria-label="Inscription">Inscription</router-link>
-        <router-link to="/login" class="link" aria-label="Connexion">Connexion</router-link>
+        <router-link to="/login" class="link" aria-label="Connexion ">Connexion</router-link>
       </nav>
     </body>     
-    <Footer />
-
+    <Footer/>
   </div>
 </template>
 
@@ -20,9 +19,9 @@ import Footer from "../components/FooterCompo";
 export default {
   name: 'HomeView',
   components: {
-            Header,
-            Footer
-            }
+    Header,
+    Footer
+  }
 }
 </script>
 

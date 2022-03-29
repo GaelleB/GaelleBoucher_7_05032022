@@ -1,12 +1,12 @@
 <template>
-    <header class="nav">
-        <img id="logo" src="src/assets/icon.svg" alt="Logo Groupomania" />
-        <nav>
-            <router-link class="link" to="/AccountView"  aria-label="Profil">Mon profil</router-link>
-            <router-link class="link" to="/FilActuView" aria-label="Fil d'actualités Groupomania"><i class="fas fa-home home"></i></router-link>
-            <router-link class="link" to="" @click="disconnectUser()">Déconnexion</router-link>
-        </nav>
-    </header>
+  <header class="nav">
+    <a href="/"><img class="imgLogo" src="../assets/images/icon.png" alt="Logo Groupomania" /></a>
+    <nav>
+      <router-link class="link" to="/profile"  aria-label="Profil">Mon profil</router-link>
+      <router-link class="link" to="/allposts" aria-label="Retour ver Le Flash Actu Groupomania"><i class="fas fa-home home"></i></router-link>
+      <router-link class="link" to="/" @click="disconnectUser()">Déconnexion</router-link>
+    </nav>
+  </header>
 </template>
 
 <script>
@@ -26,8 +26,8 @@ export default {
       this.role = JSON.parse(localStorage.getItem("role"))
     }
   },
-    mounted(){
-    this.roleUser()
+  mounted(){
+      this.roleUser()
   }
 }   
 </script>
@@ -51,14 +51,14 @@ nav{
   clip-path: circle();
   border-radius: 50%;
 }
-img {
-  height: 100px;
-}
-#logo{
+.imgLogo {
   width: 60%;
   display: block;
   padding-top: 10px;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+  object-fit: cover;
+  background-size: cover;
 }
 .link {
   padding-left: 30px;
@@ -81,7 +81,7 @@ img {
   color: black;
 }
 i {
-  font-size: 1.5rem;
+    font-size: 1.5rem;
 }
 .fa-home
 {
@@ -92,37 +92,10 @@ i {
   background: gray;
   cursor: pointer; 
   text-align: center;
-  color: white;   
+    color: white;   
   display: flex;
   justify-content: center; 
   margin: auto;
   align-items: center;
-    }
-@media screen and (max-width:1024px) {
-  header {
-    flex-direction: column;
-    align-items: center;
-  justify-content: space-between;
-  }
-  img {
-    margin-bottom: 30px;
-  }
-  .link {
-    padding: 0 30px;
-    font-size: 20px;
-  }
-}
-@media screen and (max-width:768px) {
-  header {
-    flex-direction: column;
-  }
-  img {
-    margin-bottom: 4vw;
-    height: 60px;
-  }
-  .link {
-    padding: 0 20px;
-    font-size: 15px;
-  }
 }
 </style>

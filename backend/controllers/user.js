@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const fs = require('fs')
 const models = require('../models')
 const User = models.User;
@@ -73,39 +74,38 @@ exports.signup = (req, res, next) => {
 // Se connecter
 exports.login = (req, res, next) => {
     console.log("console login backend debut" + JSON.stringify(req.body));
+    // const user= req.body.user;
     const email = req.body.email;
     const password = req.body.password;
 
     if (email == null || password == null) {
         return res.status(400).json({ 'erreur': 'paramètres manquants' });
     }
+
     User.findOne({
         where: { email: email }
     })
         .then(user => {
-            if (!user) {
-                return res.status(401).json('Utilisateur non trouvé !');
-            }
-            console.log("console user  " + req.body.password);
-            console.log("console user  " + user.password);
-            bcrypt.compare(password, user.password)
-                .then(valid => {
-                    if (!valid) {
-                        return res.status(401).json({ message: 'Mot de passe incorrect !' })
-                    }
-                    res.status(200).json({
-                        userId: user.id,
-                        token: jwtUtils.generateTokenForUser(user)
-                    })
-                })
-                .catch(err => {
-                    res.status(500).json({ err })
+        if (!user) {
+            return res.status(401).json({ error: 'Utilisateur non trouvé !' });
+        }
+            bcrypt.compare(req.body.password, user.password)
+            .then(valid => {
+                if (!valid) {
+                return res.status(401).json({ error: 'Mot de passe incorrect !' });
+                }
+                res.status(200).json({
+                userId: user._id,
+                token: jwt.sign(
+                    { userId: user._id },
+                    'RANDOM_TOKEN_SECRET',
+                    { expiresIn: '24h' }
+                )
                 });
+            })
+            .catch(error => res.status(500).json({ error }));
         })
-        .catch(err => {
-            console.log("erreur login  " + err);
-            return res.status(500).json({ err });
-        });
+    .catch(error => res.status(500).json({ error }));
 }
 
 // Suppression utilisateur
@@ -131,7 +131,7 @@ exports.deleteUser = (req, res, next) => {
             } ).catch(error => {  res.status(500).json({ message : error.message }) })
 
     } else {
-        res.status(403).json({ message: 'Action non autorisé !' });
+        res.status(403).json({ message: 'Action non autorisée !' });
     }
 };
 

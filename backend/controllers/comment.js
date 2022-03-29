@@ -77,16 +77,13 @@ exports.getPostAllComments = (req, res, next) => {
 // Mofifier un commentaire
 exports.modifyComment = (req, res, next) => {
     console.log("console log modifyComment  " +(req.body));
-
     models.Comment.findOne({ where: { id: req.params.id }})
         .then(comment => {
             if (userId === comment.userId || role === 0) {
                 const modifyComment = {content: req.body.content};
                 models.Comment.update(modifyComment , { where: { id: req.params.id } })
-
                 .then(() => res.status(200).json({message : 'Commentaire modifié !'}))
                 .catch( error => res.status(400).json({error}));
-
             } else {
                 res.status(401).json({
                     message: 'Requête non autorisée !'
