@@ -4,7 +4,7 @@ const models = require('../models');
 
 // CREATE POST
 exports.createPost = (req, res, next) => {
-   // console.log("post          "+ JSON.stringify (req.body.title));
+   // console.log("post"+ JSON.stringify (req.body.title));
     const headerAuth = req.headers['authorization'];
     const userId = jwt.getUserId(headerAuth);
     const title = req.body.title;
@@ -16,7 +16,7 @@ exports.createPost = (req, res, next) => {
         where: { id: userId }
     })
     .then(user => {
-      if (req.file){  //  if(user) {               console.log("create 3 ");
+      if (req.file){  //  if(user) {console.log("create 3 ");
             models.Post.create({
                 title : title,
                 content: content,

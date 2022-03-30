@@ -43,7 +43,7 @@
                 </table>
         <!--Posts -->
         <article v-if="posts.length == 0">
-            <p>Aucune publication pour instant!</p>
+            <p>Aucune publication pour le moment!</p>
         </article>
         <Footer/>
     </div>

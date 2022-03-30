@@ -30,7 +30,6 @@
     </div>
 </template>
 
-
 <script>
 import axios from 'axios'
 import HeaderProfile from "../components/HeaderProfile";
@@ -91,20 +90,16 @@ export default {
                 if (extFile === "jpg" || extFile === "jpeg" || extFile === "png" || extFile === "webp" ||extFile === "gif"){
                     let data = new FormData()
                     data.append('filename', fileName)
-                    // data.append('image', this.image);
                     data.append('image', fileField.files[0])
-                     //formData.append('image', this.post.image, this.post.image.name);
                     data.append('title', this.title);
                     data.append('content', this.content);
                     data.append('userId',Id);
                     axios.post("http://localhost:3000/api/posts/new", data, {
-                        
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         'authorization': `Bearer ${token}`
                         },
                         body: data
-                        
                     })
                     .then((res) => {
                         alert("Message publier")

@@ -73,14 +73,14 @@ name: 'SignupView',
           password: this.password
       };
       {   
-      axios.post("http://localhost:3000/api/auth/signup", data, {
-          headers: { }
-                 })
-           .then(() => {
-              alert("Inscription accepter");
-              this.$router.push("/login");
-          })
-          .catch(alert)
+        axios.post("http://localhost:3000/api/auth/signup", data, {
+            headers: { }
+        })
+        .then(() => {
+          alert("Inscription acceptée");
+          this.$router.push("/login");
+        })
+        .catch(alert)
       }
     }
   }
@@ -107,8 +107,8 @@ li {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-   margin: 0 auto 0 auto;
- }
+  margin: 0 auto 0 auto;
+}
 input {
   width: 90%;
   font-size: 1.2rem;
@@ -129,10 +129,10 @@ footer{
   }
 /*------------ desktop-----------------*/
 @media screen and (min-width: 950px) {
- input {
-  width: 50%;
-  font-size: 1.2rem;
-  text-align: center;
-}
+  input {
+    width: 50%;
+    font-size: 1.2rem;
+    text-align: center;
+  }
 }
 </style>

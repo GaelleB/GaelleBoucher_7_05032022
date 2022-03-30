@@ -101,32 +101,26 @@ methods: {
             if (this.post.content === "")
                 alert("Veuillez remplir votre message");
             if (this.post.image === null && this.post.title != "" && this.post.content != "") {
-                
                 let data = new FormData()
                 data.append('image', '')
                 data.append('content', this.post.content)
                 axios.put(`http://localhost:3000/api/posts/${this.id_param}`, data,  {
-                    
                     headers: {
                         'authorization': `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data',
                     },
                     body: data
-                    
                 })
-                    .then((res) => {
-                        alert("Modification de message sans image réusi")
-                console.log("modification ok");
-                this.posts = res.data
-                this.$router.push("/allposts");
+                .then((res) => {
+                    alert("Modification de message sans image réusi")
+                    console.log("modification ok");
+                    this.posts = res.data
+                    this.$router.push("/allposts");
                 })
-                    
                 .catch(() =>{ 
-                alert("Vous n'avez pas autorisation de modifier ce message!!")
-                console.log('Vous n avez pas autorisation de modifier!!')
-        
-            } )
-                    
+                    alert("Vous n'avez pas autorisation de modifier ce message!!")
+                    console.log('Vous n avez pas autorisation de modifier!!')
+                } )
             } else if (this.post.title != "" && this.post.content != "") {
                 let data = new FormData()
                 data.append('image', fileField.files[0])
