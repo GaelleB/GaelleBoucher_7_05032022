@@ -1,47 +1,47 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import Home from '../views/HomeView.vue'
-import Signup from '../views/SignupView.vue'
-import Login from '../views/LoginView.vue'
-import Profile from '../views/ProfileView.vue'
-import Allposts from '../views/AllPosts.vue'
-import Post from '../views/PostView.vue'
+import HomeView from '../views/HomeView.vue'
+import SignupView from '../views/SignupView.vue'
+import LoginView from '../views/LoginView.vue'
+import ProfileView from '../views/ProfileView.vue'
+import AllPosts from '../views/AllPosts.vue'
+import PostView from '../views/PostView.vue'
 import NewPost from '../views/NewPost.vue'
 import ModifyPost from '../views/ModifyPost.vue'
 
-//Vue.use(VueRouter)  idem ligne45 main.js
+//Vue.use(VueRouter)  idem ligne45 main.j
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: HomeView
   },
   {
     path: '/signup',
     name: 'Signup',
-    component: Signup
+    component: SignupView
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: LoginView
   },
   
   {
     path: '/allposts',
     name: 'Allposts',
-    component: Allposts
+    component: AllPosts
   },
   {
     path: '/post/:id',
     name: 'Post',
-    component: Post
+    component: PostView
   },
   
   {
     path: '/profile',
     name: 'Profile',
-    component: Profile
+    component: ProfileView
   },
   {
     path: '/postnew',

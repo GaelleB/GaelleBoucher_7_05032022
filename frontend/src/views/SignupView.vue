@@ -10,16 +10,16 @@
       <form>
         <ul>
           <li>
-            <input type="text" v-model="nom" placeholder="dupont" size="50" required aria-label="Nom">
+            <input type="text" v-model="nom" placeholder="Nom" size="50" required aria-label="Nom">
           </li>
           <li>
-            <input type="text" v-model="prenom" placeholder="jean" size="50" required aria-label="Prénom">
+            <input type="text" v-model="prenom" placeholder="Prénom" size="50" required aria-label="Prénom">
           </li>
           <li>
-            <input type="email" v-model="email" placeholder="jean.dupont@groupomania.com" size="50" required aria-label="Email">
+            <input type="email" v-model="email" placeholder="Email" size="50" required aria-label="Email">
           </li>
           <li>
-            <input type="password" v-model="password" placeholder="Pass2word" size="50" required aria-label="Mot de passe">
+            <input type="password" v-model="password" placeholder="Mot de passe" size="50" required aria-label="Mot de passe">
           </li>
         </ul>
       </form>   
@@ -28,7 +28,6 @@
     <Footer />
   </div>
 </template>
-
 
 <script>
 import axios from 'axios'

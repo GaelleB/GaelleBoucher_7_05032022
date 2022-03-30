@@ -11,10 +11,6 @@ exports.createComment = (req, res, next) => {
     const headerAuth = req.headers['authorization'];
     const userId = s.getUserId(headerAuth);
     
-    /*console.log("console log content  " +req.body.content);
-    console.log("console log content  " +userId);
-    console.log("console log content  " +req.body.postId);
-    */
     models.Comment.create({
         content: req.body.content,
         UserId: userId,

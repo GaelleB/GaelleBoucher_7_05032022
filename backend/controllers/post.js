@@ -16,7 +16,6 @@ exports.createPost = (req, res, next) => {
         where: { id: userId }
     })
     .then(user => {
-      //  console.log("create 2 ");
       if (req.file){  //  if(user) {               console.log("create 3 ");
             models.Post.create({
                 title : title,

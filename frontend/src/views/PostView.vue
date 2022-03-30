@@ -3,7 +3,7 @@
         <HeaderProfile />
             <section >
                 <article class="header">
-<!-- DISPLAY POST --> 
+                    <!-- DISPLAY POST --> 
                     <div class = "card info blockRespo" >
                         <nav class = "blockRespoText">
                         <input class="inputTitle" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" >  <!--rows="10" cols="25" -->
@@ -17,7 +17,7 @@
                             le <b>{{ dateFormat(post.updatedAt) }}</b>
                             à <b>{{ hourFormat(post.updatedAt) }}</b>
                         </p>
-            <!-- MODIFY/DELETE POST -->  
+                    <!-- MODIFY/DELETE POST -->  
                     <div class="content modif">
                         <button @click="modifyPost()"  class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Modifier publication</button>
                         <button @click="deletePost()"  class="btnDelete" aria-label="Supprimer ce post"><i class="far fa-trash-alt"></i> Supprimer publication</button>
@@ -25,30 +25,26 @@
                     </nav>
                     <img class="imgPost" v-if="post.image" :src="post.image" alt="Image du post">
                     </div>
-
                 </article>
 
-<!-- DISPLAY COMMENT -->
+                <!-- DISPLAY COMMENT -->
                 <button  v-on:click="show" @click="getOneComment()" class="btnSave" aria-label="Voir les commentaires">Afficher: {{ comments.length }} commentaires </button>
                     <table class = "header " v-if="displaycomments" >
                         <h2>Les commentaires:</h2>
-
-                    <tr class = "card displayComment" v-bind:key="index" v-for="(comment, index) in comments" >
-                       
-                        <td>Commenté par:<p class="userComment">{{comment.User.nom}}</p></td>
-                        <td>le <b>{{ dateFormat(comment.createdAt) }}</b>
-                             à <b>{{ hourFormat(comment.createdAt) }}</b></td>
-                        <td><textarea type="text" v-model="comment.content" required aria-label="Commentaire" disabled></textarea></td>
-<!-- MODIFY/DELETE COMMENT -->  
-                        <div class="content displayComment">
-                            <div class="modif">                                                                   
-                                <button @click="deleteComment(index)"  class="btnDelete" aria-label="Supprimer ce commentaire"><i class="far fa-trash-alt"></i> Supprimer commentaire</button>
-                                <button v-on:click="hide" class="btnDelete" aria-label="Masquer les commentaires">Masquer</button>
-                            </div>
-                        </div>  
-                    </tr>    
-                    </table>  
-
+                        <tr class = "card displayComment" v-bind:key="index" v-for="(comment, index) in comments" >
+                            <td>Commenté par:<p class="userComment">{{comment.User.nom}}</p></td>
+                            <td>le <b>{{ dateFormat(comment.createdAt) }}</b>
+                                à <b>{{ hourFormat(comment.createdAt) }}</b></td>
+                            <td><textarea type="text" v-model="comment.content" required aria-label="Commentaire" disabled></textarea></td>
+                            <!-- MODIFY/DELETE COMMENT -->  
+                            <div class="content displayComment">
+                                <div class="modif">                                                                   
+                                    <button @click="deleteComment(index)"  class="btnDelete" aria-label="Supprimer ce commentaire"><i class="far fa-trash-alt"></i> Supprimer commentaire</button>
+                                    <button v-on:click="hide" class="btnDelete" aria-label="Masquer les commentaires">Masquer</button>
+                                </div>
+                            </div>  
+                        </tr>    
+                    </table> 
 <!-- CREATE COMMENT -->
                 <button v-if="displayCreateComment === false" v-on:click="show2" class="btnSave" aria-label="Ecrire un commentaire"><i class="far fa-edit"></i>Commenter</button>
                 <article v-if="displayCreateComment" class="createcomment">
@@ -58,7 +54,6 @@
                         <button v-on:click="hide2" class="btnDelete" aria-label="Annuler le commentaire">Annuler</button>
                     </div>
                 </article>
-
         </section>
         <router-link to="/allposts" aria-label="Retour ver Le Flash Actu Groupomania"><i class="fas fa-home home"></i></router-link>
         <Footer />
@@ -77,13 +72,12 @@ export default {
     },
     data () {
         return {
-             id_param: this.$route.params.id,
+            id_param: this.$route.params.id,
             postId: this.$route.params.id,
             users: [],
-           props: ['post'],
+            props: ['post'],
             posts: [],
-             
-              preview: null,
+            preview: null,
             post: {
                 title:'',
                 content:'',
@@ -100,18 +94,16 @@ export default {
             },
             userId:'',
             comments: [],
-                   
-             id:'',
-             content: '',
+            id:'',
+            content: '',
             role: '',
             displaycomments: false,
             displayCreateComment: false,
             modifyComment: false,
         }
     },
-        
-     methods : {
-       show: function () {
+    methods : {
+        show: function () {
             return this.displaycomments = true;
         },
         hide: function () {
@@ -133,50 +125,45 @@ export default {
             this.id = localStorage.getItem("userId")
             this.role = localStorage.getItem("role")
         },
-      
        // DISPLAY ONE POST
         getOnePost() {
             const token = localStorage.getItem("token")
-            axios.get (`http://localhost:3000/api/posts/${this.postId}` ,   {
-              
+            axios.get (`http://localhost:3000/api/posts/${this.postId}` ,  {
                 headers: {
                     'authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                } )
+            })
                 .then((res) => {
                 console.log("getOne"+res.data);
                 this.posts = res.data;
                 this.users = res.data;
                 this.post.title = res.data.title;
-               this.post.content = res.data.content;
+                this.post.content = res.data.content;
                 this.post.image = res.data.image;
                 this.post.createdAt = res.data.createdAt;
                 this.post.updatedAt = res.data.updatedAt;
-               this.user.nom = res.data.nom ;
-               this.user.prenom = res.data.prenom 
+                this.user.nom = res.data.nom ;
+                this.user.prenom = res.data.prenom 
             })
             .catch(() => console.log('Impossible de récupérer les posts!'))
         },
 // DISPLAY ALL COMMENTS OF POST
         getOneComment() {
             const token = localStorage.getItem("token")
-             const Id = localStorage.getItem("userId")
+            const Id = localStorage.getItem("userId")
             let data = {
                     content: this.content,
                     postId: this.id_param,
                     userId: Id
                 }                 
             axios.get(`http://localhost:3000/api/comments/${this.postId}`,data,  {
-                   
                     headers: {
                         'authorization': `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data',
-                       
                     },
                     body: data 
             })
-            
             .then((res) => {
                 this.posts = res.data;
                 this.users = res.data;
@@ -186,7 +173,6 @@ export default {
                 this.comments.createdAt = res.data.createdAt;
                 this.comments.updatedAt = res.data.updatedAt;
             })
-                
             .catch(() => console.log('Impossible de récupérer les commentaires!'))
         },
 //DATE 
@@ -200,13 +186,11 @@ export default {
             const options = { hour: 'numeric', minute:'numeric', second:'numeric'};
             return hour.toLocaleTimeString('fr-FR', options);
         },
-  
 //DELETE POST
         deletePost () {
             const token = localStorage.getItem("token")
             if (confirm("Voulez-vous vraiment supprimer le post") === true) {
                 axios.delete(`http://localhost:3000/api/posts/${this.id_param}`, {
-                   
                     headers: {
                         'authorization': `Bearer ${token}`
                     }
@@ -215,43 +199,37 @@ export default {
                 alert ("Publication supprimer")
                 console.log(res.data);
             })
-                
             .catch(() =>{ 
                 alert("Vous n'avez pas autorisation de supprimer ce message!!")
                 console.log('Vous n avez pas autorisation de supprimer ce message!!')
-        
-          } )}
+            })
+        }
         },
         //MODIFY POST
         modifyPost () {
             this.$router.push(`/postmodify/${this.id_param}`)
         },
-      
 //CREATE COMMENT
         createComment () {
-             const token = localStorage.getItem("token")
-               const userId = localStorage.getItem("userId")
-               const postId = this.$route.params.id;
-          
-          if( this.commentaire === ""){
+            const token = localStorage.getItem("token")
+            const userId = localStorage.getItem("userId")
+            const postId = this.$route.params.id;
+            if( this.commentaire === ""){
                 alert('Veuillez remplir votre commentaire')
             } else {
-              
-                
                 let data = {
                     content: this.content,
                     postId: postId,
                     userId: userId,
                 }                                     
                 axios.post("http://localhost:3000/api/comments/" ,data, {
-                   
                     headers: {
                     'authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                   },
+                    
+                    },
                     body: data
-                     })
+                })
                 .then(() => {
                     console.log();
                                 
@@ -259,9 +237,8 @@ export default {
                                 console.log("commentaire OK")
                                 this.$router.push("/allposts");
                             })
-                
-            .catch(() => console.log(' err comments'))
-       }
+                .catch(() => console.log(' err comments'))
+            }
         },
         //MODIFY COMMENT
         
@@ -270,31 +247,27 @@ export default {
             const token = localStorage.getItem("token")
             if (confirm("Voulez-vous vraiment supprimer ce commentaire") === true) {
                 axios.delete(`http://localhost:3000/api/comments/${this.comments[index].id}`, {
-                   
                     headers: {
                         'authorization': `Bearer ${token}`
                     },
                 })
-                 .then((res) => {
-                     alert("La suppression du commentaire est bien prise en compte")
+                .then((res) => {
+                alert("La suppression du commentaire est bien prise en compte")
                 console.log(res.data);
                 this.posts = res.data
-            })
-                
-            .catch(() => {
-                alert("Vous n'avez pas autorisation de supprimer ce commentaire!!")
-                console.log('Impossible de récupérer les posts !')})
-       }
+                })
+                .catch(() => {
+                    alert("Vous n'avez pas autorisation de supprimer ce commentaire!!")
+                    console.log('Impossible de récupérer les posts !')})
+            }
         },
     },
     mounted(){
         this.User()
-       this.getOnePost ()
-    
+        this.getOnePost ()
     }
 }
 </script>
-
 
 <style scoped>
 section {
@@ -318,7 +291,7 @@ h2{
     margin-top: 15px;
 }
 table{
-   margin-top: 15px; 
+    margin-top: 15px; 
 }
 input{
     width: 60%;
@@ -374,28 +347,26 @@ textarea {
 }
 p {
     padding-left: 0.5em;
-  }
- .likeIcon:hover {
+}
+.likeIcon:hover {
     cursor: pointer;
-    
-  }
+}
 .like{
     height: auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
- }
+}
 /*align-items: center;*/
 .modif {
     margin: 0;
-    
 }
 .btnDelete{
     margin-bottom: 10px;
 }
 .btn{
     text-align: center;
-     width: 30%;
+    width: 30%;
 }
 .content {
     margin: auto;
@@ -422,17 +393,16 @@ p {
 }
 p {
     padding-left: 0.5em;
-  }
- .likeIcon:hover {
+}
+.likeIcon:hover {
     cursor: pointer;
-    
-  }
+}
 .like{
     height: auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
- align-items: center;
+    align-items: center;
 }
 .button-comment {
     margin: 10px 0 0 0;
@@ -502,7 +472,7 @@ section{
     display: flex;
     flex-direction: column;
     align-items: center;
- }
+}
 .button {
     width: 50%;
 }

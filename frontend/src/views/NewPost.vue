@@ -1,7 +1,6 @@
 <template>
     <div>
         <HeaderProfile />
-            
             <section>
                 <h1><i class="far fa-edit"></i><br>Rédiger votre message</h1>
                 <form>
@@ -9,7 +8,6 @@
                         <li>
                             <input type="text" v-model="title" placeholder="Titre" size="50" required aria-label="Titre du post">
                         </li>
-                        
                         <li>
                             <textarea v-model="content" placeholder="Rédiger votre message..." rows="10" cols="60" required aria-label="Message du post"></textarea>
                         </li>

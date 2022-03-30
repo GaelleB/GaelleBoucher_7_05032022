@@ -73,18 +73,18 @@ methods: {
         getOnePost() {
             const token = localStorage.getItem("token")
             const fileField = document.querySelector('input[type="file"]');                                             
-            axios.get (`http://localhost:3000/api/posts/${this.id_param}`, {
+            axios.get (`http://localhost:3000/api/posts/${post.id}`, {
                     headers: {
                         'authorization': `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data',
                     }
             })
-             .then((res) => {
+            .then((res) => {
                 console.log(res.data);
                 this.posts = res.data;
                 this.post.title = res.data.title;
                 this.post.image = fileField.files[0];
-               this.post.createdAt = res.data.createdAt;
+                this.post.createdAt = res.data.createdAt;
                 this.post.updatedAt = res.data.updatedAt;
             })
             .catch(() => console.log('Impossible de récupérer les posts !'))

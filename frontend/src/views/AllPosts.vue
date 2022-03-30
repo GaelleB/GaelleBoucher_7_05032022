@@ -43,7 +43,7 @@
                 </table>
         <!--Posts -->
         <article v-if="posts.length == 0">
-            <p>Oups! Aucune publication pour instant!</p>
+            <p>Aucune publication pour instant!</p>
         </article>
         <Footer/>
     </div>
@@ -118,8 +118,8 @@ export default {
                     }
                 })
                 .then(() => {
-                    alert("Message supprimer")
-                    console.log("message supprimer");
+                    alert("Message supprimé")
+                    console.log("message supprimé");
                 })
                 
                 .catch(() =>{ 
