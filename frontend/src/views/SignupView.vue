@@ -1,12 +1,10 @@
-
 <template>
   <div>
     <Header />
     <div class="signup">
       <h1>Inscription</h1>
       <h2>Nous sommes ravis de vous accueillir chez Groupomania.</h2>
-          <p>Veillez saisir les informations demander et outiliser votre email professionel</p> 
-          <p>par example: "jean.dupont@groupomania.com"</p>
+          <p>Veillez saisir les informations demandées </p> 
       <form>
         <ul>
           <li>
