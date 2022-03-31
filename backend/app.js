@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
-const bodyParser = require('body-parser');  
 const path = require("path");
-const sequelize = require('./config/config');
-const mysql = require('mysql');
+const { authSequelize } = require('./config/dbConnection');
+
+authSequelize();
 
 //security
 const dotenv = require ('dotenv');

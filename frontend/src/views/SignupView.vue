@@ -4,7 +4,7 @@
     <div class="signup">
       <h1>Inscription</h1>
       <h2>Nous sommes ravis de vous accueillir chez Groupomania.</h2>
-          <p>Veillez saisir les informations demandées </p> 
+      <p>Veuillez saisir les informations demandées </p> 
       <form>
         <ul>
           <li>
@@ -21,7 +21,7 @@
           </li>
         </ul>
       </form>   
-      <button @click.prevent="signup()" type="submit" aria-label="Inscription" class="btnSave"><i class="fas fa-edit"></i> Enregistrer </button>
+      <button @click.prevent="signup()" type="submit" aria-label="S'enregistrer" class="btnSave"><i class="fas fa-edit"></i> S'enregistrer </button>
     </div>
     <Footer />
   </div>
@@ -88,16 +88,23 @@ name: 'SignupView',
 </script>
 
 <style scoped>
+.signup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+h2{
+color: black;
+}
+p{
+  color: black;
+  font-size: 20px;
+  margin: 0;
+}
 form{
     width: 80%;
     margin: 10px auto 10px auto;
-}
-h2{
-color:rgb(5, 5, 100);
-}
-p{
-  font-size: 12px;
-  margin: 0;
 }
 ul {
 list-style: none;
@@ -111,27 +118,21 @@ li {
 }
 input {
   width: 90%;
-  font-size: 1.2rem;
+  font-size: 20px;
   text-align: center;
-  margin: 15px auto 15px auto;
+  margin: 15px auto;
 }
-.signup {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+::placeholder {
+  text-align: center;
 }
 footer{
   padding: 0;
 }
-::placeholder {
-  text-align: center;
-  }
-/*------------ desktop-----------------*/
+/* Version desktop */
 @media screen and (min-width: 950px) {
   input {
     width: 50%;
-    font-size: 1.2rem;
+    font-size: 15px;
     text-align: center;
   }
 }

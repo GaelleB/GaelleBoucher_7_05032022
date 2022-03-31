@@ -8,7 +8,7 @@
 body{
   margin: 0px;
   text-align: center;
-  background-color: rgb(101, 104, 101);
+  background-color: rgb(58, 147, 182);
 }
 section{
   margin:0px;
