@@ -7,16 +7,16 @@
       <form>
         <ul>
           <li>
-            <input type="email" v-model="email" placeholder="Adresse mail" size="50" required aria-label="Email de connexion">
+            <input type="email" v-model="email" placeholder="Adresse email" size="50" required aria-label="Email de connexion">
           </li>
           <li>
-            <input type="password" v-model="password" placeholder="Mot de passe" size="50" required aria-label="Mdp connexion">
+            <input type="password" v-model="password" placeholder="Mot de passe" size="50" required aria-label="Mot de passe">
           </li>
         </ul>  
       </form>
       <div class="alert alert-danger" v-if="loginFailure">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    Email ou mot de passe incorrect
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        Email ou mot de passe incorrect
       </div>
       <button @click.prevent="login()" type="submit" aria-label="Se connecter" class="btnSave">Valider</button>
     </div>

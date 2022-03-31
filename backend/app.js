@@ -7,7 +7,6 @@ const mysql = require('mysql');
 
 //security
 const dotenv = require ('dotenv');
-const resul = dotenv.config();
 
 //import routes
 const userRoutes = require("./routes/user");

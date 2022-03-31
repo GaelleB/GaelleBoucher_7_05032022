@@ -1,6 +1,6 @@
 <template>
   <header class="imgLogo">
-      <a href="/"><img class="imgLogo" src="../assets/icon.png" alt="Logo Groupomania" /></a>
+      <a href="/"><img class="imgLogo" src="images/icon-left-font-monochrome-white(copie).png" alt="Logo Groupomania" /></a>
   </header>
 </template>
 

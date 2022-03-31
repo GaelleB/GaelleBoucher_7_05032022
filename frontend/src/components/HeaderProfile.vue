@@ -1,9 +1,9 @@
 <template>
   <header class="nav">
-    <a href="/"><img class="imgLogo" src="../assets/images/icon.png" alt="Logo Groupomania" /></a>
+    <a href="/"><img class="imgLogo" src="images/icon-left-font-monochrome-white(copie).png" alt="Logo Groupomania" /></a>
     <nav>
       <router-link class="link" to="/profile"  aria-label="Profil">Mon profil</router-link>
-      <router-link class="link" to="/allposts" aria-label="Retour ver Le Flash Actu Groupomania"><i class="fas fa-home home"></i></router-link>
+      <router-link class="link" to="/allposts" aria-label="Retour vers Le Flash Actu Groupomania"><i class="fas fa-home home"></i></router-link>
       <router-link class="link" to="/" @click="disconnectUser()">Déconnexion</router-link>
     </nav>
   </header>

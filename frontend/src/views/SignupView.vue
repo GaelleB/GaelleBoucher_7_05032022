@@ -74,7 +74,7 @@ name: 'SignupView',
       };
       {   
         axios.post("http://localhost:3000/api/auth/signup", data, {
-            headers: { }
+          
         })
         .then(() => {
           alert("Inscription acceptée");
