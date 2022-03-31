@@ -67,42 +67,34 @@ exports.signup = (req, res, next) => {
         })
 };
 
-// LOGIN
+// Connexion au compte
 exports.login = (req, res, next) => {
-    console.log("console login backend debut" + JSON.stringify(req.body));
-    const email = req.body.email;
-    const password = req.body.password;
-    if (email == null || password == null) {
-        return res.status(400).json({ 'erreur': 'paramètres manquants' });
-    }
-    User.findOne({
-        where: { email: email }
-    })
+    User.findOne({ email: req.body.email })
         .then(user => {
-            if (!user) {
-                return res.status(401).json('Utilisateur non trouvé !');
+        if (!user) {
+            return res.status(401).json({ error: 'Utilisateur non trouvé !' });
+        }
+        // Comparaison du mot de passe entré avec celui enregistré
+        bcrypt.compare(req.body.password, user.password)
+        .then(valid => {
+            if (!valid) {
+                return res.status(401).json({ error: 'Mot de passe incorrect !' });
             }
-            console.log("console user  " + req.body.password);
-            console.log("console user  " + user.password);
-            bcrypt.compare(password, user.password)
-                .then(valid => {
-                    if (!valid) {
-                        return res.status(401).json({ message: 'Mot de passe incorrect !' })
-                    }
-                    res.status(200).json({
-                        userId: user.id,
-                        token: jwtUtils.generateTokenForUser(user)
-                    })
-                })
-                .catch(err => {
-                    res.status(500).json({ err })
-                });
+            // Contient l'identifiant de l'utilisateur et un token
+            res.status(200).json({
+                userId: user._id,
+                // Encode un nouveau token grâce à jswonwebtoken
+                token: jwt.sign(
+                    { userId: user._id },
+                    'SECRET_TOKEN',
+                    { expiresIn: '24h' } // Reconnexion dans 24h
+                )
+            });
         })
-        .catch(err => {
-            console.log("erreur login  " + err);
-            return res.status(500).json({ err });
-        });
-}
+        .catch(error => res.status(500).json({ error }));
+    })
+    .catch(error => res.status(500).json({ error }));
+};
 
 // DELETE USER
 exports.deleteUser = (req, res, next) => {
