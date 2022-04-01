@@ -56,7 +56,7 @@ h2 {
   padding : 10px 10px 10px 10px;
   font-size: 1.2rem;
   text-decoration: none;
-  background: gray;
+  background: grey;
   border: 1px solid black;
   border-radius: 20px;
 }

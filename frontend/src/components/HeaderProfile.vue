@@ -81,10 +81,9 @@ nav{
   color: black;
 }
 i {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
-.fa-home
-{
+.fa-home {
   width: 50px;
   height: 50px;
   position: relative;
@@ -92,7 +91,7 @@ i {
   background: gray;
   cursor: pointer; 
   text-align: center;
-    color: white;   
+  color: white;   
   display: flex;
   justify-content: center; 
   margin: auto;

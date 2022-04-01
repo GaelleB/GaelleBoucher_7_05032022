@@ -82,7 +82,6 @@ export default {
             this.id = localStorage.getItem("Id")
             this.role = localStorage.getItem("role")
         },
-
         getOneUser() {
             const Id = JSON.parse(localStorage.getItem("userId"))
             const token = localStorage.getItem('token');

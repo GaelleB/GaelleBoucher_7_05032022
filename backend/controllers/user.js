@@ -38,7 +38,7 @@ exports.signup = (req, res, next) => {
     })
         .then(user => {
             if (!user) {
-                bcrypt.hash(password, 10)
+                bcrypt.hash(req.body.password, 10)
                     .then(hash => {
                         const newUser = models.User.create({
                             email: email,
@@ -99,8 +99,8 @@ exports.login = (req, res, next) => {
 // DELETE USER
 exports.deleteUser = (req, res, next) => {
     const headerAuth = req.headers['authorization'];
-    const userId = jwtUtils.getUserId(headerAuth);
-    const role = jwtUtils.getRoleUser(headerAuth);
+    const userId = jwt.getUserId(headerAuth);
+    const role = jwt.getRoleUser(headerAuth);
     console.log("delete user   " + req.params.id);
     if (userId == req.params.id || role == 0) {
         User.findOne({ where: { id:  req.params.id } })
@@ -153,8 +153,8 @@ exports.getAllUsers = (req, res, next) => {
 exports.modifyUser = (req, res, next) => {
     console.log("modif info users" + JSON.stringify(req.body));
     const headerAuth = req.headers['authorization'];
-    const userId = jwtUtils.getUserId(headerAuth);
-    const role = jwtUtils.getRoleUser(headerAuth);
+    const userId = jwt.getUserId(headerAuth);
+    const role = jwt.getRoleUser(headerAuth);
     const email = req.body.email
     const nom = req.body.nom;
     const prenom = req.body.prenom;
@@ -205,8 +205,8 @@ exports.modifyUser = (req, res, next) => {
 exports.modifyPassword = (req, res, next) => {
     console.log("modif password" + JSON.stringify(req.body));
     const headerAuth = req.headers['authorization'];
-    const userId = jwtUtils.getUserId(headerAuth);
-    const role = jwtUtils.getRoleUser(headerAuth);
+    const userId = jwt.getUserId(headerAuth);
+    const role = jwt.getRoleUser(headerAuth);
     User.findOne({ where: { id: userId } })
         .then(user => {
             if(userId === user.id || role === 0) {

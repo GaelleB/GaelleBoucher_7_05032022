@@ -8,7 +8,7 @@
 body{
   margin: 0px;
   text-align: center;
-  background-color: rgb(58, 147, 182);
+  background-color: rgb(26, 189, 88);
 }
 section{
   margin:0px;
@@ -23,6 +23,7 @@ h1 {
   font-size: 40px;
   margin: 0 auto 20px auto;
   color: black;
+  padding-top: 20px;
 }
 h2{
   font-size: 20px;
@@ -43,7 +44,7 @@ textarea{
   font-size: 15px;
   cursor: pointer;
 }
-.btnSave{
+.btnSave, .btnDelete {
   background-color: gray;
   font-weight: bolder;
   font-size: 15px;
@@ -54,19 +55,7 @@ textarea{
   color: black;
   cursor: pointer;
 }
-.btnDelete{
-  background-color: grey;
-  font-weight: bolder;
-  font-size: 15px;
-  margin: 20px 0 10px 0;
-  padding: 5px 30px ;
-  border-radius: 10px;
-  text-decoration: none;
-  color: black;
-  cursor: pointer;
-}
-.fa-home
-{
+.fa-home {
   width: 50px;
   height: 50px;
   position: relative;

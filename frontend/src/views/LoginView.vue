@@ -91,7 +91,7 @@ input {
   color:red;
   font-weight: bolder;
 }
-/*------------ desktop-----------------*/
+/* DESKTOP*/
 @media screen and (min-width: 950px) {
   h1{
     width:  25%;

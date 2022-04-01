@@ -32,8 +32,8 @@
                         le <b>{{ dateFormat(post.createdAt) }}</b>
                         à <b>{{ hourFormat(post.createdAt) }}</b><br>
                     </p>
-                    
-                        <p>  Modifié le 
+                    <p>
+                        Modifié le 
                         le <b>{{ dateFormat(post.updatedAt) }}</b>
                         à <b>{{ hourFormat(post.updatedAt) }}</b>
                     </p>
@@ -163,8 +163,7 @@ td{
 .tdHeight{
     height:100px;
 }
-.header,
-.content {
+.header, .content {
     width: 40%;
     background: #ffd7d7;
     border: 2px solid black;
