@@ -20,7 +20,7 @@
             <!--IMAGE -->
                 <div class="button modifyImage btnModifyImg" >   
                     <img v-if="user.image" :src="user.image" alt="Photo de profil" class="file" width="150px" height="150px" border-radius="15px">
-                    <label v-if="!user.image" for="file" class="label-file btnModifyImg" aria-label="Inserer votre photo de profil" ><i class="fas fa-upload"></i><br>Inserer <br>votre photo de profil</label>
+                    <label v-if="!user.image" for="file" class="label-file btnModifyImg" aria-label="Inserer votre photo de profil" ><i class="fas fa-upload"></i><br>Insérer <br>votre photo de profil</label>
                     <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer la photo de profil"> <i class="far fa-trash-alt"></i></button>
                     <input type="file" accept="image/jpeg, image/jpg, image/png, image/webp" v-on:change="uploadFile" id="file" class="input-file" aria-label="Photo de profil">
                 </div>
@@ -169,8 +169,8 @@ export default {
                     },
                 })
                 .then(() => {
-                    alert ("compte supprimmer")
-                    console.log("compte supprimer");
+                    alert ("compte supprimé")
+                    console.log("compte supprimé");
                     let pub = this.posts
                     for ( let i = 0 ; i < pub.length ; i++) {
                         if (pub[i].image) {
@@ -181,11 +181,11 @@ export default {
                             },
                         })
                             .then(() => {
-                                alert("les posts suprimer")
-                                console.log("les posts supprimer")
+                                alert("posts suprimés")
+                                console.log("posts supprimés")
                                 .then(this.$router.push("/"))
                             })
-                            .catch(alert ("impossilbe supprimer les posts"))
+                            .catch(alert ("impossilbe de supprimer les posts"))
                         }
                     }
                 })
@@ -250,8 +250,9 @@ li {
     width: 100%;
 }
 input {
-    width: 70%;
-    font-size: 1.2rem;
+    width: 31%;
+    border-radius: 15px;
+    font-size: 20px;
     text-align: center;
 }
 .modify{
@@ -276,13 +277,13 @@ input {
     margin: 20px 0 0 0;
     padding: 5px 30px ;
     border: 2px solid black;
-    border-radius: 10px;
+    border-radius: 15px;
     text-decoration: none;
     color: #000000;
     min-width: 220px;
     width: 40%;
     margin: 30px auto 15px auto;
-    background: gray;
+    background: grey;
     font-size: 15px;
     cursor: pointer;
 }

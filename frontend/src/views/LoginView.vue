@@ -1,16 +1,16 @@
 <template>
   <div>
-    <Header />
+    <Header/>
     <div class="login">
       <h1>Connexion</h1>
       <p>Veuillez saisir votre email et votre mot de passe</p>
       <form>
         <ul>
           <li>
-            <input type="email" v-model="email" placeholder="Adresse email" size="50" required aria-label="Email de connexion">
+            <input type="email" v-model="email" placeholder="Adresse email" required aria-label="Email de connexion">
           </li>
           <li>
-            <input type="password" v-model="password" placeholder="Mot de passe" size="50" required aria-label="Mot de passe">
+            <input type="password" v-model="password" placeholder="Mot de passe" required aria-label="Mot de passe">
           </li>
         </ul>  
       </form>
@@ -20,7 +20,7 @@
       </div>
       <button @click.prevent="login()" type="submit" aria-label="Se connecter" class="btnSave">Valider</button>
     </div>
-    <Footer />
+    <Footer/>
   </div>
 </template>
 
@@ -62,8 +62,17 @@ export default {
 </script>
 
 <style scoped>
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+p {
+  color: black;
+  font-size: 20px;
+}
 form{
-    width: 80%;
+  width: 30%;
 }
 ul {
 list-style: none;
@@ -76,13 +85,9 @@ li {
   margin-bottom: 30px;
 }
 input {
-  font-size: 1.2rem;
+  border-radius: 15px;
+  font-size: 20px;
   text-align: center;
-}
-.login {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 ::placeholder {
   text-align: center;
@@ -94,7 +99,7 @@ input {
 /* DESKTOP*/
 @media screen and (min-width: 950px) {
   h1{
-    width:  25%;
+    width: 25%;
   }
 }
 </style>

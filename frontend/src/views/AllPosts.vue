@@ -10,9 +10,9 @@
         </article>
 
         <!-- Création d'un post -->
-        <router-link to="/postnew" aria-label="Ouverture de creation d'un message">
+        <router-link to="/postnew" aria-label="Création d'un nouveau post">
         <button  class="button" >
-            <h2><i class="far fa-edit"></i><br>Rédiger nouveau message</h2>
+            <h2><i class="far fa-edit"></i><br>Rédiger un nouveau post</h2>
             </button>
             </router-link>
         <table>
@@ -76,7 +76,6 @@ export default {
         }
     },
     methods : {
-
         // Tous les posts
         getAllPosts() {
             const token = localStorage.getItem("token")
@@ -91,7 +90,6 @@ export default {
                 this.posts = res.data;
                 this.users = res.data;
             })
-                
             .catch(() => console.log('Impossible de récupérer les posts !'))
         },
 
@@ -123,8 +121,8 @@ export default {
                 })
                 
                 .catch(() =>{ 
-                    alert("Vous n'avez pas autorisation de supprimer ce message!!")
-                    console.log('Vous n avez pas autorisation de supprimer ce message!!')
+                    alert("Vous n'avez pas d'autorisation de supprimer ce message!!")
+                    console.log('Pas autoriser à supprimer ce message!!')
                     })
             }
         },
@@ -139,6 +137,9 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+    font-size: 30px;
+}
 h2 {
     font-size: 15px;
     margin: 0 auto 0 auto;
@@ -156,6 +157,10 @@ h2 {
     align-items: center;
     text-decoration: none;
     color: #000000;
+}
+p {
+    font-weight: bold;
+    font-size: 20px;
 }
 td{
     margin-top:10px;
@@ -240,23 +245,23 @@ textarea{
     font-size: 14px;
 }
 @media screen and (min-width:768px){
-table {
-    width: 100%;
-}
-.btnIconeDelete, .btnIconeSave{
-    width: 200px;
-}
-textarea{
-    width: 90%
-}
-.imgPost {
-    width: 20%;
-    height: 30%;
-    border-radius: 10px;
-}
-.icone{
-    display: flex;
-    justify-content: centre;
-}
+    table {
+        width: 100%;
+    }
+    .btnIconeDelete, .btnIconeSave{
+        width: 200px;
+    }
+    textarea{
+        width: 90%
+    }
+    .imgPost {
+        width: 20%;
+        height: 30%;
+        border-radius: 10px;
+    }
+    .icone{
+        display: flex;
+        justify-content: centre;
+    }
 }
 </style>

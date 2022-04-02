@@ -301,21 +301,22 @@ input{
     text-align: center ;
     font-size: 20px;
     font-weight: bolder;
+    border-radius: 20px;
 }
 .inputTitle{
     margin: 10px auto 10px auto ;
     width: 70%;
-    font-size: 1.2rem;
+    font-size: 15px;
     text-align: center;
 }
 h1 {
-    font-size: 1.5rem;
+    font-size: 15px;
     margin: 30px 0 10px 0;
 }
 textarea {
     width: 90%;
     height: 150px;
-    font-size: 1.2rem;
+    font-size: 15px;
     margin: 10px auto 10px auto;
 }
 .userComment{

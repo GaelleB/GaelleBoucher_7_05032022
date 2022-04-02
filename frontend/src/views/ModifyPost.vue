@@ -19,8 +19,8 @@
                     <img :src="post.image" alt="Image du post" class="file" width="200px" height="200px">
                 </li>
                 <li> 
-                    <label v-if="post.image " for="file" class="button" aria-label="Choisir une photo pour ce post">Modifier image</label>
-                    <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer cette photo du post"> Supprimer image</button>    
+                    <label v-if="post.image " for="file" class="button" aria-label="Choisir une photo pour ce post">Modifier l'image</label>
+                    <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer cette photo du post"> Supprimer l'image</button>    
                     <input type="file" accept=".jpeg, .jpg, .png, .webp, .gif" v-on:change="uploadFile" id="file" class="input-file" aria-label="Image du post">
                 </li>
             </ul>

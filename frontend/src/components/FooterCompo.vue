@@ -25,7 +25,7 @@ ul {
   list-style: none;
 }
 a, p {
-  font-size: 12px;
+  font-size: 15px;
   color: #000000;
   text-decoration: none;
 }

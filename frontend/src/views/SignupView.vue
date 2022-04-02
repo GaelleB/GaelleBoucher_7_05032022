@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header />
+    <Header/>
     <div class="signup">
       <h1>Inscription</h1>
       <h2>Nous sommes ravis de vous accueillir chez Groupomania.</h2>
@@ -23,7 +23,7 @@
       </form>   
       <button @click.prevent="signup()" type="submit" aria-label="S'enregistrer" class="btnSave"><i class="fas fa-edit"></i> S'enregistrer </button>
     </div>
-    <Footer />
+    <Footer/>
   </div>
 </template>
 
@@ -95,7 +95,7 @@ name: 'SignupView',
   justify-content: center;
 }
 h2{
-color: black;
+  color: black;
 }
 p{
   color: black;
@@ -103,12 +103,12 @@ p{
   margin: 0;
 }
 form{
-    width: 80%;
-    margin: 10px auto 10px auto;
+  width: 50%;
+  margin: 10px auto 10px auto;
 }
 ul {
-list-style: none;
-padding: 0;
+  list-style: none;
+  padding: 0;
 }
 li {
   display: flex;
@@ -117,10 +117,9 @@ li {
   margin: 0 auto 0 auto;
 }
 input {
-  width: 90%;
-  font-size: 20px;
+  border-radius: 15px;
   text-align: center;
-  margin: 15px auto;
+  margin: 12px auto;
 }
 ::placeholder {
   text-align: center;

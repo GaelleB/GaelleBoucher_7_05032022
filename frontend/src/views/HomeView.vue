@@ -36,9 +36,9 @@ h2 {
   width: 70%;
   color: black;
   font-size: 25px;
-  padding: 0px;
+  padding: 25px 0 0 0;
   margin:0 auto 50px auto;
-  }
+}
 .tab{
     display: flex;
     justify-content: center;
