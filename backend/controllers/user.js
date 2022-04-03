@@ -4,6 +4,7 @@ require('dotenv').config()
 
 const models = require('../models')
 const User = models.User;
+const Post = models.Post;
 
 // REGEX
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -69,7 +70,7 @@ exports.signup = (req, res, next) => {
 
 // Connexion au compte
 exports.login = (req, res, next) => {
-    User.findOne({ email: req.body.email })
+    User.findOne({  where: { email: req.body.email } })
         .then(user => {
         if (!user) {
             return res.status(401).json({ error: 'Utilisateur non trouvé !' });
@@ -81,13 +82,13 @@ exports.login = (req, res, next) => {
                 return res.status(401).json({ error: 'Mot de passe incorrect !' });
             }
             // Contient l'identifiant de l'utilisateur et un token
-            res.status(200).json({
+            res.status(200).json({ 
                 userId: user._id,
                 // Encode un nouveau token grâce à jswonwebtoken
                 token: jwt.sign(
                     { userId: user._id },
                     'SECRET_TOKEN',
-                    { expiresIn: '24h' } // Reconnexion dans 24h
+                    { expiresIn: '6h' } // Reconnexion dans 24h
                 )
             });
         })
