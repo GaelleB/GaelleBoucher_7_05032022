@@ -2,7 +2,7 @@
     <div>
         <HeaderProfile />
             <section>
-                <h1><i class="far fa-edit"></i><br>Rédiger votre message</h1>
+                <h1><i class="far fa-edit"></i><br>Rédiger votre publication</h1>
                 <form>
                     <ul>
                         <li>
@@ -17,7 +17,7 @@
                         <li>
                             <input type="file" accept=".jpeg, .jpg, .png, .webp, .gif" v-on:change="uploadFile" id="file" class="input-file" aria-label="Image du post">
                             <label v-if="!image" for="file" class="label-file" aria-label="Choisir une photo pour ce post"></label>
-                            <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer cette photo du post"><i class="far fa-trash-alt"></i> Supprimer image</button>
+                            <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer la photo du post"><i class="far fa-trash-alt"></i> Supprimer image</button>
                         </li>
                     </ul>
                 </form>

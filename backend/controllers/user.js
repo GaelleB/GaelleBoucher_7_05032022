@@ -12,60 +12,23 @@ const passwordRegex = /^(?=.*\d).{4,8}$/;
 
 // Enregistrement d'un compte
 exports.signup = (req, res, next) => {
-    console.log("console log signup backend" + JSON.stringify(req.body));
-    const user = req.body;
-    const email = user.email;
-    const password = user.password;
-    const nom = user.nom;
-    const prenom = user.prenom;
-    if (email == null || password == null || nom == null || prenom == null) {
-        return res.status(400).json({ 'erreur': 'paramètres manquants' });
-    }
-    if (nom.length > 20 || nom.length < 2) {
-        return res.status(400).json({ 'erreur': 'prénom invalide (doit être entre 2 et 20 caractères)' })
-    }
-    if (prenom.length > 20 || prenom.length < 2) {
-        return res.status(400).json({ 'erreur': 'nom invalide (doit être entre 2 et 20 caractères)' })
-    }
-    if (!emailRegex.test(email)) {
-        return res.status(400).json({ 'erreur': 'email invalide' })
-    }
-    if (!passwordRegex.test(password)) {
-        return res.status(400).json({ 'erreur': 'mot de passe invalide (doit contenir entre 4 et 8 caractères et au moins un chiffre)' })
-    }
-    User.findOne({
-        attributes: ['email'],
-        where: { email: email }
+    // Crypte le mot de passe
+    bcrypt.hash(req.body.password, 10)
+    .then(hash => {
+        // Création d'un nouvel utilisteur (mail + mot de passe)
+        const user = new User({
+            lastname: req.body.lastname,
+            firstname: req.body.firstname,
+            email: req.body.email,
+            password: hash
+        });
+        // Enregistrement de l'utilisateur 
+        user.save()
+            .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+            .catch(error => res.status(400).json({ error }));
     })
-        .then(user => {
-            if (!user) {
-                bcrypt.hash(req.body.password, 10)
-                    .then(hash => {
-                        const newUser = models.User.create({
-                            email: email,
-                            password: hash,
-                            nom: nom,
-                            prenom: prenom,
-                            image: req.body.image || "",
-                            role: 1
-                        })
-                            .then((newUser) => {
-                                return res.status(201).json({ 'userId': newUser.id })
-                            })
-                            .catch(err => {
-                                return res.status(500).json({ err })
-                            })
-                    }).catch(err => {
-                        return res.status(500).json({ err })
-                    })
-            } else {
-                return res.status(409).json({ 'error': 'utilisateur déja existant' });
-            }
-        })
-        .catch(err => {
-            console.log("erreur signUp" + err);
-            return res.status(500).json({ err });
-        })
+    // Erreur server
+    .catch(error => res.status(500).json({ error }));
 };
 
 // Connexion au compte
