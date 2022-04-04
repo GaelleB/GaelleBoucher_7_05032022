@@ -4,7 +4,6 @@ require('dotenv').config()
 
 const models = require('../models')
 const User = models.User;
-const Post = models.Post;
 
 // Regex
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -12,60 +11,22 @@ const passwordRegex = /^(?=.*\d).{4,8}$/;
 
 // Enregistrement d'un compte
 exports.signup = (req, res, next) => {
-    console.log("console log signup backend" + JSON.stringify(req.body));
-    const user = req.body;
-    const email = user.email;
-    const password = user.password;
-    const nom = user.nom;
-    const prenom = user.prenom;
-    if (email == null || password == null || nom == null || prenom == null) {
-        return res.status(400).json({ 'erreur': 'paramètres manquants' });
-    }
-    if (nom.length > 20 || nom.length < 2) {
-        return res.status(400).json({ 'erreur': 'prénom invalide (doit être entre 2 et 20 caractères)' })
-    }
-    if (prenom.length > 20 || prenom.length < 2) {
-        return res.status(400).json({ 'erreur': 'nom invalide (doit être entre 2 et 20 caractères)' })
-    }
-    if (!emailRegex.test(email)) {
-        return res.status(400).json({ 'erreur': 'email invalide' })
-    }
-    if (!passwordRegex.test(password)) {
-        return res.status(400).json({ 'erreur': 'mot de passe invalide (doit contenir entre 4 et 8 caractères et au moins un chiffre)' })
-    }
-    User.findOne({
-        attributes: ['email'],
-        where: { email: email }
+    bcrypt.hash(req.body.password, 10) // Crypte le mot de passe
+    .then(hash => {
+        // Création d'un nouvel utilisteur (mail + mot de passe)
+        const user = new User({
+            lastname: req.body.lastname,
+            firstname: req.body.firstname,
+            email: req.body.email,
+            password: hash
+        });
+        // Enregistrement de l'utilisateur 
+        user.save()
+            .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+            .catch(error => res.status(400).json({ error }));
     })
-        .then(user => {
-            if (!user) {
-                bcrypt.hash(req.body.password, 10)
-                    .then(hash => {
-                        const newUser = models.User.create({
-                            email: email,
-                            password: hash,
-                            nom: nom,
-                            prenom: prenom,
-                            image: req.body.image || "",
-                            role: 1
-                        })
-                            .then((newUser) => {
-                                return res.status(201).json({ 'userId': newUser.id })
-                            })
-                            .catch(err => {
-                                return res.status(500).json({ err })
-                            })
-                    }).catch(err => {
-                        return res.status(500).json({ err })
-                    })
-            } else {
-                return res.status(409).json({ 'error': 'utilisateur déja existant' });
-            }
-        })
-        .catch(err => {
-            console.log("erreur signUp" + err);
-            return res.status(500).json({ err });
-        })
+    // Erreur server
+    .catch(error => res.status(500).json({ error }));
 };
 
 // Connexion au compte
@@ -95,56 +56,6 @@ exports.login = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
     })
     .catch(error => res.status(500).json({ error }));
-};
-
-// Supprssion de l'utilisateur
-exports.deleteUser = (req, res, next) => {
-    const headerAuth = req.headers['authorization'];
-    const userId = jwt.getUserId(headerAuth);
-    const role = jwt.getRoleUser(headerAuth);
-    console.log("delete user   " + req.params.id);
-    if (userId == req.params.id || role == 0) {
-        User.findOne ({ where: { id:  req.params.id } })
-            .then(user => {
-                if(user!= null){
-                    if (user.image != null) {
-                        const filename = user.image.split('/images/profiles/')[1];
-                        fs.unlink(`images/profiles/${filename}`, (error) => {});
-                    } 
-                    User.destroy({ where: { id: req.params.id } })
-                    .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
-                    .catch(error =>{ console.log(error); res.status(400).json({ message : error.message })});
-                }
-                else{  console.log("user not found");
-                    res.status(404).json({ 'erreur': 'Utilisateur non trouvé !' })
-                }
-            } ).catch(error => {  res.status(500).json({ message : error.message }) })
-    } else {
-        res.status(403).json({ message: 'Action non autorisée !' });
-    }
-    };
-
-// Affichage d'un utilisateur
-exports.getOneUser = (req, res, next) => {
-    const userId = req.params.id;
-    User.findOne({
-        attributes: ['id', 'email', 'nom', 'prenom', 'image'],
-        where: { id: userId }
-    }).then((user) => {
-        if (user) {
-            res.status(200).json(user);
-        } else {
-            res.status(404).json({ 'erreur': 'Utilisateur non trouvé !' })
-        }
-    }).catch(err => res.status(500).json({ err }))
-}
-
-// Affichage des utilisateurs
-exports.getAllUsers = (req, res, next) => {
-    console.log("get all users" + JSON.stringify(req.body));
-    User.findAll()
-        .then((users) => res.status(200).json(users))
-        .catch((error) => res.status(400).json(error))
 };
 
 // Modification de l'utilisateur
@@ -210,6 +121,7 @@ exports.modifyPassword = (req, res, next) => {
             if(userId === user.id || role === 0) {
                 controle.log('oldPasword   ' + req.body.oldPassword),
                 controle.log('new pssaword    ' + user.password)
+                // Comparaison du nouveau et de l'ancien mot de passe
             bcrypt.compare(req.body.oldPassword, user.password)
                 .then(valid => {
                     if (!valid) {
@@ -234,3 +146,46 @@ exports.modifyPassword = (req, res, next) => {
         }})
         .catch(error => res.status(500).json({ error }));
 }
+
+// Suppression de l'utilisateur
+exports.deleteUser = (req, res) => {
+    User.findOne({ where: { id: req.params.id } })
+        .then(user => {
+            const filename = user.imageUrl.split('/images/profile/')[1];
+            if(filename != "images/profile/") {
+                fs.unlink(`images/${filename}`, (err) => {
+                    if(err) {
+                        console.log("Erreur: " + err);
+                    };
+                });
+            };
+            User.destroy({ where: { id: req.params.id } })
+                .then(() => res.status(200).json({ message: "Utilisateur supprimé" }))
+                .catch(error => res.status(500).json({ error }));
+        })
+        .catch(error => res.status(500).json({ error }))
+}
+
+// Affichage d'un utilisateur
+exports.getOneUser = (req, res, next) => {
+    const userId = req.params.id;
+    User.findOne({
+        attributes: ['id', 'email', 'nom', 'prenom', 'image'],
+        where: { id: userId }
+    })
+    .then((user) => {
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ 'erreur': 'Utilisateur non trouvé !' })
+        }
+    })
+    .catch(err => res.status(500).json({ err }))
+}
+
+// Affichage de tous les utilisateurs
+exports.getAllUsers = (req, res, next) => {
+    User.findAll()
+        .then((users) => res.status(200).json(users))
+        .catch((error) => res.status(400).json(error))
+};

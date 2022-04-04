@@ -15,25 +15,21 @@ exports.createPost = (req, res, next) => {
         where: { id: userId }
     })
     .then(user => {
-      if (req.file){  //  if(user) {console.log("create 3 ");
+        if (req.file){ 
             models.Post.create({
                 title : title,
                 content: content,
-                image: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`, // || ""
-               // likes: 0,
+                image: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`,
                 UserId: user.id,
-                
             }).then( res.status(201).json({"message": "Nouveau post créé avec succès !"})
             ).catch(error => {
                 console.log(error);
                 res.status(400).json({erreur : erreur.message});
             });
-                    
-        } else {  //console.log("create 4 ");
+        } else { 
             models.Post.create({
                 title : title,
                 content: content,
-                //likes: 0,
                 UserId: user.id,
                 
             }).then( res.status(201).json({"message": "Nouveau post créé avec succès !"})
