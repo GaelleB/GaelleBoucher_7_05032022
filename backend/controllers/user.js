@@ -6,11 +6,11 @@ const models = require('../models')
 const User = models.User;
 const Post = models.Post;
 
-// REGEX
+// Regex
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const passwordRegex = /^(?=.*\d).{4,8}$/;
 
-// SIGNUP
+// Enregistrement d'un compte
 exports.signup = (req, res, next) => {
     console.log("console log signup backend" + JSON.stringify(req.body));
     const user = req.body;
@@ -59,7 +59,7 @@ exports.signup = (req, res, next) => {
                         return res.status(500).json({ err })
                     })
             } else {
-                return res.status(409).json({ 'error': 'user already exist' });
+                return res.status(409).json({ 'error': 'utilisateur déja existant' });
             }
         })
         .catch(err => {
@@ -97,7 +97,7 @@ exports.login = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-// DELETE USER
+// Supprssion de l'utilisateur
 exports.deleteUser = (req, res, next) => {
     const headerAuth = req.headers['authorization'];
     const userId = jwt.getUserId(headerAuth);
@@ -109,9 +109,7 @@ exports.deleteUser = (req, res, next) => {
                 if(user!= null){
                     if (user.image != null) {
                         const filename = user.image.split('/images/profiles/')[1];
-                        fs.unlink(`images/profiles/${filename}`, (error) => {
-                           // console.log(error.message);
-                            });
+                        fs.unlink(`images/profiles/${filename}`, (error) => {});
                     } 
                     User.destroy({ where: { id: req.params.id } })
                     .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
@@ -126,7 +124,7 @@ exports.deleteUser = (req, res, next) => {
     }
     };
 
-// DISPLAY ONE USER
+// Affichage d'un utilisateur
 exports.getOneUser = (req, res, next) => {
     const userId = req.params.id;
     User.findOne({
@@ -141,7 +139,7 @@ exports.getOneUser = (req, res, next) => {
     }).catch(err => res.status(500).json({ err }))
 }
 
-// DISPLAY ALL USERS
+// Affichage des utilisateurs
 exports.getAllUsers = (req, res, next) => {
     console.log("get all users" + JSON.stringify(req.body));
     User.findAll()
@@ -149,7 +147,7 @@ exports.getAllUsers = (req, res, next) => {
         .catch((error) => res.status(400).json(error))
 };
 
-// MODIFY USER AND UPDATE
+// Modification de l'utilisateur
 exports.modifyUser = (req, res, next) => {
     console.log("modif info users" + JSON.stringify(req.body));
     const headerAuth = req.headers['authorization'];
@@ -175,7 +173,7 @@ exports.modifyUser = (req, res, next) => {
                         };
                     });
                 };
-                // UPDATE PROFILE, new info
+                // Mise à jour du profile
                 user.update({
                     email: (email ? email : user.email),
                     nom: (nom ? nom : user.nom),
@@ -201,7 +199,7 @@ exports.modifyUser = (req, res, next) => {
         })
 }
 
-//MODIFY PASSWORD
+// Modification du mot de passe
 exports.modifyPassword = (req, res, next) => {
     console.log("modif password" + JSON.stringify(req.body));
     const headerAuth = req.headers['authorization'];

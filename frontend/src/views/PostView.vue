@@ -358,7 +358,6 @@ p {
     flex-direction: row;
     justify-content: center;
 }
-/*align-items: center;*/
 .modif {
     margin: 0;
 }

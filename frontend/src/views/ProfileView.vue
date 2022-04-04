@@ -1,6 +1,6 @@
 <template>
     <div>
-        <HeaderProfile />
+        <HeaderProfile/>
         <div>
             <h1>Mon profil</h1>
             <form>
@@ -17,7 +17,7 @@
                     </ul>
             </form>
             <nav class="modify" >
-            <!--IMAGE -->
+            <!--Image -->
                 <div class="button modifyImage btnModifyImg" >   
                     <img v-if="user.image" :src="user.image" alt="Photo de profil" class="file" width="150px" height="150px" border-radius="15px">
                     <label v-if="!user.image" for="file" class="label-file btnModifyImg" aria-label="Inserer votre photo de profil" ><i class="fas fa-upload"></i><br>Insérer <br>votre photo de profil</label>
@@ -25,15 +25,13 @@
                     <input type="file" accept="image/jpeg, image/jpg, image/png, image/webp" v-on:change="uploadFile" id="file" class="input-file" aria-label="Photo de profil">
                 </div>
             </nav>
-
                 <div class="submit">
                     <button @click="modifyUser()" class="btnSave" aria-label="Modifier le compte de cet utilisateur"><i class="fas fa-edit"></i> Enregistrer</button>
                     <button @click="deleteUser()" class="espacement btnDelete" aria-label="Supprimer le compte de cet utilisateur"><i class="far fa-trash-alt"></i> Supprimer le compte</button>
                 </div>
-            
         </div>
         <router-link to="/allposts" aria-label="Retour ver Le Flash Actu Groupomania"><i class="fas fa-home home"></i></router-link>
-        <Footer />
+        <Footer/>
     </div>
 </template>
 
@@ -97,9 +95,8 @@ export default {
             this.user.image = res.data.image;
         })
         .catch(() =>{ 
-            alert("Vous n'avez pas autorisation de supprimer ce message!!")
-            console.log('Vous n avez pas autorisation de supprimer ce message!!')
-        
+            alert("Non autorisé à supprimer ce message!")
+            console.log('Non autorisé à supprimer ce message!')
         })
     },
         modifyUser() {
@@ -121,7 +118,6 @@ export default {
             } else if (regexEmail.test(this.user.email) === false) {
                 alert("Veuillez écrire une adresse email valide");
             } else if ((regexText.test(this.user.nom) === true) && regexText.test(this.user.prenom) === true && regexEmail.test(this.user.email) === true && this.user.image === null) {
-            
                 axios.put(`http://localhost:3000/api/auth/profile/${Id}`, { 
                     headers: {
                         'authorization': `Bearer ${token}`,
@@ -129,11 +125,11 @@ export default {
                         'Content-Type': 'multipart/form-data',
                     },
                 })
-                    .then((res) => {
-                    this.user = res.data;
-                    alert("Votre modification est bien prise en compte")
-                        this.$router.push("/profile");
-                    })
+                .then((res) => {
+                this.user = res.data;
+                alert("Votre modification est bien prise en compte")
+                    this.$router.push("/profile");
+                })
                 .catch((err) => console.log(err))
         
             } else if ((regexText.test(this.user.nom) === true) && regexText.test(this.user.prenom) === true && regexEmail.test(this.user.email) === true && this.user.image != null) {
@@ -144,11 +140,11 @@ export default {
                 data.append('image', this.image)
                 data.append('image', fileField.files[0])
                 axios.put(`http://localhost:3000/api/auth/profile/${Id}`, data,{
-                        headers: {
-                            'authorization': `Bearer ${token}`,
-                            'Content-Type': 'multipart/form-data',
-                        },
-                        body: data
+                    headers: {
+                        'authorization': `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    body: data
                 })
                 .then(() => {
                     alert("Profil modifier")
@@ -198,7 +194,7 @@ export default {
                     })
                         .then(response => response.json())
                         .then(() => { 
-                            alert("La suppression du compte est bien prise en compte")
+                            alert("La suppression du compte a bien été prise en compte")
                             localStorage.clear();
                         })
                         .then(this.$router.push("/"))
