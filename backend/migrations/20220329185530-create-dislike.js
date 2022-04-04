@@ -9,10 +9,14 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userId: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        onDelete: 'cascade'
       },
       postId: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        onDelete: 'cascade'
       },
       createdAt: {
         allowNull: false,

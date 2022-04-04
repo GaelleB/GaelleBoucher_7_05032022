@@ -4,7 +4,6 @@ const models = require('../models');
 
 // CREATE POST
 exports.createPost = (req, res, next) => {
-   // console.log("post"+ JSON.stringify (req.body.title));
     const headerAuth = req.headers['authorization'];
     const userId = jwt.getUserId(headerAuth);
     const title = req.body.title;
@@ -89,7 +88,7 @@ exports.getAllPosts = (req, res, next) => {
         include: [{ model : models.User,
             attributes: [ 'nom','prenom', 'id' ]
         },
-            /* { model: models.Like, 
+            { model: models.Like, 
                 attributes: [ 'UserId' ] 
                 }, 				
                 {model: models.Dislike,
@@ -100,8 +99,7 @@ exports.getAllPosts = (req, res, next) => {
                 include: [ { model: models.User, 
                 attributes: [ 'nom','prenom','id' ] 
                 }] 
-                } 
-            */
+                }
         ]
     })
     .then( post => res.status(200).json(post))
@@ -118,8 +116,6 @@ exports.getPostsUser = (req, res, next) => {
             model : models.User,
         }],
         order: [["createdAt", "ASC"]],
-       /* offset: 10 * req.body.pageNbr - 10,
-        limit: 10*/
     })
 
     .then( posts => res.status(200).json(posts))
@@ -131,7 +127,6 @@ exports.modifyPost = (req, res, next) => {
     const headerAuth = req.headers['authorization'];
     const userId = jwt.getUserId(headerAuth);
     const role = jwt.getRoleUser(headerAuth);
-  //  console.log("consol log modify post   "+ req.body);
     if (req.file) {
         models.Post.findOne({ where: { id: req.params.id }})
         .then(post => {
@@ -142,12 +137,9 @@ exports.modifyPost = (req, res, next) => {
                     const modifyPost = {
                         content: req.body.content,
                         updatedAt: Date.now(),
-
                         image: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
                     };
-        
                     models.Post.update(modifyPost , { where: { id: req.params.id } })
-                
                         .then(() => res.status(200).json({message : 'Post modifié !'}))
                         .catch( error => res.status(400).json({error}));
                 })} else {
@@ -156,9 +148,7 @@ exports.modifyPost = (req, res, next) => {
                         updatedAt: Date.now(),
                         image: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
                     };
-            
                     models.Post.update(modifyPost , { where: { id: req.params.id } })
-            
                         .then(() => res.status(200).json({message : 'Post modifié !'}))
                         .catch( error => res.status(400).json({error}));
                 }
@@ -182,9 +172,7 @@ exports.modifyPost = (req, res, next) => {
                             createdAt: Date.now(),
                             image: ''
                         };
-
                         models.Post.update(modifyPost , { where: { id: req.params.id } })
-
                             .then(() => res.status(200).json({message : 'Post modifié !'}))
                             .catch( error => res.status(400).json({error}));
                     })

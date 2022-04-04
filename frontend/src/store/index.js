@@ -16,7 +16,6 @@ import axios from 'axios'
     async getUser(state){
       const userId = localStorage.getItem('userId');
       const token = localStorage.getItem('token');
-      //const res = await axios.get
       await axios.get(`http://localhost:3000/api/auth/profile/${userId}`, {
         headers: {
           'authorization': `Bearer ${token}`
@@ -28,7 +27,6 @@ import axios from 'axios'
         state.currentUser.prenom = res.data.prenom;
         state.currentUser.email = res.data.email;
         state.currentUser.image = res.data.image;
-
       }).catch(err => console.log(err))
     }, 
     actions: {   

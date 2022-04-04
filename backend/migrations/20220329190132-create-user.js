@@ -6,25 +6,33 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        onDelete: 'cascade'
       },
       nom: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       prenom: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique : true
       },
       password: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       image: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       role: {
-        type: Sequelize.INTEGER
+        type: Sequelize.BOOLEAN,
+        defaultValue: 1   // 1 = user
       },
       createdAt: {
         allowNull: false,

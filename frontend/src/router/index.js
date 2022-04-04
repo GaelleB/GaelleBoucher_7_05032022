@@ -9,7 +9,6 @@ import PostView from '../views/PostView.vue'
 import NewPost from '../views/NewPost.vue'
 import ModifyPost from '../views/ModifyPost.vue'
 
-//Vue.use(VueRouter)  idem ligne45 main.j
 const routes = [ 
   {
     path: '/',

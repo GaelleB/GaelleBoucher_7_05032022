@@ -175,7 +175,7 @@ export default {
             })
             .catch(() => console.log('Impossible de récupérer les commentaires!'))
         },
-//DATE 
+        //DATE 
         dateFormat (createdDate) {
             const date = new Date(createdDate)
             const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'};
@@ -186,7 +186,7 @@ export default {
             const options = { hour: 'numeric', minute:'numeric', second:'numeric'};
             return hour.toLocaleTimeString('fr-FR', options);
         },
-//DELETE POST
+        //DELETE POST
         deletePost () {
             const token = localStorage.getItem("token")
             if (confirm("Voulez-vous vraiment supprimer le post") === true) {
@@ -209,7 +209,7 @@ export default {
         modifyPost () {
             this.$router.push(`/postmodify/${this.id_param}`)
         },
-//CREATE COMMENT
+        //CREATE COMMENT
         createComment () {
             const token = localStorage.getItem("token")
             const userId = localStorage.getItem("userId")
@@ -242,7 +242,7 @@ export default {
         },
         //MODIFY COMMENT
         
-//DELETE COMMENT
+        //DELETE COMMENT
         deleteComment (index) {
             const token = localStorage.getItem("token")
             if (confirm("Voulez-vous vraiment supprimer ce commentaire") === true) {

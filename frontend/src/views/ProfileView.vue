@@ -58,10 +58,9 @@ export default {
                 image:''
             },
             preview: null,
-            
-           // oldPassword:'',
-           // newPassword:'',
-           // confirmNewPassword:'',
+            oldPassword:'',
+            newPassword:'',
+            confirmNewPassword:'',
             button : false
         }
     },

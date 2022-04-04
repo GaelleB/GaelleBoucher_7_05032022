@@ -69,7 +69,7 @@ methods: {
             this.id = localStorage.getItem("Id")
             this.role = localStorage.getItem("role")
         },
-//GET POST
+        // GET POST
         getOnePost() {
             const token = localStorage.getItem("token")
             const fileField = document.querySelector('input[type="file"]');                                             
@@ -89,7 +89,7 @@ methods: {
             })
             .catch(() => console.log('Impossible de récupérer les posts !'))
         },
-//MODIFY POST
+        //MODIFY POST
         modifyPost() {
             const token = localStorage.getItem("token")
             const fileField = document.querySelector('input[type="file"]');

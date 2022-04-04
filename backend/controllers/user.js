@@ -70,7 +70,7 @@ exports.signup = (req, res, next) => {
 
 // Connexion au compte
 exports.login = (req, res, next) => {
-    User.findOne({  where: { email: req.body.email } })
+    User.findOne ({  where: { email: req.body.email } })
         .then(user => {
         if (!user) {
             return res.status(401).json({ error: 'Utilisateur non trouvé !' });
@@ -88,7 +88,7 @@ exports.login = (req, res, next) => {
                 token: jwt.sign(
                     { userId: user._id },
                     'SECRET_TOKEN',
-                    { expiresIn: '6h' } // Reconnexion dans 24h
+                    { expiresIn: '6h' } // Reconnexion dans 6h
                 )
             });
         })
@@ -104,7 +104,7 @@ exports.deleteUser = (req, res, next) => {
     const role = jwt.getRoleUser(headerAuth);
     console.log("delete user   " + req.params.id);
     if (userId == req.params.id || role == 0) {
-        User.findOne({ where: { id:  req.params.id } })
+        User.findOne ({ where: { id:  req.params.id } })
             .then(user => {
                 if(user!= null){
                     if (user.image != null) {
@@ -114,7 +114,6 @@ exports.deleteUser = (req, res, next) => {
                             });
                     } 
                     User.destroy({ where: { id: req.params.id } })
-                   // User.destroy({ where: { id: user.id } })
                     .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
                     .catch(error =>{ console.log(error); res.status(400).json({ message : error.message })});
                 }
@@ -187,18 +186,18 @@ exports.modifyUser = (req, res, next) => {
                     if(userId === user.id || role === 0){
                         return res.status(201).json(user)
                     } else {
-                        res.status(500).json({ 'erreur': 'Impossible de mettre a jour le profil de l\'utilisateur' })
+                        res.status(500).json({ 'erreur': 'Impossible de mettre à jour le profil de l\'utilisateur' })
                     }
                 })
                 .catch(() => {
-                    res.status(500).json({ 'erreur': 'impossible de mettre à jour l\'utilisateur' })
+                    res.status(500).json({ 'erreur': 'Impossible de mettre à jour l\'utilisateur' })
                 });
             } else {
-                res.status(404).json({ 'erreur': 'Utilisateur introuvable !' })
+                res.status(404).json({ 'erreur': 'Utilisateur non trouvé !' })
             }
         })
         .catch(() => {
-            res.status(500).json({ 'erreur': 'impossible de vérifier l\'utilisateur' })
+            res.status(500).json({ 'erreur': 'Impossible de vérifier l\'utilisateur' })
         })
 }
 
@@ -208,7 +207,7 @@ exports.modifyPassword = (req, res, next) => {
     const headerAuth = req.headers['authorization'];
     const userId = jwt.getUserId(headerAuth);
     const role = jwt.getRoleUser(headerAuth);
-    User.findOne({ where: { id: userId } })
+    User.findOne ({ where: { id: userId } })
         .then(user => {
             if(userId === user.id || role === 0) {
                 controle.log('oldPasword   ' + req.body.oldPassword),
