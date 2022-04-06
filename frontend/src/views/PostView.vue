@@ -1,9 +1,9 @@
 <template>
     <div>
-        <HeaderProfile />
+        <HeaderProfile/>
             <section >
                 <article class="header">
-                    <!-- DISPLAY POST --> 
+                    <!-- Affichage d'un post --> 
                     <div class = "card info blockRespo" >
                         <nav class = "blockRespoText">
                         <input class="inputTitle" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" >  <!--rows="10" cols="25" -->
@@ -17,7 +17,8 @@
                             le <b>{{ dateFormat(post.updatedAt) }}</b>
                             à <b>{{ hourFormat(post.updatedAt) }}</b>
                         </p>
-                    <!-- MODIFY/DELETE POST -->  
+                        
+                    <!-- Modification & suppression d'un post -->  
                     <div class="content modif">
                         <button @click="modifyPost()"  class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Modifier publication</button>
                         <button @click="deletePost()"  class="btnDelete" aria-label="Supprimer ce post"><i class="far fa-trash-alt"></i> Supprimer publication</button>
@@ -27,25 +28,7 @@
                     </div>
                 </article>
 
-                <!-- DISPLAY COMMENT -->
-                <button  v-on:click="show" @click="getOneComment()" class="btnSave" aria-label="Voir les commentaires">Afficher: {{ comments.length }} commentaires </button>
-                    <table class = "header " v-if="displaycomments" >
-                        <h2>Les commentaires:</h2>
-                        <tr class = "card displayComment" v-bind:key="index" v-for="(comment, index) in comments" >
-                            <td>Commenté par:<p class="userComment">{{comment.User.nom}}</p></td>
-                            <td>le <b>{{ dateFormat(comment.createdAt) }}</b>
-                                à <b>{{ hourFormat(comment.createdAt) }}</b></td>
-                            <td><textarea type="text" v-model="comment.content" required aria-label="Commentaire" disabled></textarea></td>
-                            <!-- MODIFY/DELETE COMMENT -->  
-                            <div class="content displayComment">
-                                <div class="modif">                                                                   
-                                    <button @click="deleteComment(index)"  class="btnDelete" aria-label="Supprimer ce commentaire"><i class="far fa-trash-alt"></i> Supprimer commentaire</button>
-                                    <button v-on:click="hide" class="btnDelete" aria-label="Masquer les commentaires">Masquer</button>
-                                </div>
-                            </div>  
-                        </tr>    
-                    </table> 
-<!-- CREATE COMMENT -->
+                <!-- Création d'un commentaire -->
                 <button v-if="displayCreateComment === false" v-on:click="show2" class="btnSave" aria-label="Ecrire un commentaire"><i class="far fa-edit"></i>Commenter</button>
                 <article v-if="displayCreateComment" class="createcomment">
                     <textarea v-model="content" placeholder="Faire ton commentaire..." cols="60" rows="5" aria-label="Message du commentaire"></textarea>
@@ -54,9 +37,28 @@
                         <button v-on:click="hide2" class="btnDelete" aria-label="Annuler le commentaire">Annuler</button>
                     </div>
                 </article>
-        </section>
-        <router-link to="/allposts" aria-label="Retour ver Le Flash Actu Groupomania"><i class="fas fa-home home"></i></router-link>
-        <Footer />
+
+                <!-- Affichage des commentaires -->
+                <button  v-on:click="show" @click="getOneComment()" class="btnSave" aria-label="Voir les commentaires">Afficher: {{ comments.length }} commentaires </button>
+                    <table class = "header " v-if="displaycomments" >
+                        <h2>Les commentaires:</h2>
+                        <tr class = "card displayComment" v-bind:key="index" v-for="(comment, index) in comments" >
+                            <td>Commenté par:<p class="userComment">{{comment.User.nom}}</p></td>
+                            <td>le <b>{{ dateFormat(comment.createdAt) }}</b>
+                                à <b>{{ hourFormat(comment.createdAt) }}</b></td>
+                            <td><textarea type="text" v-model="comment.content" required aria-label="Commentaire" disabled></textarea></td>
+                            <!-- Modification et suppression d'un commentaire -->  
+                            <div class="content displayComment">
+                                <div class="modif">                                                                   
+                                    <button @click="deleteComment(index)"  class="btnDelete" aria-label="Supprimer ce commentaire"><i class="far fa-trash-alt"></i> Supprimer commentaire</button>
+                                    <button v-on:click="hide" class="btnDelete" aria-label="Masquer les commentaires">Masquer</button>
+                                </div>
+                            </div>  
+                        </tr>    
+                    </table>
+            </section>
+        <router-link to="/allposts" aria-label="Retour vers Le fil d'actu de Groupomania"><i class="fas fa-home home"></i></router-link>
+        <Footer/>
     </div>
 </template>
 

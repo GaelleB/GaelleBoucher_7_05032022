@@ -1,7 +1,7 @@
 <template>
     <div>
-        <HeaderProfile />
-        <h1>Le Flash Actu Groupomania</h1>
+        <HeaderProfile/>
+        <h1>Le fil d'actu de Groupomania</h1>
         <div class="getAllPosts">
         <button @click="getAllPosts()" class="btnSave" aria-label="Bouton d'actualisation de la page" ><i class="fas fa-redo"></i></button>
         </div>
@@ -41,7 +41,8 @@
                 <td><img class="imgPost" v-if="post.image" :src="post.image" alt="Image"></td>
             </tr>
                 </table>
-        <!--Posts -->
+                
+        <!-- Affichage des posts -->
         <article v-if="posts.length == 0">
             <p>Aucune publication pour le moment!</p>
         </article>

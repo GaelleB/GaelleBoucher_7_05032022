@@ -1,10 +1,9 @@
 <template>
     <div>
-        <HeaderProfile />
+        <HeaderProfile/>
             <section>
                 <h1>Modification de votre publication</h1>
                 <p>Vous pouvez modifier le text et image de votre message</p>
-            
         <form>
             <ul>
                 <li>
@@ -28,12 +27,12 @@
                 <button @click="ModifyPost()" class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Enregistrer</button>
             </section>
             <div>
-            <router-link :to="`/post/${id_param}`" class="btnDelete" aria-label="Retour au fil d'actualité"><i class="fas fa-comment-slash"></i> Annuler</router-link>
+                <router-link :to="`/post/${id_param}`" class="btnDelete" aria-label="Retour au fil d'actualité"><i class="fas fa-comment-slash"></i> Annuler</router-link>
             </div>
             <div>
-            <router-link to="/allposts" aria-label="Retour ver Le Flash Actu Groupomania"><i class="fas fa-home home"></i></router-link>
+                <router-link to="/allposts" aria-label="Retour vers Le fil d'actu de Groupomania"><i class="fas fa-home home"></i></router-link>
             </div>
-        <Footer />
+        <Footer/>
     </div>
 </template>
 

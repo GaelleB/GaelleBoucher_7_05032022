@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header />
+    <Header/>
     <body>
       <h1>Bienvenue chez Groupomania</h1>
       <h2>Le réseau social de notre entreprise</h2> 

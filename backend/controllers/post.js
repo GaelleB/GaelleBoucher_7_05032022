@@ -3,119 +3,20 @@ const fs = require('fs');
 const models = require('../models');
 
 // Création d'un post
-exports.createPost = (req, res, next) => {
-    console.log('execution requete post')
-    const headerAuth = req.headers['authorization'];
-    const userId = jwt.getUserId(headerAuth);
-    const title = req.body.title;
-    const content = req.body.content;
-    if(!title || !content) {
-        res.status(400).json({ 'erreur': 'paramètre manquant' });
-    }; 
-    models.User.findOne({
-        where: { id: userId }
-    })
-    .then(user => {
-        if (req.file){ 
-            models.Post.create({
-                title : title,
-                content: content,
-                image: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`,
-                UserId: user.id,
-            }).then( res.status(201).json({"message": "Nouveau post créé avec succès !"})
-            ).catch(error => {
-                console.log(error);
-                res.status(400).json({erreur : erreur.message});
-            });
-        } else { 
-            models.Post.create({
-                title : title,
-                content: content,
-                UserId: user.id,
-                
-            }).then( res.status(201).json({"message": "Nouveau post créé avec succès !"})
-            ).catch(error => {
-                console.log(error);
-                res.status(400).json({erreur : erreur.message});
-            });
-        };
-    
-    })
-    .catch(error => {
-        console.log(error);
-        res.status(500).json({erreur : erreur.message});
-    });
-};
-
-// Affichage d'un post
-exports.getOnePost = (req, res, next) => {
-    console.log("getOnePost  " + req.body)
-    const headerAuth = req.headers['authorization'];
-    const userId = jwt.getUserId(headerAuth);
-    models.Post.findOne({
-        where: { id : req.params.id },
-            include: [{ 
-                model : models.User, 
-                attributes: [ 'nom','prenom', 'id' ]          
-            }, 
-            {model: models.Like,
-                attributes: [ 'PostId', 'UserId' ]
-            },
-            {model: models.Dislike,
-                attributes: [ 'PostId', 'UserId' ]
-            }, 
-            {model: models.Comment,
-                attributes: [ 'content', 'id' , 'updatedAt','createdAt', 'UserId','PostId' ],
-                include: [ { model: models.User, 
-                attributes: [ 'nom','prenom','id' ] 
-            }] 
-            }
-        ],
-    })
-    .then( post => res.status(200).json(post))
-    .catch( error => res.status(400).json({error}))
-}
-
-// Affichage de tous les posts
-exports.getAllPosts = (req, res, next) => {
-    console.log("all post  " + req.body);
-    models.Post.findAll({ 
-        order: [["id", "DESC"]],
-        include: [{ model : models.User,
-            attributes: [ 'nom','prenom', 'id' ]
-        },
-            { model: models.Like, 
-                attributes: [ 'UserId' ] 
-                }, 				
-                {model: models.Dislike,
-                attributes: ['UserId' ] 
-                }, 
-                {model: models.Comment,
-                attributes: [ 'content', 'id' , 'updatedAt','createdAt', 'UserId','PostId' ],
-                include: [ { model: models.User, 
-                attributes: [ 'nom','prenom','id' ] 
-                }] 
-                }
-        ]
-    })
-    .then( post => res.status(200).json(post))
-    .catch( error => res.status(400).json({error}))
-};
-
-// Affichage de tous les posts d'un utilisateur
-exports.getPostsUser = (req, res, next) => {
-    models.Post.findAll({
-        where: {
-            userId : req.params.user.id
-        },
-        include: [{
-            model : models.User,
-        }],
-        order: [["createdAt", "ASC"]],
-    })
-
-    .then( posts => res.status(200).json(posts))
-    .catch( error => res.status(400).json({error}))
+exports.createPost = (req, res) => {
+    const newPost = {
+        userId: req.body.userId,
+        content: req.body.content,
+        imageUrl: imagePost
+    };
+    Post.create(newPost)
+        .then(post => res.status(201).json(post))
+        .catch(error => res.status(500).json({ error }));
+    // Gestion de l'image
+    let imagePost;
+    if(req.file) {
+        imagePost = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    };
 };
 
 // Modification d'un post (contenu et image)
@@ -192,42 +93,93 @@ exports.modifyPost = (req, res, next) => {
 }
 
 // Suppression d'un post
-exports.deletePost = (req, res, next) => {
+exports.deletePost = (req, res) => {
+    Post.findOne({ where: { id: req.params.id } })
+    .then(post => {
+        if(post.imageUrl != null) {
+            const filename = post.imageUrl.split('/images/')[1];
+            fs.unlink(`images/${filename}`, (err) => {
+                if(err) throw err;
+            })
+        };
+        post.destroy({ where: { id: req.params.id } })
+            .then(() => res.status(201).json({ message: "Post supprimé"}))
+            .catch(error => res.status(500).json({ error }));
+    })
+    .catch(error => res.status(500).json({ error }));
+};
+
+// Affichage d'un post
+exports.getOnePost = (req, res, next) => {
+    console.log("getOnePost  " + req.body)
     const headerAuth = req.headers['authorization'];
     const userId = jwt.getUserId(headerAuth);
-    const role = jwt.getRoleUser(headerAuth);
-    console.log("delete post   "+ req.body);
-
-        models.Post.findOne({
-            where: { id: req.params.id }
-        })
-        .then(post => {
-            console.log("post FindOne    "   + req.params.id)
-            console.log("userId    "   + userId);
-            console.log("post user.id     " + post.userId)
-            if (userId === post.userId || role === 0)
-            {
-                if (post.image != null) {
-                    const filename = post.image.split('/images/posts/')[1];
-                    fs.unlink(`images/posts/${filename}`, () => {
-                        models.Post.destroy({ where: { id: req.params.id } })
-                        .then(() => res.status(200).json({message : 'Post supprimé !'}))
-                        .catch( error => res.status(400).json({error}));
-                    })
-                } else {
-                    models.Post.destroy({ where: { id: req.params.id } })
-                    .then(() => res.status(200).json({message : 'Post supprimé !'}))
-                    .catch( error =>{console.log(error); res.status(400).json({message :error.message}); });
-                }
-            } else {
-                res.status(401).json({
-                    message: 'Requête non autorisée !'
-                });
+    models.Post.findOne({
+        where: { id : req.params.id },
+            include: [{ 
+                model : models.User, 
+                attributes: [ 'nom','prenom', 'id' ]          
+            }, 
+            {model: models.Like,
+                attributes: [ 'PostId', 'UserId' ]
+            },
+            {model: models.Dislike,
+                attributes: [ 'PostId', 'UserId' ]
+            }, 
+            {model: models.Comment,
+                attributes: [ 'content', 'id' , 'updatedAt','createdAt', 'UserId','PostId' ],
+                include: [ { model: models.User, 
+                attributes: [ 'nom','prenom','id' ] 
+            }] 
             }
-        })
-        .catch( error =>{console.log(error); res.status(400).json({message :error.message}); });
+        ],
+    })
+    .then( post => res.status(200).json(post))
+    .catch( error => res.status(400).json({error}))
 }
-// Like & dislike
+
+// Récupération de tous les posts d'un utilisateur
+exports.getPostsUser = (req, res, next) => {
+    models.Post.findAll({
+        where: {
+            userId : req.params.user.id
+        },
+        include: [{
+            model : models.User,
+        }],
+        order: [["createdAt", "ASC"]],
+    })
+    .then( posts => res.status(200).json(posts))
+    .catch( error => res.status(400).json({error}))
+};
+
+// Récupération de tous les posts
+exports.getAllPosts = (req, res, next) => {
+    console.log("all post  " + req.body);
+    models.Post.findAll({ 
+        order: [["id", "DESC"]],
+        include: [{ model : models.User,
+            attributes: [ 'nom','prenom', 'id' ]
+        },
+            { model: models.Like, 
+                attributes: [ 'UserId' ] 
+                }, 				
+                {model: models.Dislike,
+                attributes: ['UserId' ] 
+                }, 
+                {model: models.Comment,
+                attributes: [ 'content', 'id' , 'updatedAt','createdAt', 'UserId','PostId' ],
+                include: [ { model: models.User, 
+                attributes: [ 'nom','prenom','id' ] 
+                }] 
+                }
+        ]
+    })
+    .then( post => res.status(200).json(post))
+    .catch( error => res.status(400).json({error}))
+};
+
+// Like
 exports.likePost = async (req, res, next) => {
     console.log("console LIKE  " +(req.body));
 	try {
@@ -255,6 +207,7 @@ exports.likePost = async (req, res, next) => {
 	}
 };
 
+// Dislike
 exports.dislikePost = async (req, res, next) => {
 	try {
 		const headerAuth = req.headers['authorization'];

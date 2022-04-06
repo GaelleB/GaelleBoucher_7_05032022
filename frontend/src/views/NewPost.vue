@@ -1,15 +1,15 @@
 <template>
     <div>
-        <HeaderProfile />
+        <HeaderProfile/>
             <section>
-                <h1><i class="far fa-edit"></i><br>Rédiger votre publication</h1>
+                <h1><i class="far fa-edit"></i><br>Rédiger une publication</h1>
                 <form>
                     <ul>
                         <li>
                             <input type="text" v-model="title" placeholder="Titre" size="50" required aria-label="Titre du post">
                         </li>
                         <li>
-                            <textarea v-model="content" placeholder="Rédiger votre message..." rows="10" cols="60" required aria-label="Message du post"></textarea>
+                            <textarea v-model="content" placeholder="Rédigez votre publication" rows="10" cols="60" required aria-label="Post"></textarea>
                         </li>
                         <li v-if="image">
                             <img :src="image" alt="Image du post" class="file">
@@ -23,10 +23,10 @@
                 </form>
                 <button @click="createPost()" class="btnSave" aria-label="Créer ce post">Publier</button>
                 <div>
-                <router-link to="/allposts" aria-label="Retour vers Le Flash Actu Groupomania"><i class="fas fa-home home"></i></router-link>
+                    <router-link to="/allposts" aria-label="Retour vers Le fil d'actu de Groupomania"><i class="fas fa-home home"></i></router-link>
                 </div>
             </section>
-        <Footer />
+        <Footer/>
     </div>
 </template>
 
@@ -53,13 +53,13 @@ export default {
     },
     methods: {
         createPost() {
-            const Id = JSON.parse(localStorage.getItem("userId"))
+            const Id = (localStorage.getItem("userId"))
             const fileField = document.querySelector('input[type="file"]');
             const token = (localStorage.getItem("token"))
             if (this.title === '')
                 alert("Veuillez remplir le titre")
             if (this.content === '')
-                alert("Veuillez remplir le contenu du message")
+                alert("Veuillez remplir le contenu du post")
             if (this.image === '' && this.title != '' && this.content != ''){ 
                 let data = new FormData()
                 data.append('title', this.title)
