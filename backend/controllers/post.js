@@ -48,7 +48,7 @@ exports.createPost = (req, res, next) => {
 };
 
 // Affichage d'un post
-exports.getOnePost = (req, res, nest) => {
+exports.getOnePost = (req, res, next) => {
     console.log("getOnePost  " + req.body)
     const headerAuth = req.headers['authorization'];
     const userId = jwt.getUserId(headerAuth);

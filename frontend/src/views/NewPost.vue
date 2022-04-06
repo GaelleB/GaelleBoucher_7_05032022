@@ -68,7 +68,7 @@ export default {
                 data.append('userId', Id)
                 console.log('envoie post')
                 console.log(data)
-                axios.post("http://localhost:3000/api/posts/new", data, {
+                axios.post("http://localhost:3000/api/posts/newpost", data, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'authorization': `Bearer ${token}`
@@ -95,7 +95,7 @@ export default {
                     data.append('title', this.title);
                     data.append('content', this.content);
                     data.append('userId',Id);
-                    axios.post("http://localhost:3000/api/posts/new", data, {
+                    axios.post("http://localhost:3000/api/posts/newpost", data, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         'authorization': `Bearer ${token}`
