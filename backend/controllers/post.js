@@ -2,8 +2,9 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const models = require('../models');
 
-// CREATE POST
+// Création d'un post
 exports.createPost = (req, res, next) => {
+    console.log('execution requete post')
     const headerAuth = req.headers['authorization'];
     const userId = jwt.getUserId(headerAuth);
     const title = req.body.title;
@@ -46,37 +47,36 @@ exports.createPost = (req, res, next) => {
     });
 };
 
-// DISPLAY ONE POST
+// Affichage d'un post
 exports.getOnePost = (req, res, nest) => {
     console.log("getOnePost  " + req.body)
     const headerAuth = req.headers['authorization'];
     const userId = jwt.getUserId(headerAuth);
     models.Post.findOne({
         where: { id : req.params.id },
-        include: [{ model : models.User, 
-                    attributes: [ 'nom','prenom', 'id' ]          
-                    },
-                /*  {model: models.Like,
-                    attributes: [ 'PostId', 'UserId' ]
-                },
-                {model: models.Dislike,
-                    attributes: [ 'PostId', 'UserId' ]
-                }, 
-                {model: models.Comment,
-                    attributes: [ 'content', 'id' , 'updatedAt','createdAt', 'UserId','PostId' ],
-                    include: [ { model: models.User, 
-                    attributes: [ 'nom','prenom','id' ] 
-                }] 
-                } 
-                 */
+            include: [{ 
+                model : models.User, 
+                attributes: [ 'nom','prenom', 'id' ]          
+            }, 
+            {model: models.Like,
+                attributes: [ 'PostId', 'UserId' ]
+            },
+            {model: models.Dislike,
+                attributes: [ 'PostId', 'UserId' ]
+            }, 
+            {model: models.Comment,
+                attributes: [ 'content', 'id' , 'updatedAt','createdAt', 'UserId','PostId' ],
+                include: [ { model: models.User, 
+                attributes: [ 'nom','prenom','id' ] 
+            }] 
+            }
         ],
     })
     .then( post => res.status(200).json(post))
     .catch( error => res.status(400).json({error}))
 }
 
-// DISPLAY ALL POSTS
-
+// Affichage de tous les posts
 exports.getAllPosts = (req, res, next) => {
     console.log("all post  " + req.body);
     models.Post.findAll({ 
@@ -102,7 +102,7 @@ exports.getAllPosts = (req, res, next) => {
     .catch( error => res.status(400).json({error}))
 };
 
-// DISPLAY ALL POSTS  - ONE USER
+// Affichage de tous les posts d'un utilisateur
 exports.getPostsUser = (req, res, next) => {
     models.Post.findAll({
         where: {
@@ -118,7 +118,7 @@ exports.getPostsUser = (req, res, next) => {
     .catch( error => res.status(400).json({error}))
 };
 
-// MODIFY POST only content or image
+// Modification d'un post (contenu et image)
 exports.modifyPost = (req, res, next) => {
     const headerAuth = req.headers['authorization'];
     const userId = jwt.getUserId(headerAuth);
@@ -191,7 +191,7 @@ exports.modifyPost = (req, res, next) => {
     }
 }
 
-// DELETE POST
+// Suppression d'un post
 exports.deletePost = (req, res, next) => {
     const headerAuth = req.headers['authorization'];
     const userId = jwt.getUserId(headerAuth);
@@ -227,7 +227,7 @@ exports.deletePost = (req, res, next) => {
         })
         .catch( error =>{console.log(error); res.status(400).json({message :error.message}); });
 }
-// LIKE/DISLIKE 
+// Like & dislike
 exports.likePost = async (req, res, next) => {
     console.log("console LIKE  " +(req.body));
 	try {

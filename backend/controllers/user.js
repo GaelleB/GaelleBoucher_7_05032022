@@ -33,6 +33,8 @@ exports.signup = (req, res, next) => {
 
 // Connexion au compte
 exports.login = (req, res, next) => {
+    console.log(req.body.email)
+    console.log(req.body.password)
     User.findOne ({  where: { email: req.body.email } })
         .then(user => {
         if (!user) {
@@ -69,7 +71,7 @@ exports.modifyUser = (req, res, next) => {
     const email = req.body.email
     const nom = req.body.nom;
     const prenom = req.body.prenom;
-    const image = req.file ? `${req.protocol}://${req.get('host')}/images/profiles/${req.file.filename}` : null;
+    const image = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null;
     User.findOne({
         attributes: ['id', 'email', 'nom', 'prenom', 'image'],
         where: { id: userId }
@@ -77,7 +79,7 @@ exports.modifyUser = (req, res, next) => {
         .then(user => {
             if(userId === user.id || role === 0) {
                 if(image != null) {
-                    const filename = user.image.split('/images/profiles')[1];
+                    const filename = user.image.split('/images/')[1];
                     fs.unlink(`images/${filename}`, (error) => {
                         if(error){
                             console.log("Echec de suppression de l'image : " + error);
@@ -154,8 +156,8 @@ exports.deleteUser = (req, res, next) => {
         .then(user => {
             if(user!= null){
                 if (user.image != null) {
-                    const filename = user.image.split('/images/profiles/')[1];
-                    fs.unlink(`images/profiles/${filename}`, (error) => {});
+                    const filename = user.image.split('/images/')[1];
+                    fs.unlink(`images/${filename}`, (error) => {});
                 } 
                 User.destroy({ where: { id: req.params.id } })
                 .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))

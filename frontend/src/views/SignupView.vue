@@ -46,7 +46,7 @@ name: 'SignupView',
     }
   },
   methods: {
-    //SIGNUP
+    // Enregistrement d'un compte
     signup() {
       const regexText = /^[a-zA-Z-\s]+$/;
       const regexEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/; 

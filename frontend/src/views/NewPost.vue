@@ -61,12 +61,13 @@ export default {
             if (this.content === '')
                 alert("Veuillez remplir le contenu du message")
             if (this.image === '' && this.title != '' && this.content != ''){ 
-                
                 let data = new FormData()
                 data.append('title', this.title)
                 data.append('content', this.content)
                 data.append('image', "");
                 data.append('userId', Id)
+                console.log('envoie post')
+                console.log(data)
                 axios.post("http://localhost:3000/api/posts/new", data, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -75,7 +76,7 @@ export default {
                 body: data
                 })
                 .then(() => {
-                    alert("Message  sans image publier")
+                    alert("Message sans image publiée")
                     this.$router.push("/allposts");
                     console.log('message publier')
                     

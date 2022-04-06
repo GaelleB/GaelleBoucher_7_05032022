@@ -125,7 +125,7 @@ export default {
             this.id = localStorage.getItem("userId")
             this.role = localStorage.getItem("role")
         },
-       // DISPLAY ONE POST
+        // Affichage d'un post
         getOnePost() {
             const token = localStorage.getItem("token")
             axios.get (`http://localhost:3000/api/posts/${this.postId}` ,  {
@@ -148,7 +148,7 @@ export default {
             })
             .catch(() => console.log('Impossible de récupérer les posts!'))
         },
-// DISPLAY ALL COMMENTS OF POST
+        // Affichage de tous les commentaires d'un post
         getOneComment() {
             const token = localStorage.getItem("token")
             const Id = localStorage.getItem("userId")
@@ -175,7 +175,7 @@ export default {
             })
             .catch(() => console.log('Impossible de récupérer les commentaires!'))
         },
-        //DATE 
+        // Date 
         dateFormat (createdDate) {
             const date = new Date(createdDate)
             const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'};
@@ -186,7 +186,7 @@ export default {
             const options = { hour: 'numeric', minute:'numeric', second:'numeric'};
             return hour.toLocaleTimeString('fr-FR', options);
         },
-        //DELETE POST
+        // Suppression d'un post
         deletePost () {
             const token = localStorage.getItem("token")
             if (confirm("Voulez-vous vraiment supprimer le post") === true) {
@@ -200,22 +200,22 @@ export default {
                 console.log(res.data);
             })
             .catch(() =>{ 
-                alert("Vous n'avez pas autorisation de supprimer ce message!!")
+                alert("Non autorisé pour supprimer ce message!!")
                 console.log('Vous n avez pas autorisation de supprimer ce message!!')
             })
         }
         },
-        //MODIFY POST
+        // modification d'un post
         modifyPost () {
             this.$router.push(`/postmodify/${this.id_param}`)
         },
-        //CREATE COMMENT
+        // Création d'un commentaire
         createComment () {
             const token = localStorage.getItem("token")
             const userId = localStorage.getItem("userId")
             const postId = this.$route.params.id;
             if( this.commentaire === ""){
-                alert('Veuillez remplir votre commentaire')
+                alert('Saisissez votre commentaire')
             } else {
                 let data = {
                     content: this.content,
@@ -224,9 +224,8 @@ export default {
                 }                                     
                 axios.post("http://localhost:3000/api/comments/" ,data, {
                     headers: {
-                    'authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                    
+                        'authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
                     },
                     body: data
                 })
@@ -240,9 +239,9 @@ export default {
                 .catch(() => console.log(' err comments'))
             }
         },
-        //MODIFY COMMENT
+        // Suppression d'un commentaire
         
-        //DELETE COMMENT
+        // Suppression d'un commentaire
         deleteComment (index) {
             const token = localStorage.getItem("token")
             if (confirm("Voulez-vous vraiment supprimer ce commentaire") === true) {
@@ -252,12 +251,12 @@ export default {
                     },
                 })
                 .then((res) => {
-                alert("La suppression du commentaire est bien prise en compte")
+                alert("La suppression du commentaire a bien été bien prise en compte")
                 console.log(res.data);
                 this.posts = res.data
                 })
                 .catch(() => {
-                    alert("Vous n'avez pas autorisation de supprimer ce commentaire!!")
+                    alert("Non autorisé pour supprimer ce commentaire!!")
                     console.log('Impossible de récupérer les posts !')})
             }
         },

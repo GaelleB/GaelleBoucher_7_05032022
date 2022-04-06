@@ -61,7 +61,7 @@ methods: {
         show: function () {
             return this.button = true;
         },
-        // FILE UPLOAD
+        // Téléchargement d'un fichier image
         uploadFile(event) {
             this.image = event.target.files[0]
         },
@@ -69,7 +69,7 @@ methods: {
             this.id = localStorage.getItem("Id")
             this.role = localStorage.getItem("role")
         },
-        // GET POST
+        // Affichage d'un post
         getOnePost() {
             const token = localStorage.getItem("token")
             const fileField = document.querySelector('input[type="file"]');                                             
@@ -89,7 +89,7 @@ methods: {
             })
             .catch(() => console.log('Impossible de récupérer les posts !'))
         },
-        //MODIFY POST
+        // Modification d'un post
         modifyPost() {
             const token = localStorage.getItem("token")
             const fileField = document.querySelector('input[type="file"]');
@@ -152,7 +152,7 @@ methods: {
         
             } )}
         },
-        //DATE 
+        // Date 
         dateFormat (updatedDate) {
             const date = new Date(updatedDate)
             const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'};
@@ -176,7 +176,7 @@ label {
     color:rgb(5, 5, 100);
 }
 .title{
-  width: 60%;
+    width: 60%;
     height: 30px;
     text-align: center;
     margin: 0 auto 0 auto;
