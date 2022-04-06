@@ -56,7 +56,6 @@ exports.modifyPost = (req, res, next) => {
             }
         })
         .catch(error => res.status(500).json({ error }));
-
     } else {
         models.Post.findOne({ where: { id: req.params.id }})
         .then(post => {
