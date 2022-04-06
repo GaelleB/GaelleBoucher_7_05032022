@@ -59,92 +59,45 @@ exports.login = (req, res, next) => {
 };
 
 // Modification de l'utilisateur
-exports.modifyUser = (req, res, next) => {
-    console.log("modif info users" + JSON.stringify(req.body));
-    const headerAuth = req.headers['authorization'];
-    const userId = jwt.getUserId(headerAuth);
-    const role = jwt.getRoleUser(headerAuth);
-    const email = req.body.email
-    const nom = req.body.nom;
-    const prenom = req.body.prenom;
-    const image = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null;
-    User.findOne({
-        attributes: ['id', 'email', 'nom', 'prenom', 'image'],
-        where: { id: userId }
-    })
+exports.updateUser = (req, res) => {
+    User.findOne({ where: { id: req.body.userId } })
         .then(user => {
-            if(userId === user.id || role === 0) {
-                if(image != null) {
-                    const filename = user.image.split('/images/')[1];
-                    fs.unlink(`images/${filename}`, (error) => {
-                        if(error){
-                            console.log("Echec de suppression de l'image : " + error);
+            if(req.body.oldPassword && req.body.newPassword) {
+                bcrypt.compare(req.body.oldPassword, user.password)
+                    .then(valid => {
+                        if(!valid) {
+                            return res.status(401).json({ error: 'Le mot de passe saisi ne correspond pas au mot de passe actuel'})
                         } else {
-                            console.log("Image supprimée avec succès !");
-                        };
-                    });
-                };
-                // Mise à jour du profile
-                user.update({
-                    email: (email ? email : user.email),
-                    nom: (nom ? nom : user.nom),
-                    prenom: (prenom ? prenom : user.prenom),
-                    image: (image ? image : user.image)
-                })
-                .then(user => {
-                    if(userId === user.id || role === 0){
-                        return res.status(201).json(user)
-                    } else {
-                        res.status(500).json({ 'erreur': 'Impossible de mettre à jour le profil de l\'utilisateur' })
-                    }
-                })
-                .catch(() => {
-                    res.status(500).json({ 'erreur': 'Impossible de mettre à jour l\'utilisateur' })
-                });
-            } else {
-                res.status(404).json({ 'erreur': 'Utilisateur non trouvé !' })
+                            bcrypt.hash(req.body.newPassword, 10)
+                                .then(newHash => {
+                                    User.update(
+                                        { password: newHash },
+                                        { where: { id: req.body.userId } }
+                                    );
+                                    res.status(201).json({ message: 'Mot de passe modifié'})
+                                })
+                                .catch(error => res.status(500).json({ error }))
+                        }
+                    })
+                    .catch(error => res.status(500).json({ error }))
             }
+            if(req.body.lastname && req.body.lastname != user.lastname) {
+                User.update(
+                    { lastname: req.body.lastname},
+                    { where: { id: req.body.userId } }
+                );
+                res.status(201).json({ message: 'Nom modifié'})
+            };
+            if(req.body.firstname && req.body.firstname != user.firstname) {
+                User.update(
+                    { firstname: req.body.firstname},
+                    { where: { id: req.body.userId } }
+                );
+                res.status(201).json({ message: 'Prénom modifié'})
+            };
         })
-        .catch(() => {
-            res.status(500).json({ 'erreur': 'Impossible de vérifier l\'utilisateur' })
-        })
-}
-
-// Modification du mot de passe
-exports.modifyPassword = (req, res, next) => {
-    console.log("modif password" + JSON.stringify(req.body));
-    const headerAuth = req.headers['authorization'];
-    const userId = jwt.getUserId(headerAuth);
-    const role = jwt.getRoleUser(headerAuth);
-    User.findOne ({ where: { id: userId } })
-        .then(user => {
-            if(userId === user.id || role === 0) {
-            controle.log('oldPasword   ' + req.body.oldPassword),
-            controle.log('new pssaword    ' + user.password)
-            bcrypt.compare(req.body.oldPassword, user.password)
-                .then(valid => {
-                    if (!valid) {
-                        return res.status(401).json("Mot de passe actuel incorrect");
-                    }
-                    if (!schema.validate(req.body.password)) {
-                        return res.status(401).json('Le nouveau mot de passe doit avoir une longueur de 3 à 50 caractères avec au moins un chiffre, une minuscule, une majuscule !!!')
-                    }
-                    bcrypt.hash(req.body.password, 10)
-                        .then(hash => {
-                            const newPassword = {
-                                password: hash
-                            };
-                            user.update(newPassword, { where: { id: req.params.id } })
-                            console.log('newpass   ' + newPassword)
-                                .then(() => { res.status(201).json({ message: 'Mot de passe modifié !' }) })
-                                .catch(() => res.status(400).json({message: "imposible de modifier le mot de passe" }));
-                        })
-                        .catch(error => res.status(500).json({ error }));
-                })
-                .catch(error => res.status(500).json({ error }));
-        }})
         .catch(error => res.status(500).json({ error }));
-}
+};
 
 // Suppression de l'utilisateur
 exports.deleteUser = (req, res, next) => {
@@ -153,19 +106,23 @@ exports.deleteUser = (req, res, next) => {
             if(user!= null){
                 if (user.image != null) {
                     const filename = user.image.split('/images/')[1];
-                    fs.unlink(`images/${filename}`, (error) => {});
+                    fs.unlink(`images/${filename}`, (error) => {
+                        if (error) {
+                            console.log("Error");
+                        }
+                    });
                 } 
                 User.destroy({ where: { id: req.params.id } })
                 .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
                 .catch(error =>{ console.log(error); res.status(400).json({ message : error.message })});
             }
-            else{  console.log("user not found");
+            else{ console.log("Utilisateur non trouvé");
                 res.status(404).json({ 'erreur': 'Utilisateur non trouvé !' })
             }
         } ).catch(error => {  res.status(500).json({ message : error.message }) })
 };
 
-// Affichage d'un utilisateur
+// Récupération d'un utilisateur
 exports.getOneUser = (req, res) => {
     const userId = req.params.id;
     User.findOne({
@@ -178,10 +135,11 @@ exports.getOneUser = (req, res) => {
             res.status(404).json({ 'erreur': 'Utilisateur non trouvé !' })
         }
     }).catch(err => res.status(500).json({ err }))
-}
+};
 
-// Affichage de tous les utilisateurs
-exports.getAllUsers = (req, res) => {
+// Récupération de tous les utilisateurs
+exports.getAllUsers = (req, res, next) => {
+    console.log("get all users" + JSON.stringify(req.body));
     User.findAll()
         .then((users) => res.status(200).json(users))
         .catch((error) => res.status(400).json(error))
