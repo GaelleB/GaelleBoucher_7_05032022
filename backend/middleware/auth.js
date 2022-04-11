@@ -5,7 +5,7 @@ module.exports = (req, res, next) => {
         console.log(req.body);
         const token = req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.verify(token, 'SECRET_TOKEN');
-        const userId = decodedToken.user;
+        const userId = decodedToken.userId;
         req.tokenUserId = userId;
         if(req.body.UserId && req.body.UserId !== userId) {
             throw 'err middleware auth ID utilisateur incorrect !';

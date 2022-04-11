@@ -5,21 +5,20 @@ const { Post } = require('../models')
 // Création d'un post
 exports.createPost = (req, res) => {
     // Gestion de l'image
-    let imagePost
+    let imagePost = null
     if(req.file) {
         imagePost = `${req.protocol}://${req.get('host')}/images/post${req.file.filename}`
     };
     const newPost = {
+        UserId: req.tokenUserId,
         title: req.body.title,
         content: req.body.content,
         imageUrl: req.body.imagePost
     };
     Post.create(newPost) 
-        .then (post => newPost.save()
-            .then(() => res.status(201).json({ post}))
-            .catch(error => res.status(400).json({ error })),
-            res.status(201).json("post créé")
-        )
+            .then((post) => res.status(201).json(post))
+            .catch(error => res.status(400).json({ error }));
+        
 };
 
 // Modification d'un post (contenu et image)
