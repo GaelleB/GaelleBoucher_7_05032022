@@ -1,22 +1,25 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-const models = require('../models');
+const { Post } = require('../models')
 
 // Création d'un post
 exports.createPost = (req, res) => {
-    const newPost = {
-        userId: req.body.userId,
-        content: req.body.content,
-        imageUrl: imagePost
-    };
-    Post.create(newPost)
-        .then(post => res.status(201).json(post))
-        .catch(error => res.status(500).json({ error }));
     // Gestion de l'image
-    let imagePost;
+    let imagePost
     if(req.file) {
-        imagePost = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        imagePost = `${req.protocol}://${req.get('host')}/images/post${req.file.filename}`
     };
+    const newPost = {
+        title: req.body.title,
+        content: req.body.content,
+        imageUrl: req.body.imagePost
+    };
+    Post.create(newPost) 
+        .then (post => newPost.save()
+            .then(() => res.status(201).json({ post}))
+            .catch(error => res.status(400).json({ error })),
+            res.status(201).json("post créé")
+        )
 };
 
 // Modification d'un post (contenu et image)
@@ -25,7 +28,7 @@ exports.modifyPost = (req, res, next) => {
     const userId = jwt.getUserId(headerAuth);
     const role = jwt.getRoleUser(headerAuth);
     if (req.file) {
-        models.Post.findOne({ where: { id: req.params.id }})
+        Post.findOne({ where: { id: req.params.id }})
         .then(post => {
             if (userId === post.userId || role === 0) {
                 if (post.image) {
@@ -36,7 +39,7 @@ exports.modifyPost = (req, res, next) => {
                         updatedAt: Date.now(),
                         image: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
                     };
-                    models.Post.update(modifyPost , { where: { id: req.params.id } })
+                    Post.update(modifyPost , { where: { id: req.params.id } })
                         .then(() => res.status(200).json({message : 'Post modifié !'}))
                         .catch( error => res.status(400).json({error}));
                 })} else {
@@ -45,7 +48,7 @@ exports.modifyPost = (req, res, next) => {
                         updatedAt: Date.now(),
                         image: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
                     };
-                    models.Post.update(modifyPost , { where: { id: req.params.id } })
+                    Post.update(modifyPost , { where: { id: req.params.id } })
                         .then(() => res.status(200).json({message : 'Post modifié !'}))
                         .catch( error => res.status(400).json({error}));
                 }
@@ -57,7 +60,7 @@ exports.modifyPost = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error }));
     } else {
-        models.Post.findOne({ where: { id: req.params.id }})
+        Post.findOne({ where: { id: req.params.id }})
         .then(post => {
             if (userId === post.userId || role === 0) {
                 if (post.image && req.body.image === '') {
@@ -68,7 +71,7 @@ exports.modifyPost = (req, res, next) => {
                             createdAt: Date.now(),
                             image: ''
                         };
-                        models.Post.update(modifyPost , { where: { id: req.params.id } })
+                        Post.update(modifyPost , { where: { id: req.params.id } })
                             .then(() => res.status(200).json({message : 'Post modifié !'}))
                             .catch( error => res.status(400).json({error}));
                     })
@@ -77,7 +80,7 @@ exports.modifyPost = (req, res, next) => {
                         content: req.body.content,
                         createdAt: Date.now(),
                     };
-                    models.Post.update(modifyPost , { where: { id: req.params.id } })
+                    Post.update(modifyPost , { where: { id: req.params.id } })
                         .then(() => res.status(200).json({message : 'Post modifié !'}))
                         .catch( error => res.status(400).json({error}));
                 }
@@ -101,7 +104,7 @@ exports.deletePost = (req, res) => {
                 if(err) throw err;
             })
         };
-        post.destroy({ where: { id: req.params.id } })
+        Post.destroy({ where: { id: req.params.id } })
             .then(() => res.status(201).json({ message: "Post supprimé"}))
             .catch(error => res.status(500).json({ error }));
     })
@@ -113,7 +116,7 @@ exports.getOnePost = (req, res, next) => {
     console.log("getOnePost  " + req.body)
     const headerAuth = req.headers['authorization'];
     const userId = jwt.getUserId(headerAuth);
-    models.Post.findOne({
+    Post.findOne({
         where: { id : req.params.id },
             include: [{ 
                 model : models.User, 
@@ -127,7 +130,8 @@ exports.getOnePost = (req, res, next) => {
             }, 
             {model: models.Comment,
                 attributes: [ 'content', 'id' , 'updatedAt','createdAt', 'UserId','PostId' ],
-                include: [ { model: models.User, 
+                include: [ { 
+                model: models.User, 
                 attributes: [ 'nom','prenom','id' ] 
             }] 
             }
@@ -139,7 +143,7 @@ exports.getOnePost = (req, res, next) => {
 
 // Récupération de tous les posts d'un utilisateur
 exports.getPostsUser = (req, res, next) => {
-    models.Post.findAll({
+    Post.findAll({
         where: {
             userId : req.params.user.id
         },
@@ -155,7 +159,7 @@ exports.getPostsUser = (req, res, next) => {
 // Récupération de tous les posts
 exports.getAllPosts = (req, res, next) => {
     console.log("all post  " + req.body);
-    models.Post.findAll({ 
+    Post.findAll({ 
         order: [["id", "DESC"]],
         include: [{ model : models.User,
             attributes: [ 'nom','prenom', 'id' ]

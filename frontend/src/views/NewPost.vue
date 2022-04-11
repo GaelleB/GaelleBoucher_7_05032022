@@ -76,13 +76,11 @@ export default {
                 body: data
                 })
                 .then(() => {
-                    alert("Message sans image publiée")
+                    alert("Message sans image publié")
                     this.$router.push("/allposts");
                     console.log('message publier')
                     
                 })
-                
-                
             } else if (this.title != '' && this.content != '') {
                 var fileName = document.getElementById("file").value
                 var idxDot = fileName.lastIndexOf(".") + 1;

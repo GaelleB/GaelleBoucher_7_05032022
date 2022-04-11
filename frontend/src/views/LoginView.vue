@@ -48,7 +48,7 @@ export default {
         password: this.password
       })
       .then((res) => {
-        localStorage.setItem('userId', parseInt(res.data.userId));
+        localStorage.setItem('userId', res.data.userId);
         localStorage.setItem('token', res.data.token);
         this.$router.push('/allposts')
       })

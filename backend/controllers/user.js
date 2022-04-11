@@ -14,8 +14,8 @@ exports.signup = (req, res, next) => {
     .then(hash => {
         // Création d'un nouvel utilisateur (mail + mot de passe)
         const user = new User({
-            lastname: req.body.lastname,
-            firstname: req.body.firstname,
+            nom: req.body.nom,
+            prenom: req.body.prenom,
             email: req.body.email,
             password: hash
         });
@@ -34,6 +34,7 @@ exports.login = (req, res, next) => {
     console.log(req.body.password)
     User.findOne ({  where: { email: req.body.email } })
         .then(user => {
+            console.log(user)
         if (!user) {
             return res.status(401).json({ error: 'Utilisateur non trouvé !' });
         }
@@ -45,14 +46,15 @@ exports.login = (req, res, next) => {
             }
             // Contient l'identifiant de l'utilisateur et un token
             res.status(200).json({ 
-                userId: user._id,
+                userId: user.id,
                 // Encode un nouveau token grâce à jswonwebtoken
                 token: jwt.sign(
-                    { userId: user._id },
+                    { userId: user.id },
                     'SECRET_TOKEN',
-                    { expiresIn: '6h' } // Reconnexion dans 6h
+                    { expiresIn: '3h' } // Reconnexion dans 3h
                 )
             });
+            console.log(user._id)
         })
         .catch(error => res.status(500).json({ error }));
     })
