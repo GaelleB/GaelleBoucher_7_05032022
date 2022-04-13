@@ -51,7 +51,7 @@ exports.login = (req, res, next) => {
                 token: jwt.sign(
                     { userId: user.id },
                     'SECRET_TOKEN',
-                    { expiresIn: '3h' } // Reconnexion dans 3h
+                    { expiresIn: '24h' } // Reconnexion dans 24h
                 )
             });
             console.log(user._id)
@@ -130,7 +130,7 @@ exports.modifyPassword = (req, res, next) => {
                         return res.status(401).json("Mot de passe actuel incorrect");
                     }
                     if (!schema.validate(req.body.password)) {
-                        return res.status(401).json('Le nouveau mot de passe doit avoir une longueur de 3 à 50 caractères avec au moins un chiffre, une minuscule, une majuscule !!!')
+                        return res.status(401).json('Le nouveau mot de passe doit contenir entre 3 à 50 caractères avec au moins un chiffre, une minuscule, une majuscule !!!')
                     }
                     bcrypt.hash(req.body.password, 10)
                         .then(hash => {
@@ -140,7 +140,7 @@ exports.modifyPassword = (req, res, next) => {
                             user.update(newPassword, { where: { id: req.params.id } })
                             console.log('newpass   ' + newPassword)
                                 .then(() => { res.status(201).json({ message: 'Mot de passe modifié !' }) })
-                                .catch(() => res.status(400).json({message: "imposible de modifier le mot de passe" }));
+                                .catch(() => res.status(400).json({message: "impossible de modifier le mot de passe" }));
                         })
                         .catch(error => res.status(500).json({ error }));
                 })

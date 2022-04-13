@@ -80,7 +80,7 @@ export default {
             this.role = localStorage.getItem("role")
         },
         getOneUser() {
-            const Id = JSON.parse(localStorage.getItem("userId"))
+            const Id = localStorage.getItem("userId");
             const token = localStorage.getItem('token');
             axios.get(`http://localhost:3000/api/auth/profile/${Id}`, {
                 headers: {
@@ -187,9 +187,9 @@ export default {
                 .then(() => {
                     axios.delete(`http://localhost:3000/api/auth/profile/${Id}`, {
                         headers: {
-                        'Accept': 'application/json',
-                        'authorization': `Bearer ${token}`,
-                        'Content-Type': 'multipart/form-data',
+                            'Accept': 'application/json',
+                            'authorization': `Bearer ${token}`,
+                            'Content-Type': 'multipart/form-data',
                         }
                     })
                         .then(response => response.json())

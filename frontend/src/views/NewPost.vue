@@ -78,7 +78,7 @@ export default {
                 .then(() => {
                     alert("Message sans image publié")
                     this.$router.push("/allposts");
-                    console.log('message publier')
+                    console.log('message publié')
                     
                 })
             } else if (this.title != '' && this.content != '') {
@@ -96,18 +96,18 @@ export default {
                     axios.post("http://localhost:3000/api/posts/newpost", data, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
-                        'authorization': `Bearer ${token}`
+                            'authorization': `Bearer ${token}`
                         },
                         body: data
                     })
                     .then((res) => {
-                        alert("Message publier")
+                        alert("Message publié")
                         this.$router.push("/allposts");
                         console.log(res.data);
                         this.posts = res.data
                     })
                 
-                    .catch(() => console.log('Impossible de récupérer information !'))
+                    .catch(() => console.log('Impossible de récupérer les informations !'))
         
                 } else {
                     alert("Uniquement les fichiers jpg, jpeg, png, webp et gif sont acceptés!");

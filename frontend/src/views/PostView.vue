@@ -132,8 +132,7 @@ export default {
             const token = localStorage.getItem("token")
             axios.get (`http://localhost:3000/api/posts/${this.postId}` ,  {
                 headers: {
-                    'authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
+                    'authorization': `Bearer ${token}`
                 },
             })
                 .then((res) => {
@@ -160,11 +159,10 @@ export default {
                     userId: Id
                 }                 
             axios.get(`http://localhost:3000/api/comments/${this.postId}`,data,  {
-                    headers: {
-                        'authorization': `Bearer ${token}`,
-                        'Content-Type': 'multipart/form-data',
-                    },
-                    body: data 
+                headers: {
+                    'authorization': `Bearer ${token}`
+                },
+                body: data 
             })
             .then((res) => {
                 this.posts = res.data;

@@ -22,7 +22,7 @@ exports.createPost = (req, res) => {
 };
 
 // Modification d'un post (contenu et image)
-exports.modifyPost = (req, res, next) => {
+exports.modifyPost = (req, res) => {
     const headerAuth = req.headers['authorization'];
     const userId = jwt.getUserId(headerAuth);
     const role = jwt.getRoleUser(headerAuth);
@@ -111,44 +111,23 @@ exports.deletePost = (req, res) => {
 };
 
 // Affichage d'un post
-exports.getOnePost = (req, res, next) => {
+exports.getOnePost = (req, res) => {
     console.log("getOnePost  " + req.body)
     const headerAuth = req.headers['authorization'];
     const userId = jwt.getUserId(headerAuth);
     Post.findOne({
         where: { id : req.params.id },
-            include: [{ 
-                model : models.User, 
-                attributes: [ 'nom','prenom', 'id' ]          
-            }, 
-            {model: models.Like,
-                attributes: [ 'PostId', 'UserId' ]
-            },
-            {model: models.Dislike,
-                attributes: [ 'PostId', 'UserId' ]
-            }, 
-            {model: models.Comment,
-                attributes: [ 'content', 'id' , 'updatedAt','createdAt', 'UserId','PostId' ],
-                include: [ { 
-                model: models.User, 
-                attributes: [ 'nom','prenom','id' ] 
-            }] 
-            }
-        ],
     })
     .then( post => res.status(200).json(post))
     .catch( error => res.status(400).json({error}))
 }
 
 // Récupération de tous les posts d'un utilisateur
-exports.getPostsUser = (req, res, next) => {
+exports.getPostsUser = (req, res) => {
     Post.findAll({
         where: {
             userId : req.params.user.id
         },
-        include: [{
-            model : models.User,
-        }],
         order: [["createdAt", "ASC"]],
     })
     .then( posts => res.status(200).json(posts))
@@ -156,33 +135,18 @@ exports.getPostsUser = (req, res, next) => {
 };
 
 // Récupération de tous les posts
-exports.getAllPosts = (req, res, next) => {
+exports.getAllPosts = (req, res) => {
     console.log("all post  " + req.body);
-    Post.findAll({ 
+    Post.findAll({  
         order: [["id", "DESC"]],
-        include: [{ model : models.User,
-            attributes: [ 'nom','prenom', 'id' ]
-        },
-            { model: models.Like, 
-                attributes: [ 'UserId' ] 
-                }, 				
-                {model: models.Dislike,
-                attributes: ['UserId' ] 
-                }, 
-                {model: models.Comment,
-                attributes: [ 'content', 'id' , 'updatedAt','createdAt', 'UserId','PostId' ],
-                include: [ { model: models.User, 
-                attributes: [ 'nom','prenom','id' ] 
-                }] 
-                }
-        ]
+
     })
     .then( post => res.status(200).json(post))
     .catch( error => res.status(400).json({error}))
 };
 
 // Like
-exports.likePost = async (req, res, next) => {
+exports.likePost = async (req, res) => {
     console.log("console LIKE  " +(req.body));
 	try {
         const headerAuth = req.headers['authorization'];
@@ -210,7 +174,7 @@ exports.likePost = async (req, res, next) => {
 };
 
 // Dislike
-exports.dislikePost = async (req, res, next) => {
+exports.dislikePost = async (req, res) => {
 	try {
 		const headerAuth = req.headers['authorization'];
 		const userId = jwt.getUserId(headerAuth);

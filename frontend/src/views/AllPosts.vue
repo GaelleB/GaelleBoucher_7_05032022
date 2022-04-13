@@ -25,21 +25,21 @@
                     </router-link>
                     <button @click="deletePost(index)" class="btnIconeDelete" aria-label="Supprimer ce message"><i class="far fa-trash-alt"></i></button>
                 </td>
-                <td class="info">
+                <td class="info"> -->
                     <p>
                         Posté par 
-                        <b>{{ post.User.nom }}</b>
+                        <b>{{ post.userId }}</b>
                         le <b>{{ dateFormat(post.createdAt) }}</b>
                         à <b>{{ hourFormat(post.createdAt) }}</b><br>
                     </p>
                     <p>
-                        Modifié le 
+                        Modifié
                         le <b>{{ dateFormat(post.updatedAt) }}</b>
                         à <b>{{ hourFormat(post.updatedAt) }}</b>
                     </p>
                 </td>
                 <td><img class="imgPost" v-if="post.image" :src="post.image" alt="Image"></td>
-            </tr>
+            </tr> 
                 </table>
                 
         <!-- Affichage des posts -->
@@ -82,9 +82,8 @@ export default {
             const token = localStorage.getItem("token")
             axios.get('http://localhost:3000/api/posts/', {
                 headers: {
-                    'authorization': `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data',
-                    },
+                    'authorization': `Bearer ${token}`
+                },
             })    
             .then((res) => {
                 console.log(res.data);
