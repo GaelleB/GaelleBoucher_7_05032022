@@ -56,7 +56,7 @@ export default {
             button : false
         }
     },
-methods: {
+    methods: {
         show: function () {
             return this.button = true;
         },
@@ -88,13 +88,13 @@ methods: {
             })
             .catch(() => console.log('Impossible de récupérer les posts !'))
         },
+
         // Modification d'un post
-        modifyPost() {
+        ModifyPost() {
             const token = localStorage.getItem("token")
             const fileField = document.querySelector('input[type="file"]');
             
             if (confirm("Voulez-vous vraiment modifier ce post?") === true);
-            
             if (this.post.title === "")
                 alert("Veuillez remplir le titre");
             if (this.post.content === "")
@@ -111,21 +111,20 @@ methods: {
                     body: data
                 })
                 .then((res) => {
-                    alert("Modification de message sans image réusi")
+                    alert("Modification du post sans image réussie")
                     console.log("modification ok");
                     this.posts = res.data
                     this.$router.push("/allposts");
                 })
                 .catch(() =>{ 
-                    alert("Vous n'avez pas autorisation de modifier ce message!!")
-                    console.log('Vous n avez pas autorisation de modifier!!')
+                    alert("Non autorisé à modifier ce post!!")
+                    console.log('Non autorisé à modifier ce post!!')
                 } )
             } else if (this.post.title != "" && this.post.content != "") {
                 let data = new FormData()
                 data.append('image', fileField.files[0])
                 data.append('content', this.post.content)
                 axios.put(`http://localhost:3000/api/posts/${this.id_param}`, data ,{
-                    
                     headers: {
                         'authorization': `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data',
@@ -133,24 +132,28 @@ methods: {
                     body: data
                 })
                 .then((res) => {
-                        console.log(res.data);
-                this.posts = res.data;
-                this.post.content = res.data.content;
-                this.post.image = res.data.image;
-                this.post.createdAt = res.data.createdAt;
-                this.post.updatedAt = res.data.updatedAt;
-                        alert("Modification de message avec image réusie")
-                console.log("modification ok");
-                this.posts = res.data
-                this.$router.push("/allposts");
+                    console.log(res.data);
+
+                    this.posts = res.data;
+                    this.post.content = res.data.content;
+                    this.post.image = res.data.image;
+                    this.post.createdAt = res.data.createdAt;
+                    this.post.updatedAt = res.data.updatedAt;
+
+                    alert("Modification du post avec image réussie")
+                    console.log("modification ok");
+
+                    this.posts = res.data
+                    this.$router.push("/allposts");
                 })
                     
                 .catch(() =>{ 
-                alert("Non autorisé à modifier ce post!!")
-                console.log('Non autorisé à modifier ce post!!')
-        
-            } )}
+                    alert("Non autorisé à modifier ce post!!")
+                    console.log('Non autorisé à modifier ce post!!')
+                })
+            }
         },
+        
         // Date 
         dateFormat (updatedDate) {
             const date = new Date(updatedDate)

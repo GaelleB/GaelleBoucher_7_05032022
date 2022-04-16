@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-const { Post } = require('../models')
+const { Post } = require('../models');
+const { post } = require('../routes/post');
 
 // Création d'un post
 exports.createPost = (req, res) => {
@@ -21,77 +22,75 @@ exports.createPost = (req, res) => {
         
 };
 
-// Modification d'un post (contenu et image)
-exports.modifyPost = (req, res) => {
+// Affichage d'un post
+exports.getOnePost = (req, res) => {
+    console.log("getOnePost  " + req.body)
     const headerAuth = req.headers['authorization'];
-    const userId = jwt.getUserId(headerAuth);
-    const role = jwt.getRoleUser(headerAuth);
-    if (req.file) {
-        Post.findOne({ where: { id: req.params.id }})
-        .then(post => {
-            if (userId === post.userId || role === 0) {
-                if (post.image) {
-                const filename = post.image.split('/images/posts/')[1];
-                fs.unlink(`images/posts/${filename}`, () => {
-                    const modifyPost = {
-                        content: req.body.content,
-                        updatedAt: Date.now(),
-                        image: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
-                    };
-                    Post.update(modifyPost , { where: { id: req.params.id } })
-                        .then(() => res.status(200).json({message : 'Post modifié !'}))
-                        .catch( error => res.status(400).json({error}));
-                })} else {
-                    const modifyPost = {
-                        content: req.body.content,
-                        updatedAt: Date.now(),
-                        image: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
-                    };
-                    Post.update(modifyPost , { where: { id: req.params.id } })
-                        .then(() => res.status(200).json({message : 'Post modifié !'}))
-                        .catch( error => res.status(400).json({error}));
-                }
-            } else {
-                res.status(401).json({
-                    message: 'Requête non autorisée !'
-                });
-            }
-        })
-        .catch(error => res.status(500).json({ error }));
-    } else {
-        Post.findOne({ where: { id: req.params.id }})
-        .then(post => {
-            if (userId === post.userId || role === 0) {
-                if (post.image && req.body.image === '') {
-                    const filename = post.image.split('/images/posts/')[1];
-                    fs.unlink(`images/posts/${filename}`, () => {
-                        const modifyPost = {
-                            content: req.body.content,
-                            createdAt: Date.now(),
-                            image: ''
-                        };
-                        Post.update(modifyPost , { where: { id: req.params.id } })
-                            .then(() => res.status(200).json({message : 'Post modifié !'}))
-                            .catch( error => res.status(400).json({error}));
-                    })
-                } else {
-                    const modifyPost = {
-                        content: req.body.content,
-                        createdAt: Date.now(),
-                    };
-                    Post.update(modifyPost , { where: { id: req.params.id } })
-                        .then(() => res.status(200).json({message : 'Post modifié !'}))
-                        .catch( error => res.status(400).json({error}));
-                }
-            } else {
-                res.status(401).json({
-                    message: 'Requête non autorisée !'
-                });
-            }
-        })
-        .catch(error => res.status(500).json({ error }));
-    }
+    Post.findOne({
+        where: { id : req.params.id },
+    })
+    .then( post => res.status(200).json(post))
+    .catch( error => res.status(400).json({error}))
 }
+
+// Récupération de tous les posts
+exports.getAllPosts = (req, res) => {
+    console.log("all post  " + req.body);
+    Post.findAll({  
+        order: [["id", "DESC"]],
+
+    })
+    .then( post => res.status(200).json(post))
+    .catch( error => res.status(400).json({error}))
+};
+
+// Modification d'un post (contenu et image)
+exports.modifyPost = (req, res, next) => {
+    const userId = req.userId;
+    const postId = req.params.id;
+    const title = req.body.title;
+    const content = req.body.content;
+
+    if (req.file) {
+        models.Post.findOne({ where: { id: postId } })
+        .then((post) => {
+        if (post.userId !== userId) {
+        res.status(400).json({
+            error: new Error("Requête non autorisée"),
+        });
+        }
+        const filename = post.image.split("/images/")[1];
+        if (post.image !== null) {
+        fs.unlink(`images/${filename}`, (error) => {
+            if (error) throw error;
+        });
+        }
+        })
+        .catch((error) => res.status(500).json({ error }));
+    }
+    const updatePost = req.file
+    ? {
+        title: title ? title : post.title,
+        content: content ? content : post.content,
+        image: `${req.protocol}://${req.get("host")}/images/${
+        req.file.filename
+        }`,
+    }
+    : { ...req.body };
+    models.Post.update(
+        {
+            ...updatePost,
+            id: postId,
+        },
+        { where: { id: postId } }
+    )
+    .then(() => {
+        return res.status(200).json({ message: "Post modifié !" });
+    })
+    .catch((error) => {
+        return res.status(400).json({ error });
+    });
+};
 
 // Suppression d'un post
 exports.deletePost = (req, res) => {
@@ -108,40 +107,6 @@ exports.deletePost = (req, res) => {
             .catch(error => res.status(500).json({ error }));
     })
     .catch(error => res.status(500).json({ error }));
-};
-
-// Affichage d'un post
-exports.getOnePost = (req, res) => {
-    console.log("getOnePost  " + req.body)
-    const headerAuth = req.headers['authorization'];
-    Post.findOne({
-        where: { id : req.params.id },
-    })
-    .then( post => res.status(200).json(post))
-    .catch( error => res.status(400).json({error}))
-}
-
-// Récupération de tous les posts d'un utilisateur
-exports.getPostsUser = (req, res) => {
-    Post.findAll({
-        where: {
-            userId : req.params.user.id
-        },
-        order: [["createdAt", "ASC"]],
-    })
-    .then( posts => res.status(200).json(posts))
-    .catch( error => res.status(400).json({error}))
-};
-
-// Récupération de tous les posts
-exports.getAllPosts = (req, res) => {
-    console.log("all post  " + req.body);
-    Post.findAll({  
-        order: [["id", "DESC"]],
-
-    })
-    .then( post => res.status(200).json(post))
-    .catch( error => res.status(400).json({error}))
 };
 
 // Like
