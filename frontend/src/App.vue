@@ -40,12 +40,12 @@ textarea{
   border-radius: 10px;
   text-decoration: none;
   color: #000000;
-  background: gray;
+  background: grey;
   font-size: 15px;
   cursor: pointer;
 }
 .btnSave, .btnDelete {
-  background-color: gray;
+  background-color: grey;
   font-weight: bolder;
   font-size: 15px;
   margin: 20px 0 10px 0;
@@ -60,7 +60,7 @@ textarea{
   height: 50px;
   position: relative;
   border-radius: 100%;
-  background: gray;
+  background: grey;
   cursor: pointer; 
   text-align: center;
   color: white;   
@@ -74,7 +74,7 @@ textarea{
   height: 50px;
   position: relative;
   border-radius: 20px;
-  background: gray;
+  background: grey;
   cursor: pointer; 
   text-align: center;
   color: white;   

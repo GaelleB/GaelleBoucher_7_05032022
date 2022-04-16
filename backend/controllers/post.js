@@ -114,7 +114,6 @@ exports.deletePost = (req, res) => {
 exports.getOnePost = (req, res) => {
     console.log("getOnePost  " + req.body)
     const headerAuth = req.headers['authorization'];
-    const userId = jwt.getUserId(headerAuth);
     Post.findOne({
         where: { id : req.params.id },
     })

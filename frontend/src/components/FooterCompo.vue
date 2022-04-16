@@ -5,7 +5,7 @@
         <a href="contact: administrateur@groupomania.com" aria-label="Envoyer un email à l'administrateur" > Aide et contact</a>
       </div>  
     <div class="copyright">
-      <p>2022 ©Groupomania by Gaëlle B</p>
+      <p>2022 ©Groupomania</p>
     </div>
   </footer>
 </template>

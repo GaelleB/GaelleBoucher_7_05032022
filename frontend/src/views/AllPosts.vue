@@ -3,7 +3,7 @@
         <HeaderProfile/>
         <h1>Le fil d'actu de Groupomania</h1>
         <div class="getAllPosts">
-        <button @click="getAllPosts()" class="btnSave" aria-label="Bouton d'actualisation de la page" ><i class="fas fa-redo"></i></button>
+            <button @click="getAllPosts()" class="btnSave" aria-label="Bouton d'actualisation de la page" ><i class="fas fa-redo"></i></button>
         </div>
         <article v-if="post in posts">
             <p>Aucune publication pour instant!</p>
@@ -13,17 +13,17 @@
         <router-link to="/postnew" aria-label="Création d'un nouveau post">
         <button  class="button" >
             <h2><i class="far fa-edit"></i><br>Rédiger un nouveau post</h2>
-            </button>
-            </router-link>
+        </button>
+        </router-link>
         <table>
             <tr class = "card cardPost" v-bind:key="index" v-for="(post, index) in posts">
                 <td><input type="text" v-model="post.title" required aria-label="Titre" disabled></td>
                 <td><textarea class="tdHeight" type="text" v-model="post.content" required aria-label="Message" disabled></textarea></td>
                 <td class="icone">
                     <router-link  :to="`/post/${post.id}`" :href="$router.resolve({name: 'Post', params: { id: post.id}}).href" aria-label="Afficher le message">
-                    <button class="btnIconeSave" aria-label="Icone afficher les messages" ><i class="far fa-edit"></i></button>
+                    <button class="btnIconeSave" aria-label="Modifier ce post" ><i class="far fa-edit"></i></button>
                     </router-link>
-                    <button @click="deletePost(index)" class="btnIconeDelete" aria-label="Supprimer ce message"><i class="far fa-trash-alt"></i></button>
+                    <button @click="deletePost(index)" class="btnIconeDelete" aria-label="Supprimer ce post"><i class="far fa-trash-alt"></i></button>
                 </td>
                 <td class="info"> -->
                     <p>
@@ -40,8 +40,8 @@
                 </td>
                 <td><img class="imgPost" v-if="post.image" :src="post.image" alt="Image"></td>
             </tr> 
-                </table>
-                
+        </table>
+
         <!-- Affichage des posts -->
         <article v-if="posts.length == 0">
             <p>Aucune publication pour le moment!</p>
@@ -148,7 +148,7 @@ h2 {
     font-size: 15px;
 }
 .image {
-    height: 15vw;
+    height: 20px;
     border-radius: 30px;
 }
 .article {
@@ -174,7 +174,7 @@ td{
     border: 2px solid black;
 }
 .cardPost{
-    width: 90%;
+    width: 60%;
     margin: 10px auto 10px auto;
     display: flex;
     flex-direction: column;
@@ -204,8 +204,8 @@ table{
     font-size: 14px;
 }
 input {
-    width: 70%;
-    font-size: 1.2rem;
+    width: 40%;
+    font-size: 16px;
     text-align: center;
 }
 textarea{
@@ -236,10 +236,10 @@ textarea{
     border-radius: 10px;
 }
 .btnIconeDelete{
-    background-color: indianred;
+    background-color: rgb(218, 83, 83);
 }
 .btnIconeSave{
-    background-color: rgb(31, 216, 216);
+    background-color: rgb(9, 140, 163);
 }
 .text {
     font-size: 14px;

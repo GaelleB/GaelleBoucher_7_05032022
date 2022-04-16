@@ -14,7 +14,7 @@
                     <li>
                         <input type="email" v-model="user.email" placeholder="Email" size="50" required aria-label="Email de l'utilisateur">
                     </li>
-                    </ul>
+                </ul>
             </form>
             <nav class="modify" >
             <!--Image -->
@@ -120,8 +120,7 @@ export default {
             } else if ((regexText.test(this.user.nom) === true) && regexText.test(this.user.prenom) === true && regexEmail.test(this.user.email) === true && this.user.image === null) {
                 axios.put(`http://localhost:3000/api/auth/profile/${Id}`, { 
                     headers: {
-                        'authorization': `Bearer ${token}`,
-                        'Accept': 'application/json',               
+                        'authorization': `Bearer ${token}`,           
                         'Content-Type': 'multipart/form-data',
                     },
                 })
@@ -147,8 +146,8 @@ export default {
                     body: data
                 })
                 .then(() => {
-                    alert("Profil modifier")
-                    console.log("profil modifier");
+                    alert("Profil modifié")
+                    console.log("Profil modifié");
                     this.$router.push("/profile");
                 })
                 .catch(error => console.log(error))
@@ -166,10 +165,10 @@ export default {
                 .then(() => {
                     alert ("compte supprimé")
                     console.log("compte supprimé");
-                    let pub = this.posts
-                    for ( let i = 0 ; i < pub.length ; i++) {
-                        if (pub[i].image) {
-                        axios.delete(`http://localhost:3000/api/posts/${pub[i].id}`, {
+                    let publi = this.posts
+                    for ( let i = 0 ; i < publi.length ; i++) {
+                        if (publi[i].image) {
+                        axios.delete(`http://localhost:3000/api/posts/${publi[i].id}`, {
                             headers: {
                                 'authorization': `Bearer ${token}`,
                                 'Content-Type': 'multipart/form-data',
@@ -268,7 +267,7 @@ input {
 .input-file {
     display: none;
 }
-.button,#modifyImage {
+.button, #modifyImage {
     margin: 20px 0 0 0;
     padding: 5px 30px ;
     border: 2px solid black;

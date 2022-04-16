@@ -6,32 +6,32 @@
                     <!-- Affichage d'un post --> 
                     <div class = "card info blockRespo" >
                         <nav class = "blockRespoText">
-                        <input class="inputTitle" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" >  <!--rows="10" cols="25" -->
-                        <textarea type="text" v-model="post.content" required aria-label="Message" disabled ></textarea>
-                        <p>Posté par <b>{{ post.user.nom }}</b> <b>{{ post.user.prenom }} </b>     
-                            le <b>{{ dateFormat(post.createdAt) }}</b>
-                            à <b>{{ hourFormat(post.createdAt) }}</b><br>
-                        </p>
-                        <p v-if="post.createdAt != post.updatedAt">
-                            Modifié 
-                            le <b>{{ dateFormat(post.updatedAt) }}</b>
-                            à <b>{{ hourFormat(post.updatedAt) }}</b>
-                        </p>
-                        
-                    <!-- Modification & suppression d'un post -->  
-                    <div class="content modif">
-                        <button @click="modifyPost()"  class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Modifier publication</button>
-                        <button @click="deletePost()"  class="btnDelete" aria-label="Supprimer ce post"><i class="far fa-trash-alt"></i> Supprimer publication</button>
-                    </div> 
-                    </nav>
-                    <img class="imgPost" v-if="post.image" :src="post.image" alt="Image du post">
+                            <input class="inputTitle" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" > 
+                            <textarea type="text" v-model="post.content" required aria-label="Message" disabled ></textarea>
+                            <p>Posté par <b>{{ post.user.nom }}</b> <b>{{ post.user.prenom }} </b>     
+                                le <b>{{ dateFormat(post.createdAt) }}</b>
+                                à <b>{{ hourFormat(post.createdAt) }}</b><br>
+                            </p>
+                            <p v-if="post.createdAt != post.updatedAt">
+                                Modifié 
+                                le <b>{{ dateFormat(post.updatedAt) }}</b>
+                                à <b>{{ hourFormat(post.updatedAt) }}</b>
+                            </p>
+                            
+                            <!-- Modification & suppression d'un post -->  
+                            <div class="content modif">
+                                <button @click="modifyPost()" class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Modifier la publication</button>
+                                <button @click="deletePost()" class="btnDelete" aria-label="Supprimer ce post"><i class="far fa-trash-alt"></i> Supprimer la publication</button>
+                            </div> 
+                        </nav>
+                        <img class="imgPost" v-if="post.image" :src="post.image" alt="Image du post">
                     </div>
                 </article>
 
                 <!-- Création d'un commentaire -->
                 <button v-if="displayCreateComment === false" v-on:click="show2" class="btnSave" aria-label="Ecrire un commentaire"><i class="far fa-edit"></i>Commenter</button>
                 <article v-if="displayCreateComment" class="createcomment">
-                    <textarea v-model="content" placeholder="Faire ton commentaire..." cols="60" rows="5" aria-label="Message du commentaire"></textarea>
+                    <textarea v-model="content" placeholder="Ecrire ton commentaire..." cols="60" rows="5" aria-label="Message du commentaire"></textarea>
                     <div class=btnComment>
                         <button @click="createComment()" class="btnSave" aria-label="Envoyer le commentaire">Envoyer</button>
                         <button v-on:click="hide2" class="btnDelete" aria-label="Annuler le commentaire">Annuler</button>
@@ -44,9 +44,13 @@
                         <h2>Les commentaires:</h2>
                         <tr class = "card displayComment" v-bind:key="index" v-for="(comment, index) in comments" >
                             <td>Commenté par:<p class="userComment">{{comment.User.nom}}</p></td>
-                            <td>le <b>{{ dateFormat(comment.createdAt) }}</b>
-                                à <b>{{ hourFormat(comment.createdAt) }}</b></td>
-                            <td><textarea type="text" v-model="comment.content" required aria-label="Commentaire" disabled></textarea></td>
+                            <td>
+                                le <b>{{ dateFormat(comment.createdAt) }}</b>
+                                à <b>{{ hourFormat(comment.createdAt) }}</b>
+                            </td>
+                            <td>
+                                <textarea type="text" v-model="comment.content" required aria-label="Commentaire" disabled></textarea>
+                            </td>
                             <!-- Modification et suppression d'un commentaire -->  
                             <div class="content displayComment">
                                 <div class="modif">                                                                   
@@ -127,10 +131,11 @@ export default {
             this.id = localStorage.getItem("userId")
             this.role = localStorage.getItem("role")
         },
+
         // Affichage d'un post
         getOnePost() {
             const token = localStorage.getItem("token")
-            axios.get (`http://localhost:3000/api/posts/${this.postId}` ,  {
+            axios.get (`http://localhost:3000/api/posts/${this.postId}`, {
                 headers: {
                     'authorization': `Bearer ${token}`
                 },
@@ -157,7 +162,7 @@ export default {
                     content: this.content,
                     postId: this.id_param,
                     userId: Id
-                }                 
+            }                 
             axios.get(`http://localhost:3000/api/comments/${this.postId}`,data,  {
                 headers: {
                     'authorization': `Bearer ${token}`
@@ -239,7 +244,6 @@ export default {
                 .catch(() => console.log(' err comments'))
             }
         },
-        // Suppression d'un commentaire
         
         // Suppression d'un commentaire
         deleteComment (index) {
@@ -325,9 +329,9 @@ textarea {
 .header,
 .content {
     width: 95%;
-    background:gray;
+    background:grey;
     border-radius: 20px ;
-    }
+}
 .header {
     display: flex;
     flex-direction: column;

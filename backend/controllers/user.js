@@ -105,11 +105,11 @@ exports.modifyUser = (req, res, next) => {
                     res.status(500).json({ 'erreur': 'Impossible de mettre à jour l\'utilisateur' })
                 });
             } else {
-                res.status(404).json({ 'erreur': 'Utilisateur non trouvé !' })
+                res.status(404).json({ 'erreur': 'Utilisateur introuvable !' })
             }
         })
         .catch(() => {
-            res.status(500).json({ 'erreur': 'Impossible de vérifier l\'utilisateur' })
+            res.status(500).json({ 'erreur': 'Utilisateur introuvable !' })
         })
 }
 

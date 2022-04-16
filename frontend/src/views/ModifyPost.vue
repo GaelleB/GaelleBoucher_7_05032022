@@ -3,27 +3,27 @@
         <HeaderProfile/>
             <section>
                 <h1>Modification de votre publication</h1>
-                <p>Vous pouvez modifier le text et image de votre message</p>
-        <form>
-            <ul>
-                <li>
-                    <label for="titre" aria-label="Titre">Titre</label>
-                    <input class="title" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" >
-                </li>
-                <li>
-                    <label for="content" aria-label="Publication">Publication</label>
-                    <textarea v-model="post.content" placeholder="Vous pouvez modifier la publication..." rows="10" cols="60" required aria-label="Message du post"></textarea>
-                </li>
-                <li v-if="post.image">
-                    <img :src="post.image" alt="Image du post" class="file" width="200px" height="200px">
-                </li>
-                <li> 
-                    <label v-if="post.image " for="file" class="button" aria-label="Choisir une photo pour ce post">Modifier l'image</label>
-                    <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer cette photo du post"> Supprimer l'image</button>    
-                    <input type="file" accept=".jpeg, .jpg, .png, .webp, .gif" v-on:change="uploadFile" id="file" class="input-file" aria-label="Image du post">
-                </li>
-            </ul>
-        </form>
+                <p>Vous pouvez modifier l'image et le contenu de la publication</p>
+                <form>
+                    <ul>
+                        <li>
+                            <label for="titre" aria-label="Titre">Titre</label>
+                            <input class="title" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" >
+                        </li>
+                        <li>
+                            <label for="content" aria-label="Publication">Publication</label>
+                            <textarea v-model="post.content" placeholder="Vous pouvez modifier la publication..." rows="10" cols="60" required aria-label="Message du post"></textarea>
+                        </li>
+                        <li v-if="post.image">
+                            <img :src="post.image" alt="Image du post" class="file" width="200px" height="200px">
+                        </li>
+                        <li> 
+                            <label v-if="post.image " for="file" class="button" aria-label="Choisir une photo pour ce post">Modifier l'image</label>
+                            <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer cette photo du post"> Supprimer l'image</button>    
+                            <input type="file" accept=".jpeg, .jpg, .png, .webp, .gif" v-on:change="uploadFile" id="file" class="input-file" aria-label="Image du post">
+                        </li>
+                    </ul>
+                </form>
                 <button @click="ModifyPost()" class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Enregistrer</button>
             </section>
             <div>
@@ -73,10 +73,10 @@ methods: {
             const token = localStorage.getItem("token")
             const fileField = document.querySelector('input[type="file"]');                                             
             axios.get (`http://localhost:3000/api/posts/${post.id}`, {
-                    headers: {
-                        'authorization': `Bearer ${token}`,
-                        'Content-Type': 'multipart/form-data',
-                    }
+                headers: {
+                    'authorization': `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                }
             })
             .then((res) => {
                 console.log(res.data);
@@ -139,15 +139,15 @@ methods: {
                 this.post.image = res.data.image;
                 this.post.createdAt = res.data.createdAt;
                 this.post.updatedAt = res.data.updatedAt;
-                        alert("Modification de message avec image réusi")
+                        alert("Modification de message avec image réusie")
                 console.log("modification ok");
                 this.posts = res.data
                 this.$router.push("/allposts");
                 })
                     
                 .catch(() =>{ 
-                alert("Vous n'avez pas autorisation de modifier ce message!!")
-                console.log('Vous n avez pas autorisation de modifier!!')
+                alert("Non autorisé à modifier ce post!!")
+                console.log('Non autorisé à modifier ce post!!')
         
             } )}
         },
@@ -183,8 +183,8 @@ label {
     font-weight: bolder;
 }
 form{
-   width: 80% ; 
-   margin: auto;
+    width: 80% ; 
+    margin: auto;
 }
 ul {
     
@@ -196,7 +196,7 @@ li {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-  margin-bottom: 30px;
+    margin-bottom: 30px;
 }
 .title{
     width: 60%;

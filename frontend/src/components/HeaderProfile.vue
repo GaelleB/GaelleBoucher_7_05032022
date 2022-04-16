@@ -1,6 +1,6 @@
 <template>
   <header class="nav">
-    <a href="/"><img class="imgLogo" src="images/icon-left-font-monochrome-white(copie).png" alt="Logo Groupomania" /></a>
+    <img class="imgLogo" src="images/icon-left-font-monochrome-white(copie).png" alt="Logo Groupomania" />
     <nav>
       <router-link class="link" to="/profile"  aria-label="Profil">Mon profil</router-link>
       <router-link class="link" to="/allposts" aria-label="Retour vers Le fil d'actu de Groupomania"><i class="fas fa-home home"></i></router-link>
@@ -48,12 +48,10 @@ nav{
   object-fit: cover;
   width: 100%;
   height: 100%;
-  clip-path: circle();
   border-radius: 50%;
 }
 .imgLogo {
   width: 60%;
-  display: block;
   padding-top: 10px;
   margin-left: auto;
   margin-right: auto;
@@ -88,7 +86,7 @@ i {
   height: 50px;
   position: relative;
   border-radius: 100%;
-  background: gray;
+  background: grey;
   cursor: pointer; 
   text-align: center;
   color: white;   
