@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const { Post } = require('../models');
-const { post } = require('../routes/post');
 
 // Création d'un post
 exports.createPost = (req, res) => {
@@ -86,7 +85,7 @@ exports.modifyPost = (req, res, next) => {
         }`,
     }
     : { ...req.body };
-    models.Post.update(
+    Post.update(
         {
         ...updatePost,
         id: postId,

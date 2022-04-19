@@ -72,7 +72,7 @@ export default {
         getOnePost() {
             const token = localStorage.getItem("token")
             const fileField = document.querySelector('input[type="file"]');                                             
-            axios.get (`http://localhost:3000/api/posts/${post.id}`, {
+            axios.get (`http://localhost:3000/api/posts/this.id_param`, {
                 headers: {
                     'authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
@@ -140,7 +140,7 @@ export default {
                     this.post.createdAt = res.data.createdAt;
                     this.post.updatedAt = res.data.updatedAt;
 
-                    alert("Modification du post avec image réussie")
+                    alert("Modification du post avec image réussie");
                     console.log("modification ok");
 
                     this.posts = res.data
@@ -148,7 +148,7 @@ export default {
                 })
                     
                 .catch(() =>{ 
-                    alert("Non autorisé à modifier ce post!!")
+                    alert("Non autorisé à modifier ce post!!");
                     console.log('Non autorisé à modifier ce post!!')
                 })
             }
