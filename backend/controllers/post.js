@@ -28,6 +28,15 @@ exports.getOnePost = (req, res) => {
     const headerAuth = req.headers['authorization'];
     Post.findOne({
         where: { id : req.params.id },
+        include: [
+            {
+                model: models.User,
+                as: "User",
+                attributes: ["prenom", "nom"],
+            },
+            { model: models.Comment },
+            { model: models.Like },
+        ],
     })
     .then( post => res.status(200).json(post))
     .catch( error => res.status(400).json({error}))
@@ -79,8 +88,8 @@ exports.modifyPost = (req, res, next) => {
     : { ...req.body };
     models.Post.update(
         {
-            ...updatePost,
-            id: postId,
+        ...updatePost,
+        id: postId,
         },
         { where: { id: postId } }
     )
