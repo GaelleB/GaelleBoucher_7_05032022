@@ -32,7 +32,7 @@ module.exports = {
       },
       role: {
         type: Sequelize.BOOLEAN,
-        defaultValue: 1   // 1 = user
+        defaultValue: 1 
       },
       createdAt: {
         allowNull: false,

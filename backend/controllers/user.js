@@ -70,7 +70,7 @@ exports.modifyUser = (req, res, next) => {
     const email = req.body.email
     const nom = req.body.nom;
     const prenom = req.body.prenom;
-    const image = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null;
+    const image = req.file ? `${req.protocol}:${req.get('host')}/images/${req.file.filename}` : null;
     User.findOne({
         attributes: ['id', 'email', 'nom', 'prenom', 'image'],
         where: { id: userId }

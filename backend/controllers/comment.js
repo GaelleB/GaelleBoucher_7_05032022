@@ -1,16 +1,36 @@
 const Comment = require('../models/comment');
-const models = require('../models');
 
 // Création d'un commentaire
 exports.createComment = (req, res) => {
     const newComment = {
         userId: req.body.userId,
         content: req.body.content,
-        publicationId: req.body.publicationId
+        postId : req.params.postId
     };
     Comment.create(newComment)
         .then(() => res.status(201).json({ message: "Commentaire créé" }))
         .catch(error => res.status(500).json({ error }));
+};
+
+// Affichage d'un commentaire
+exports.getOneComment = (req, res, next) => {
+    console.log("console log getOneComment  " +(req.body));
+    Comment.findAll({
+        where: { postId : req.params.postId },
+    })
+    .then(comments => res.status(200).json(comments))
+    .catch( error => res.status(400).json({error}))
+};
+
+// Affichage de tous les commentaires
+exports.getAllComments = (req, res, next) => {
+    console.log("console log getPostAllComments  " +(req.body));
+    models.Comment.findAll({
+        where: {postId : req.params.postId},
+        order: [["createdAt", "DESC"]]
+    })
+    .then( comments => res.status(200).json(comments))
+    .catch( error => res.status(400).json({error}))
 };
 
 // Modification d'un commentaire
@@ -23,7 +43,7 @@ exports.modifyComment = (req, res, next) => {
         .then(comment => {
             if (userId === comment.userId || role === 0) {
                 const modifyComment = {content: req.body.content};
-                models.Comment.update(modifyComment , { where: { id: req.params.id } })
+                Comment.update(modifyComment , { where: { id: req.params.id } })
                 .then(() => res.status(200).json({message : 'Commentaire modifié !'}))
                 .catch( error => res.status(400).json({error}));
             } else {
@@ -42,44 +62,4 @@ exports.deleteComment = (req, res) => {
     )
     .then(() => res.status(200).json({ message: "Commentaire supprimé" }))
     .catch(error => res.status(500).json({ error }));
-};
-
-// Affichage d'un commentaire
-exports.getPostComments = (req, res, next) => {
-    console.log("console log getPostComments  " +(req.body));
-    models.Comment.findAll({
-        where: { postId : req.params.postId },
-        include: [{  model : models.User}],
-        order: [["createdAt", "DESC"]]
-    })
-    .then(comments => res.status(200).json(comments))
-    .catch( error => res.status(400).json({error}))
-};
-
-// Affichage de tous les commentaires
-exports.getAllComments = (req, res, next) => {
-    console.log("console log getPostAllComments  " +(req.body));
-    models.Comment.findAll({
-        where: {postId : req.params.postId},
-        include: [
-            { model : models.User},
-            { model : models.Post}],
-        order: [["createdAt", "DESC"]]})
-    .then( comments => res.status(200).json(comments))
-    .catch( error => res.status(400).json({error}))
-};
-
-// Affichage de tous les commentaire d'un post
-exports.getPostAllComments = (req, res, next) => {
-    console.log("console log getAllComment  " +(req.body));
-    models.Comment.findAll({
-        include: [{
-            model : models.User
-        },{
-            model : models.Post
-        }],
-        order: [["createdAt", "DESC"]],
-    })
-    .then( comments => res.status(200).json(comments))
-    .catch( error => res.status(400).json({error}))
 };

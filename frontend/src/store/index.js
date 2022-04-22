@@ -9,7 +9,7 @@ import axios from 'axios'
       prenom: '',
       email: '',
       image: '',
-    role : ''
+      role : ''
     },
   },
   methods : {

@@ -108,7 +108,7 @@ export default {
         // Suppression d'un post
         deletePost (index) {
             const token = localStorage.getItem("token")
-            if (confirm("Voulez-vous vraiment supprimer votre message?") === true) {
+            if (confirm("Voulez-vous vraiment supprimer votre post?") === true) {
                 axios.delete(`http://localhost:3000/api/posts/${this.posts[index].id}`, {
                     headers: {
                         'authorization': `Bearer ${token}`,
@@ -116,13 +116,13 @@ export default {
                     }
                 })
                 .then(() => {
-                    alert("Message supprimé")
-                    console.log("message supprimé");
+                    alert("Post supprimé")
+                    console.log("Post supprimé");
                 })
                 
                 .catch(() =>{ 
-                    alert("Vous n'avez pas d'autorisation de supprimer ce message!!")
-                    console.log('Pas autoriser à supprimer ce message!!')
+                    alert("Vous n'avez pas d'autorisation de supprimer ce post!!")
+                    console.log('Pas autoriser à supprimer ce post!!')
                     })
             }
         },

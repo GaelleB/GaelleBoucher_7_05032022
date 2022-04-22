@@ -76,9 +76,9 @@ export default {
                 body: data
                 })
                 .then(() => {
-                    alert("Message sans image publié")
+                    alert("Post sans image publié")
                     this.$router.push("/allposts");
-                    console.log('message publié')
+                    console.log('Post publié')
                     
                 })
             } else if (this.title != '' && this.content != '') {
@@ -101,7 +101,7 @@ export default {
                         body: data
                     })
                     .then((res) => {
-                        alert("Message publié")
+                        alert("Post publié")
                         this.$router.push("/allposts");
                         console.log(res.data);
                         this.posts = res.data

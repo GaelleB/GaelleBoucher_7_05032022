@@ -41,7 +41,7 @@
                 <!-- Affichage des commentaires -->
                 <button  v-on:click="show" @click="getOneComment()" class="btnSave" aria-label="Voir les commentaires">Afficher: {{ comments.length }} commentaires </button>
                     <table class = "header " v-if="displaycomments" >
-                        <h2>Les commentaires:</h2>
+                        <h2>Les commentaires</h2>
                         <tr class = "card displayComment" v-bind:key="index" v-for="(comment, index) in comments" >
                             <td>Commenté par:<p class="userComment">{{comment.User.nom}}</p></td>
                             <td>
@@ -141,7 +141,6 @@ export default {
                 },
             })
                 .then((res) => {
-                console.log("getOne"+res.data);
                 this.posts = res.data;
                 this.users = res.data;
                 this.post.title = res.data.title;
@@ -180,6 +179,7 @@ export default {
             })
             .catch(() => console.log('Impossible de récupérer les commentaires!'))
         },
+
         // Date 
         dateFormat (createdDate) {
             const date = new Date(createdDate)
@@ -191,6 +191,7 @@ export default {
             const options = { hour: 'numeric', minute:'numeric', second:'numeric'};
             return hour.toLocaleTimeString('fr-FR', options);
         },
+
         // Suppression d'un post
         deletePost () {
             const token = localStorage.getItem("token")
@@ -201,19 +202,21 @@ export default {
                     }
                 })
                 .then((res) => {
-                alert ("Publication supprimer")
+                alert ("Publication supprimée")
                 console.log(res.data);
             })
             .catch(() =>{ 
-                alert("Non autorisé pour supprimer ce message!!")
-                console.log('Vous n avez pas autorisation de supprimer ce message!!')
+                alert("Non autorisé pour supprimer ce post!!")
+                console.log('Vous n avez pas autorisation de supprimer ce post!!')
             })
         }
         },
-        // modification d'un post
+
+        // Modification d'un post
         modifyPost () {
             this.$router.push(`/postmodify/${this.id_param}`)
         },
+        
         // Création d'un commentaire
         createComment () {
             const token = localStorage.getItem("token")
@@ -223,24 +226,23 @@ export default {
                 alert('Saisissez votre commentaire')
             } else {
                 let data = {
-                    content: this.content,
-                    postId: postId,
                     userId: userId,
+                    postId: postId,
+                    content: this.content
                 }                                     
-                axios.post("http://localhost:3000/api/comments/" ,data, {
+                axios.post("http://localhost:3000/api/comments/", data, {
                     headers: {
                         'authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json',
                     },
                     body: data
                 })
                 .then(() => {
-                    console.log();
-                                
-                                alert("commentaire publié")
-                                console.log("commentaire OK")
-                                this.$router.push("/allposts");
-                            })
+                    alert("commentaire publié")
+                    this.$router.push("/allposts");
+                    console.log("commentaire OK")
+                })
                 .catch(() => console.log(' err comments'))
             }
         },
@@ -255,12 +257,12 @@ export default {
                     },
                 })
                 .then((res) => {
-                alert("La suppression du commentaire a bien été bien prise en compte")
-                console.log(res.data);
-                this.posts = res.data
+                    alert("La suppression du commentaire a bien été bien prise en compte")
+                    this.posts = res.data
+                    console.log(res.data);
                 })
                 .catch(() => {
-                    alert("Non autorisé pour supprimer ce commentaire!!")
+                    alert("Non autorisé à supprimer ce commentaire!!")
                     console.log('Impossible de récupérer les posts !')})
             }
         },

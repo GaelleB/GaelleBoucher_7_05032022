@@ -16,9 +16,8 @@ exports.createPost = (req, res) => {
         imageUrl: req.body.imagePost
     };
     Post.create(newPost) 
-            .then((post) => res.status(201).json(post))
-            .catch(error => res.status(400).json({ error }));
-        
+        .then((post) => res.status(201).json(post))
+        .catch(error => res.status(400).json({ error }));
 };
 
 // Affichage d'un post
@@ -27,21 +26,12 @@ exports.getOnePost = (req, res) => {
     const headerAuth = req.headers['authorization'];
     Post.findOne({
         where: { id : req.params.id },
-        include: [
-            {
-                model: models.User,
-                as: "User",
-                attributes: ["prenom", "nom"],
-            },
-            { model: models.Comment },
-            { model: models.Like },
-        ],
     })
     .then( post => res.status(200).json(post))
     .catch( error => res.status(400).json({error}))
 }
 
-// Récupération de tous les posts
+// Affichage de tous les posts
 exports.getAllPosts = (req, res) => {
     console.log("all post  " + req.body);
     Post.findAll({  

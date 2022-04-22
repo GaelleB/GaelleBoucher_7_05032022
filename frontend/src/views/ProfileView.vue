@@ -56,9 +56,6 @@ export default {
                 image:''
             },
             preview: null,
-            oldPassword:'',
-            newPassword:'',
-            confirmNewPassword:'',
             button : false
         }
     },
@@ -106,17 +103,17 @@ export default {
             const regexText = /^[a-zA-Z-\s]+$/;
             const regexEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/; 
             if (this.user.nom === "") {
-                alert("Veuillez remplir votre nom");
+                alert("Veuillez saisir votre nom");
             } else if (regexText.test(this.user.nom) === false) {
                 alert("Veuillez vérifier que l'écriture de votre nom soit uniquement en lettre");}
             if (this.user.prenom === "") {
-                alert("Veuillez remplir votre prénom");
+                alert("Veuillez saisir votre prénom");
             } else if (regexText.test(this.user.prenom) === false) {
                 alert("Veuillez vérifier que l'écriture de votre prénom soit uniquement en lettre");}
             if (this.user.email === "") {
-                alert("Veuillez remplir votre adresse email");
+                alert("Veuillez saisir votre adresse email");
             } else if (regexEmail.test(this.user.email) === false) {
-                alert("Veuillez écrire une adresse email valide");
+                alert("Veuillez saisir une adresse email valide");
             } else if ((regexText.test(this.user.nom) === true) && regexText.test(this.user.prenom) === true && regexEmail.test(this.user.email) === true && this.user.image === null) {
                 axios.put(`http://localhost:3000/api/auth/profile/${Id}`, { 
                     headers: {
@@ -177,7 +174,7 @@ export default {
                             .then(() => {
                                 alert("posts suprimés")
                                 console.log("posts supprimés")
-                                .then(this.$router.push("/"))
+                                this.$router.push("/")
                             })
                             .catch(alert ("impossilbe de supprimer les posts"))
                         }
@@ -196,7 +193,7 @@ export default {
                             alert("La suppression du compte a bien été prise en compte")
                             localStorage.clear();
                         })
-                        .then(this.$router.push("/"))
+                        this.$router.push("/")
                 })
                 .catch(alert)
             }

@@ -24,7 +24,7 @@
                         </li>
                     </ul>
                 </form>
-                <button @click="ModifyPost()" class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Enregistrer</button>
+                <button @click="modifyPost()" class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Enregistrer</button>
             </section>
             <div>
                 <router-link :to="`/post/${id_param}`" class="btnDelete" aria-label="Retour au fil d'actualité"><i class="fas fa-comment-slash"></i> Annuler</router-link>
@@ -60,6 +60,7 @@ export default {
         show: function () {
             return this.button = true;
         },
+
         // Téléchargement d'un fichier image
         uploadFile(event) {
             this.image = event.target.files[0]
@@ -72,7 +73,7 @@ export default {
         getOnePost() {
             const token = localStorage.getItem("token")
             const fileField = document.querySelector('input[type="file"]');                                             
-            axios.get (`http://localhost:3000/api/posts/this.id_param`, {
+            axios.get(`http://localhost:3000/api/posts/${this.id_param}`, {
                 headers: {
                     'authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
@@ -90,15 +91,15 @@ export default {
         },
 
         // Modification d'un post
-        ModifyPost() {
+        modifyPost() {
             const token = localStorage.getItem("token")
             const fileField = document.querySelector('input[type="file"]');
             
             if (confirm("Voulez-vous vraiment modifier ce post?") === true);
             if (this.post.title === "")
-                alert("Veuillez remplir le titre");
+                alert("Veuillez saisir le titre");
             if (this.post.content === "")
-                alert("Veuillez remplir votre message");
+                alert("Veuillez saisir votre message");
             if (this.post.image === null && this.post.title != "" && this.post.content != "") {
                 let data = new FormData()
                 data.append('image', '')
@@ -117,7 +118,7 @@ export default {
                     this.$router.push("/allposts");
                 })
                 .catch(() =>{ 
-                    alert("Non autorisé à modifier ce post!!")
+                    alert("Non autorisé à modifier ce post!!");
                     console.log('Non autorisé à modifier ce post!!')
                 } )
             } else if (this.post.title != "" && this.post.content != "") {
@@ -165,10 +166,10 @@ export default {
             const options = { hour: 'numeric', minute:'numeric', second:'numeric'};
             return hour.toLocaleTimeString('fr-FR', options);
         },
-},
-    mounted () {
-        this.getOnePost()
-    }
+    },
+        mounted () {
+            this.getOnePost()
+        }
 }
 </script>
 
