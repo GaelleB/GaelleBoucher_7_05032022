@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-const { Post } = require('../models');
+const { Post } = require('../models/post');
+const models = require('../models');
 
 // Création d'un post
 exports.createPost = (req, res) => {
@@ -15,17 +16,26 @@ exports.createPost = (req, res) => {
         content: req.body.content,
         imageUrl: req.body.imagePost
     };
-    Post.create(newPost) 
-        .then((post) => res.status(201).json(post))
-        .catch(error => res.status(400).json({ error }));
+    models.Post.create(newPost) 
+            .then((post) => res.status(201).json(post))
+            .catch(error => res.status(400).json({ error }));
+        
 };
 
 // Affichage d'un post
 exports.getOnePost = (req, res) => {
-    console.log("getOnePost  " + req.body)
     const headerAuth = req.headers['authorization'];
-    Post.findOne({
+    models.Post.findOne({
         where: { id : req.params.id },
+        include: [
+            {
+                model: models.User,
+                as: "User",
+                attributes: ["prenom", "nom"],
+            },
+            { model: models.Comment },
+            { model: models.Like },
+        ],
     })
     .then( post => res.status(200).json(post))
     .catch( error => res.status(400).json({error}))
@@ -33,10 +43,8 @@ exports.getOnePost = (req, res) => {
 
 // Affichage de tous les posts
 exports.getAllPosts = (req, res) => {
-    console.log("all post  " + req.body);
-    Post.findAll({  
+    models.Post.findAll({  
         order: [["id", "DESC"]],
-
     })
     .then( post => res.status(200).json(post))
     .catch( error => res.status(400).json({error}))
@@ -75,7 +83,7 @@ exports.modifyPost = (req, res, next) => {
         }`,
     }
     : { ...req.body };
-    Post.update(
+    models.Post.update(
         {
         ...updatePost,
         id: postId,
@@ -92,7 +100,7 @@ exports.modifyPost = (req, res, next) => {
 
 // Suppression d'un post
 exports.deletePost = (req, res) => {
-    Post.findOne({ where: { id: req.params.id } })
+    models.Post.findOne({ where: { id: req.params.id } })
     .then(post => {
         if(post.imageUrl != null) {
             const filename = post.imageUrl.split('/images/')[1];
@@ -100,7 +108,7 @@ exports.deletePost = (req, res) => {
                 if(err) throw err;
             })
         };
-        Post.destroy({ where: { id: req.params.id } })
+        models.Post.destroy({ where: { id: req.params.id } })
             .then(() => res.status(201).json({ message: "Post supprimé"}))
             .catch(error => res.status(500).json({ error }));
     })

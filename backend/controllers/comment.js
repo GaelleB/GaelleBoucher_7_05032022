@@ -1,12 +1,11 @@
-const { Comment } = require('../models/comment');
-const models = require('../models');
+const models = require('../models/');
 
 // Création d'un commentaire
 exports.createComment = (req, res) => {
     const newComment = {
-        UserId: req.body.UserId,
+        uerId: req.body.userId,
         content: req.body.content,
-        PostId: req.body.PostId
+        postId: req.body.postId
     };
     models.Comment.create(newComment)
         .then(() => res.status(201).json({ message: "Commentaire créé" }))
@@ -15,14 +14,9 @@ exports.createComment = (req, res) => {
 
   // Suppression d'un commentaire
 exports.deleteComment = (req, res, next) => {
-    const headerAuth = req.headers['authorization'];
-    const userId = getUserId(headerAuth);
-    const role = getRoleUser(headerAuth);
-
-    Comment.findOne({
-        where: { id: req.params.id }
-        })
-
+    models.Comment.findOne(
+        { where: { id: req.params.id } }
+    )
     .then(Comment => {
         if (userId === userId || role === 0) 
         {
@@ -39,7 +33,7 @@ exports.deleteComment = (req, res, next) => {
 
 // Affichage d'un commentaire
 exports.getOneComment = (req, res, next) => {
-    Comment.findAll({
+    models.Comment.findAll({
         where: { postId : req.params.postId },
         include: [{  model : models.User}],
         order: [["createdAt", "DESC"]]

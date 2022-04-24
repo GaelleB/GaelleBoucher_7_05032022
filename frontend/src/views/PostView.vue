@@ -223,7 +223,7 @@ export default {
             const token = localStorage.getItem("token")
             const userId = localStorage.getItem("userId")
             const postId = this.$route.params.id;
-            console.log(token)
+            console.log(postId)
             if( this.commentaire === ""){
                 alert('Saisissez votre commentaire')
             } else {
