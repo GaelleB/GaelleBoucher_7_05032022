@@ -38,7 +38,7 @@
                     </div>
                 </article>
 
-                <!-- Affichage des commentaires -->
+                <!-- Affichage d'un commentaire -->
                 <button  v-on:click="show" @click="getOneComment()" class="btnSave" aria-label="Voir les commentaires">Afficher: {{ comments.length }} commentaires </button>
                     <table class = "header " v-if="displaycomments" >
                         <h2>Les commentaires</h2>
@@ -51,7 +51,7 @@
                             <td>
                                 <textarea type="text" v-model="comment.content" required aria-label="Commentaire" disabled></textarea>
                             </td>
-                            <!-- Modification et suppression d'un commentaire -->  
+                            <!-- Suppression d'un commentaire -->  
                             <div class="content displayComment">
                                 <div class="modif">                                                                   
                                     <button @click="deleteComment(index)"  class="btnDelete" aria-label="Supprimer ce commentaire"><i class="far fa-trash-alt"></i> Supprimer commentaire</button>
@@ -95,7 +95,7 @@ export default {
                 userId:'',
                 
             },
-                user : {
+            user : {
                 nom: '',
             },
             userId:'',
@@ -135,7 +135,7 @@ export default {
         // Affichage d'un post
         getOnePost() {
             const token = localStorage.getItem("token")
-            axios.get (`http://localhost:3000/api/posts/${this.postId}`, {
+            axios.get(`http://localhost:3000/api/posts/${this.postId}`, {
                 headers: {
                     'authorization': `Bearer ${token}`
                 },
@@ -153,16 +153,17 @@ export default {
             })
             .catch(() => console.log('Impossible de récupérer les posts!'))
         },
-        // Affichage de tous les commentaires d'un post
+
+        // Affichage d'un commentaire
         getOneComment() {
             const token = localStorage.getItem("token")
             const Id = localStorage.getItem("userId")
             let data = {
-                    content: this.content,
-                    postId: this.id_param,
-                    userId: Id
+                content: this.content,
+                postId: this.id_param,
+                userId: Id
             }                 
-            axios.get(`http://localhost:3000/api/comments/${this.postId}`,data,  {
+            axios.get(`http://localhost:3000/api/comments/${this.content}`,data,  {
                 headers: {
                     'authorization': `Bearer ${token}`
                 },
@@ -177,7 +178,7 @@ export default {
                 this.comments.createdAt = res.data.createdAt;
                 this.comments.updatedAt = res.data.updatedAt;
             })
-            .catch(() => console.log('Impossible de récupérer les commentaires!'))
+            .catch(() => console.log('Impossible de récupérer le commentaire!'))
         },
 
         // Date 
@@ -206,8 +207,8 @@ export default {
                 console.log(res.data);
             })
             .catch(() =>{ 
-                alert("Non autorisé pour supprimer ce post!!")
-                console.log('Vous n avez pas autorisation de supprimer ce post!!')
+                alert("Non autorisé à supprimer ce post!!")
+                console.log('Non autorisé à supprimer ce post!!')
             })
         }
         },
@@ -222,26 +223,27 @@ export default {
             const token = localStorage.getItem("token")
             const userId = localStorage.getItem("userId")
             const postId = this.$route.params.id;
+            console.log(token)
             if( this.commentaire === ""){
                 alert('Saisissez votre commentaire')
             } else {
                 let data = {
-                    userId: userId,
+                    content: this.content,
                     postId: postId,
-                    content: this.content
-                }                                     
-                axios.post("http://localhost:3000/api/comments/", data, {
+                    userId: userId,
+                }
+                console.log(data)                                     
+                axios.post("http://localhost:3000/api/comments/" ,data, {
                     headers: {
                         'authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json',
                     },
                     body: data
                 })
                 .then(() => {
                     alert("commentaire publié")
-                    this.$router.push("/allposts");
                     console.log("commentaire OK")
+                    this.$router.push("/allposts");
                 })
                 .catch(() => console.log(' err comments'))
             }
@@ -354,7 +356,7 @@ textarea {
 p {
     padding-left: 0.5em;
 }
-.likeIcon:hover {
+.Icon:hover {
     cursor: pointer;
 }
 .like{

@@ -107,57 +107,52 @@ exports.deletePost = (req, res) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-// Like
-exports.likePost = async (req, res) => {
-    console.log("console LIKE  " +(req.body));
-	try {
-        const headerAuth = req.headers['authorization'];
-		const userId = jwt.getUserId(headerAuth);
-		const postId = req.params.id;
-		const user = await models.Like.findOne({
-			where: { UserId: userId, PostId: postId }
-		});
-		if (user) {
-			await models.Like.destroy(
-				{ where: { UserId: userId, PostId: postId } },
-				{ truncate: true, restartIdentity: true }
-			);
-			res.status(200).send({ messageRetour: "Neutre" });
-		} else {
-			await models.Like.create({
-				UserId: userId,
-				PostId: postId
-			});
-			res.status(201).json({ messageRetour: 'LIKE POST :)' });
-		}
-	} catch (error) {
-		return res.status(500).send({ error: 'Erreur du serveur' });
-	}
-};
+// Like & Dislike
+exports.likeStatus = (req, res) => {
+	const like = req.body.like
+	const userId = req.body.userId
 
-// Dislike
-exports.dislikePost = async (req, res) => {
-	try {
-		const headerAuth = req.headers['authorization'];
-		const userId = jwt.getUserId(headerAuth);
-		const postId = req.params.id;
-		const user = await models.Dislike.findOne({
-			where: { UserId: userId, PostId: postId }
-		});
-		if (user) {
-			await models.Dislike.destroy(
-				{ where: { UserId: userId, PostId: postId } },
-				{ truncate: true, restartIdentity: true }
-			);
-			res.status(200).send({ messageRetour: "Neutre" });
-		} else {
-			await models.Dislike.create({
-				UserId: userId,
-				PostId: postId
-			});
-			res.status(201).json({ messageRetour: 'DISLIKE POST :(' });
-		}
-	} catch (error) {
-		return res.status(500).send({ error: 'Erreur du serveur' });
-	}
-};
+	// Recherche du post sélectionné
+	Post.findOne({ _id: req.params.id })
+		.then((post) => {
+			// Vérification de l'ID utilisateur avec .find
+			let userLike = post.usersLiked.find((id) => id === userId)
+			let userDislike = post.usersDisliked.find((id) => id === userId)
+
+			console.log('Statut : ', like)
+
+			// Fonction pour le like/dislike
+			switch (like) {
+				// +1 (like)
+				case 1:
+					post.likes += 1
+					post.usersLiked.push(userId)
+					break
+
+				// Annule -1
+				case 0:
+					if (userLike) {
+						post.likes -= 1
+						post.usersLiked = post.usersLiked.filter((id) => id !== userId)
+					}
+					if (userDislike) {
+						post.dislikes -= 1
+						post.usersDisliked = post.usersDisliked.filter(
+							(id) => id !== userId
+						)
+					}
+					break
+
+				// +1 (dislike)
+				case -1:
+					post.dislikes += 1
+					post.usersDisliked.push(userId)
+			}
+			// Sauvegarde du post avec .save
+			post.save()
+				.then(() => res.status(201).json({ message: 'Post sauvegardé' }))
+				.catch((error) => res.status(400).json({ error }))
+		})
+		// Erreur server
+		.catch((error) => res.status(500).json({ error }))
+}
