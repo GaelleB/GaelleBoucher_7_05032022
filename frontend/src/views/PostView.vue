@@ -17,7 +17,14 @@
                                 le <b>{{ dateFormat(post.updatedAt) }}</b>
                                 à <b>{{ hourFormat(post.updatedAt) }}</b>
                             </p>
-                            
+
+                            <!-- Like -->
+                                <div class="card--like">
+                                <label class="like" for="like">
+                                    <div class="heart"><i class="fa-solid fa-thumbs-up"></i></div>
+                                </label>
+                                </div>
+
                             <!-- Modification & suppression d'un post -->  
                             <div class="content modif">
                                 <button @click="modifyPost()" class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Modifier la publication</button>
@@ -360,6 +367,7 @@ p {
     cursor: pointer;
 }
 .like{
+    font-size: 50px;
     height: auto;
     display: flex;
     flex-direction: row;
@@ -392,17 +400,6 @@ p {
     flex-direction: row;
     justify-content: space-evenly;
     
-}
-.likeNbr{
-    margin: 0;
-    padding: 0;
-    outline: none;
-}
-p {
-    padding-left: 0.5em;
-}
-.likeIcon:hover {
-    cursor: pointer;
 }
 .like{
     height: auto;

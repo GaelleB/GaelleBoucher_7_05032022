@@ -25,7 +25,7 @@
                     </router-link>
                     <button @click="deletePost(index)" class="btnIconeDelete" aria-label="Supprimer ce post"><i class="far fa-trash-alt"></i></button>
                 </td>
-                <td class="info"> -->
+                <td class="info">
                     <p>
                         Posté par 
                         <b>{{ post.userId }}</b>
@@ -77,7 +77,7 @@ export default {
         }
     },
     methods : {
-        // Tous les posts
+        // Affichage de tous les posts
         getAllPosts() {
             const token = localStorage.getItem("token")
             axios.get('http://localhost:3000/api/posts/', {

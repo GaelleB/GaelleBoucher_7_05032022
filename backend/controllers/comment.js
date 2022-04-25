@@ -2,8 +2,9 @@ const models = require('../models/');
 
 // Création d'un commentaire
 exports.createComment = (req, res) => {
+    console.log("newComment")
     const newComment = {
-        uerId: req.body.userId,
+        userId: req.body.userId,
         content: req.body.content,
         postId: req.body.postId
     };
@@ -12,15 +13,27 @@ exports.createComment = (req, res) => {
         .catch(error => res.status(500).json({ error }));
 };
 
+// Affichage d'un commentaire
+exports.getOneComment = (req, res, next) => {
+    console.log("getOneComment");
+    models.Comment.findAll({
+        where: { postId: req.body.postId },
+        include: [{ model : models.User }],
+        order: [["createdAt", "DESC"]]
+    })
+    .then(comment => res.status(200).json(comment))
+    .catch( error => res.status(400).json({error}))
+};
+
   // Suppression d'un commentaire
 exports.deleteComment = (req, res, next) => {
     models.Comment.findOne(
         { where: { id: req.params.id } }
     )
-    .then(Comment => {
+    .then(comment => {
         if (userId === userId || role === 0) 
         {
-            Comment.destroy({ where: { id: req.params.id } })
+            comment.destroy({ where: { id: req.params.id } })
             res.status(200).json({message : 'Commentaire supprimé !'})
         } else {
             res.status(401).json({
@@ -29,15 +42,4 @@ exports.deleteComment = (req, res, next) => {
         }
     })
     .catch( error => res.status(400).json({error}));
-};
-
-// Affichage d'un commentaire
-exports.getOneComment = (req, res, next) => {
-    models.Comment.findAll({
-        where: { postId : req.params.postId },
-        include: [{  model : models.User}],
-        order: [["createdAt", "DESC"]]
-    })
-    .then(comments => res.status(200).json(comments))
-    .catch( error => res.status(400).json({error}))
 };
