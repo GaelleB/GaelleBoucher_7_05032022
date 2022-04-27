@@ -100,9 +100,7 @@ exports.modifyPost = (req, res, next) => {
 
 // Suppression d'un post
 exports.deletePost = (req, res) => {
-    models.Post.findOne(
-        { where: { id: req.params.id } }
-    )
+    models.Post.findOne({ where: { id: req.params.id } })
     .then(post => {
         if(post.imageUrl != null) {
             const filename = post.imageUrl.split('/images/')[1];
