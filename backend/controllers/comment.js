@@ -8,11 +8,11 @@ exports.createComment = (req, res) => {
         postId: req.body.postId
     };
     models.Comment.create(newComment)
-        .then(() => res.status(201).json({ message: "Commentaire créé" }))
+        .then(() => res.status(201).json({ message: "Commentaire créé !" }))
         .catch(error => res.status(500).json({ error }));
 };
 
-// Affichage des commentaires d'un user
+// Affichage commentaire d'un post
 exports.getOneComment = (req, res) => {
     models.Comment.findAll({
         where: { postId: req.body.postId },

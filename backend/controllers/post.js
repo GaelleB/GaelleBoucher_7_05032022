@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-const { Post } = require('../models/post');
 const models = require('../models');
 
 // Création d'un post
@@ -17,35 +16,32 @@ exports.createPost = (req, res) => {
         imageUrl: req.body.imagePost
     };
     models.Post.create(newPost) 
-            .then((post) => res.status(201).json(post))
-            .catch(error => res.status(400).json({ error }));
+        .then(() => res.status(201).json({ message: "Post créé !" }))
+        .catch(error => res.status(500).json({ error }));
         
 };
 
 // Affichage d'un post
 exports.getOnePost = (req, res) => {
-    const headerAuth = req.headers['authorization'];
-    models.Post.findOne({
-        where: { id : req.params.id },
-        include: [
-            {
-                model: models.User,
-                as: "User",
-                attributes: ["prenom", "nom"],
-            },
-            { model: models.Comment },
-            { model: models.Like },
-        ],
+    models.Comment.findAll({
+        where: { postId: req.body.postId },
+        include: [{ model : models.Post }],
+        order: [["createdAt", "DESC"]]
     })
-    .then( post => res.status(200).json(post))
+    .then(comment => res.status(200).json(comment))
     .catch( error => res.status(400).json({error}))
-}
+};
 
 // Affichage de tous les posts
-exports.getAllPosts = (req, res) => {
-    models.Post.findAll({  
+exports.getAllPosts = (req, res, next) => {
+    console.log("all post  " + req.body);
+    models.Post.findAll({ 
         order: [["id", "DESC"]],
-    })
+        include: [{ model : models.User,
+            attributes: [ 'nom','prenom', 'id' ]
+        }
+        ]})
+
     .then( post => res.status(200).json(post))
     .catch( error => res.status(400).json({error}))
 };
@@ -60,17 +56,17 @@ exports.modifyPost = (req, res, next) => {
     if (req.file) {
         models.Post.findOne({ where: { id: postId } })
         .then((post) => {
-        if (post.userId !== userId) {
-        res.status(400).json({
-            error: new Error("Requête non autorisée"),
-        });
-        }
-        const filename = post.image.split("/images/")[1];
-        if (post.image !== null) {
-        fs.unlink(`images/${filename}`, (error) => {
-            if (error) throw error;
-        });
-        }
+            if (post.userId !== userId) {
+            res.status(400).json({
+                error: new Error("Requête non autorisée"),
+            });
+            }
+            const filename = post.image.split("/images/")[1];
+            if (post.image !== null) {
+            fs.unlink(`images/${filename}`, (error) => {
+                if (error) throw error;
+            });
+            }
         })
         .catch((error) => res.status(500).json({ error }));
     }
@@ -109,7 +105,7 @@ exports.deletePost = (req, res) => {
             })
         };
         models.Post.destroy({ where: { id: req.params.id } })
-            .then(() => res.status(201).json({ message: "Post supprimé"}))
+            .then(() => res.status(201).json({ message: "Post supprimé !"}))
             .catch(error => res.status(500).json({ error }));
     })
     .catch(error => res.status(500).json({ error }));
