@@ -64,9 +64,6 @@ exports.login = (req, res, next) => {
 // Modification de l'utilisateur
 exports.modifyUser = (req, res, next) => {
     console.log("modif info users" + JSON.stringify(req.body));
-    const headerAuth = req.headers['authorization'];
-    const userId = jwt.getUserId(headerAuth);
-    const role = jwt.getRoleUser(headerAuth);
     const email = req.body.email
     const nom = req.body.nom;
     const prenom = req.body.prenom;
