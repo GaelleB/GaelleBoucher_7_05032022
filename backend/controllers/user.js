@@ -61,93 +61,98 @@ exports.login = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
+// Affichage d'un utilisateur
+exports.getOneUser = (req, res) => {
+    models.User.findByPk(req.params.id)
+    .then(user => res.status(200).json(user))
+    .catch(error => res.status(400).json({error}))
+};
+
+// Affichage de tous les utilisateurs
+exports.getAllUsers = (req, res) => {
+    models.Post.findAll({  
+        order: [["id", "DESC"]],
+    })
+    .then( user => res.status(200).json(user))
+    .catch( error => res.status(400).json({error}))
+};
+
 // Modification de l'utilisateur
 exports.modifyUser = (req, res, next) => {
-    console.log("modif info users" + JSON.stringify(req.body));
-    const email = req.body.email
+    const userId = req.params.id;
     const nom = req.body.nom;
     const prenom = req.body.prenom;
-    const image = req.file ? `${req.protocol}:${req.get('host')}/images/${req.file.filename}` : null;
-    const userId = req.userId;
-    
+    const role = req.body.role;
+
     models.User.findOne({
-        attributes: ['id', 'email', 'nom', 'prenom', 'image'],
-        where: { id: userId }
+        where: { id: userId },
     })
-        .then(user => {
-            if(userId === user.id || role === 0) {
-                if(image != null) {
-                    const filename = user.image.split('/images/')[1];
-                    fs.unlink(`images/${filename}`, (error) => {
-                        if(error){
-                            console.log("Echec de suppression de l'image : " + error);
-                        } else {
-                            console.log("Image supprimée avec succès !");
-                        };
-                    });
-                };
-                // Mise à jour du profile
-                user.update({
-                    email: (email ? email : user.email),
-                    nom: (nom ? nom : user.nom),
-                    prenom: (prenom ? prenom : user.prenom),
-                    image: (image ? image : user.image)
-                })
-                .then(user => {
-                    if(userId === user.id || role === 0){
-                        return res.status(201).json(user)
-                    } else {
-                        res.status(500).json({ 'erreur': 'Impossible de mettre à jour le profil de l\'utilisateur' })
-                    }
-                })
-                .catch(() => {
-                    res.status(500).json({ 'erreur': 'Impossible de mettre à jour l\'utilisateur' })
-                });
-            } else {
-                res.status(404).json({ 'erreur': 'Utilisateur introuvable !' })
-            }
+    .then((user) => {
+        user.update({
+            nom: nom,
+            prenom: prenom,
+            role: role,
+        })
+        .then((user) => {
+            if (user) return res.status(201).json(user);
+            else return res
+            .status(500)
+            .json({ error: "Mise à jour du profil impossible" });
         })
         .catch(() => {
-            res.status(500).json({ 'erreur': 'Utilisateur introuvable !' })
+            res.status(500).json({ error: "Mise à jour impossible" });
+        });
+    })
+    .catch(() => res.status(500).json({ error: "Vérification impossible" }));
+};
+
+// Gestion de l'image
+exports.uploadImage = (req, res, next) => {
+    const userId = req.user.userId;
+
+    models.User.findOne({
+        where: { id: userId },
+    })
+        .then((user) => {
+        if (user.image !== null) {
+        const filename = user.image.split("/images/")[1];
+        fs.unlink(`images/${filename}`, () => {
+            user.update(
+            {
+                image: `${req.protocol}://${req.get("host")}/images/${
+                    req.file.filename
+                }`,
+            },
+            { where: { id: userId } }
+        )
+            .then(() =>
+                res.status(200).json({ message: "Photo de profil mise à jour !" })
+            )
+            .catch((error) =>
+                res.status(400).json({ error: "Modification impossible" })
+            );
         })
-}
-
-// Modification du mot de passe
-exports.modifyPassword = (req, res, next) => {
-    console.log("modif password" + JSON.stringify(req.body));
-    const headerAuth = req.headers['authorization'];
-    const userId = jwt.getUserId(headerAuth);
-    const role = jwt.getRoleUser(headerAuth);
-    User.findOne ({ where: { id: userId } })
-        .then(user => {
-            if(userId === user.id || role === 0) {
-            controle.log('oldPasword   ' + req.body.oldPassword),
-            controle.log('new pssaword    ' + user.password)
-            bcrypt.compare(req.body.oldPassword, user.password)
-                .then(valid => {
-                    if (!valid) {
-                        return res.status(401).json("Mot de passe actuel incorrect");
-                    }
-                    if (!schema.validate(req.body.password)) {
-                        return res.status(401).json('Le nouveau mot de passe doit contenir entre 3 à 50 caractères avec au moins un chiffre, une minuscule, une majuscule !!!')
-                    }
-                    bcrypt.hash(req.body.password, 10)
-                        .then(hash => {
-                            const newPassword = {
-                                password: hash
-                            };
-                            user.update(newPassword, { where: { id: req.params.id } })
-                            console.log('newpass   ' + newPassword)
-                                .then(() => { res.status(201).json({ message: 'Mot de passe modifié !' }) })
-                                .catch(() => res.status(400).json({message: "impossible de modifier le mot de passe" }));
-                        })
-                        .catch(error => res.status(500).json({ error }));
-                })
-                .catch(error => res.status(500).json({ error }));
-        }})
-        .catch(error => res.status(500).json({ error }));
-}
-
+        } else{
+        user.update(
+            {
+            image: `${req.protocol}://${req.get("host")}/images/${
+                req.file.filename
+            }`,
+            },
+            { where: { id: userId } }
+        )
+            .then(() =>
+                res.status(200).json({ message: "Photo de profil mise à jour !" })
+            )
+            .catch((error) =>
+                res.status(400).json({ error: "Modification impossible" })
+            );
+        }
+    })
+    .catch((error) => {
+        res.status(500).json({ error: "Vérification impossible" });
+    });
+};
 // Suppression de l'utilisateur
 exports.deleteUser = (req, res, next) => {
     User.findOne ({ where: { id:  req.params.id } })
@@ -165,21 +170,4 @@ exports.deleteUser = (req, res, next) => {
                 res.status(404).json({ 'erreur': 'Utilisateur non trouvé !' })
             }
         } ).catch(error => {  res.status(500).json({ message : error.message }) })
-};
-
-// Affichage d'un utilisateur
-exports.getOneUser = (req, res) => {
-    models.User.findByPk(req.params.id)
-    .then(user => res.status(200).json(user))
-    .catch(error => res.status(400).json({error}))
-};
-
-
-// Affichage de tous les utilisateurs
-exports.getAllUsers = (req, res) => {
-    models.Post.findAll({  
-        order: [["id", "DESC"]],
-    })
-    .then( user => res.status(200).json(user))
-    .catch( error => res.status(400).json({error}))
 };
