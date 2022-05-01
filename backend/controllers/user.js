@@ -68,7 +68,9 @@ exports.modifyUser = (req, res, next) => {
     const nom = req.body.nom;
     const prenom = req.body.prenom;
     const image = req.file ? `${req.protocol}:${req.get('host')}/images/${req.file.filename}` : null;
-    User.findOne({
+    const userId = req.userId;
+    
+    models.User.findOne({
         attributes: ['id', 'email', 'nom', 'prenom', 'image'],
         where: { id: userId }
     })
@@ -167,22 +169,17 @@ exports.deleteUser = (req, res, next) => {
 
 // Affichage d'un utilisateur
 exports.getOneUser = (req, res) => {
-    const userId = req.params.id;
-    User.findOne({
-        attributes: ['id', 'email', 'nom', 'prenom', 'image'],
-        where: { id: userId }
-    }).then((user) => {
-        if (user) {
-            res.status(200).json(user);
-        } else {
-            res.status(404).json({ 'erreur': 'Utilisateur non trouvé !' })
-        }
-    }).catch(err => res.status(500).json({ err }))
-}
+    models.User.findByPk(req.params.id)
+    .then(user => res.status(200).json(user))
+    .catch(error => res.status(400).json({error}))
+};
+
 
 // Affichage de tous les utilisateurs
 exports.getAllUsers = (req, res) => {
-    User.findAll()
-        .then((users) => res.status(200).json(users))
-        .catch((error) => res.status(400).json(error))
+    models.Post.findAll({  
+        order: [["id", "DESC"]],
+    })
+    .then( user => res.status(200).json(user))
+    .catch( error => res.status(400).json({error}))
 };

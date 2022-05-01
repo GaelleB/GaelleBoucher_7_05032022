@@ -12,7 +12,7 @@ exports.createComment = (req, res) => {
         .catch(error => res.status(500).json({ error }));
 };
 
-// Affichage commentaire d'un post
+// Affichage d'un commentaire
 exports.getOneComment = (req, res) => {
     models.Comment.findAll({
         where: { postId: req.body.postId },

@@ -22,21 +22,10 @@ exports.createPost = (req, res) => {
 
 // Affichage d'un post
 exports.getOnePost = (req, res) => {
-    models.Post.findOne({
-        where: { id : req.params.id },
-        include: [
-            {
-                model: models.User,
-                as: "User",
-                attributes: ["prenom", "nom"],
-            },
-            { model: models.Comment },
-            { model: models.Like },
-        ],
-    })
-    .then( post => res.status(200).json(post))
-    .catch( error => res.status(400).json({error}))
-}
+    models.Post.findByPk(req.params.id)
+    .then(post => res.status(200).json(post))
+    .catch(error => res.status(400).json({error}));
+};
 
 // Affichage de tous les posts
 exports.getAllPosts = (req, res) => {
@@ -118,7 +107,7 @@ exports.likeStatus = (req, res) => {
 	const userId = req.body.userId
 
 	// Recherche du post sélectionné
-	Post.findOne({ _id: req.params.id })
+	models.Post.findOne({ _id: req.params.id })
 		.then((post) => {
 			// Vérification de l'ID utilisateur avec .find
 			let userLike = post.usersLiked.find((id) => id === userId)
