@@ -109,7 +109,7 @@ exports.modifyUser = (req, res, next) => {
 // Gestion de l'image
 exports.uploadImage = (req, res, next) => {
     const userId = req.user.userId;
-
+    
     models.User.findOne({
         where: { id: userId },
     })
