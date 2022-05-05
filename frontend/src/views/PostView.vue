@@ -18,12 +18,14 @@
                                 à <b>{{ hourFormat(post.updatedAt) }}</b>
                             </p>
 
-                            <!-- Like -->
-                                <div class="card--like">
-                                <label class="like" for="like">
-                                    <div class="heart"><i class="fa-solid fa-thumbs-up"></i></div>
-                                </label>
-                                </div>
+                            <!-- Likes -->
+                            <div class="card--like">
+                            <label class="post-like" for="like">
+                                <span>{{ post.likes }}</span>
+                                <input type="checkbox" id="like" @click="likePost" />
+                                <font-awesome-icon icon="fa-solid fa-thumbs-up" />
+                            </label>
+                            </div>
 
                             <!-- Modification & suppression d'un post -->  
                             <div class="content modif">
@@ -159,6 +161,23 @@ export default {
                 this.user.prenom = res.data.prenom 
             })
             .catch(() => console.log('Impossible de récupérer les posts!'))
+        },
+
+        // Like
+        likePost() {
+            let token = localStorage.getItem("token");
+            axios.post("http://localhost:8080/api/posts/" + this.id + "/like",
+                {},
+                {
+                    headers: { 
+                        Authorization: `Bearer ${token}`
+                    },
+                }
+            )
+            .then((response) => {
+                this.onePost();
+            })
+            .catch((error) => {});
         },
 
         // Affichage d'un commentaire
@@ -355,23 +374,15 @@ textarea {
 .info {
     font-size: 13px;
 }
-.likeNbr{
-    margin: 0;
-    padding: 0;
-    outline: none;
+.commentaire {
+    font-size: 20px;
+    margin-right: 10px;
 }
 p {
     padding-left: 0.5em;
 }
 .Icon:hover {
     cursor: pointer;
-}
-.like{
-    font-size: 50px;
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
 }
 .modif {
     margin: 0;
@@ -400,13 +411,6 @@ p {
     flex-direction: row;
     justify-content: space-evenly;
     
-}
-.like{
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
 }
 .button-comment {
     margin: 10px 0 0 0;
@@ -455,37 +459,37 @@ p {
 }
 /*--------------------*/
 @media screen and (min-width:768px) {
-.blockRespo{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-.blockRespoText{
-    display: flex;
-    flex-direction: column;
-    margin: 20px;
-}
+    .blockRespo{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+    .blockRespoText{
+        display: flex;
+        flex-direction: column;
+        margin: 20px;
+    }
     .header,
     .content {
         width: 98%;
     }
-section{
-    width: 95%;
-}
-.modif{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.button {
-    width: 50%;
-}
-.imgPost {
-    width: 20%;
-    height: 30%;
-    margin: 20px;
-    border-radius: 30px;
-}
+    section{
+        width: 95%;
+    }
+    .modif{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .button {
+        width: 50%;
+    }
+    .imgPost {
+        width: 20%;
+        height: 30%;
+        margin: 20px;
+        border-radius: 30px;
+    }
     .createcomment {
         width: 100%;
     }
