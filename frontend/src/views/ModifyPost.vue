@@ -20,7 +20,7 @@
                         <li> 
                             <label v-if="post.image " for="file" class="button" aria-label="Choisir une photo pour ce post">Modifier l'image</label>
                             <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer cette photo du post"> Supprimer l'image</button>    
-                            <input type="file" accept=".jpeg, .jpg, .png, .webp, .gif" v-on:change="uploadFile" id="file" class="input-file" aria-label="Image du post">
+                            <input type="file" accept=".jpeg, .jpg, .png, .webp, .gif" v-on:change="uploadImage" id="file" class="input-file" aria-label="Image du post">
                         </li>
                     </ul>
                 </form>
@@ -62,7 +62,7 @@ export default {
         },
 
         // Téléchargement d'un fichier image
-        uploadFile(event) {
+        uploadImage(event) {
             this.image = event.target.files[0]
         },
         User() {

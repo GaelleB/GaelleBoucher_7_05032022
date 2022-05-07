@@ -6,7 +6,7 @@
             <button @click="getAllPosts()" class="btnSave" aria-label="Bouton d'actualisation de la page" ><i class="fas fa-redo"></i></button>
         </div>
         <article v-if="post in posts">
-            <p>Aucune publication pour instant!</p>
+            <p>Aucune publication pour l'instant!</p>
         </article>
 
         <!-- Création d'un post -->
@@ -38,7 +38,7 @@
                         à <b>{{ hourFormat(post.updatedAt) }}</b>
                     </p>
                 </td>
-                <td><img class="imgPost" v-if="post.image" :src="post.image" alt="Image"></td>
+                <td><img class="imgPost" v-if="post.image" :src="post.image" alt="Image du post"></td>
             </tr> 
         </table>
 

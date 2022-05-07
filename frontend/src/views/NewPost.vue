@@ -15,7 +15,7 @@
                             <img :src="image" alt="Image du post" class="file">
                         </li>
                         <li>
-                            <input type="file" accept=".jpeg, .jpg, .png, .webp, .gif" v-on:change="uploadFile" id="file" class="input-file" aria-label="Image du post">
+                            <input type="file" accept=".jpeg, .jpg, .png, .webp, .gif" v-on:change="uploadImage" id="file" class="input-file" aria-label="Image du post">
                             <label v-if="!image" for="file" class="label-file" aria-label="Choisir une photo pour ce post"></label>
                             <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer la photo du post"><i class="far fa-trash-alt"></i> Supprimer image</button>
                         </li>
@@ -57,9 +57,9 @@ export default {
             const fileField = document.querySelector('input[type="file"]');
             const token = (localStorage.getItem("token"))
             if (this.title === '')
-                alert("Veuillez remplir le titre")
+                alert("Veuillez saisir le titre")
             if (this.content === '')
-                alert("Veuillez remplir le contenu du post")
+                alert("Veuillez saisir le contenu du post")
             if (this.image === '' && this.title != '' && this.content != ''){ 
                 let data = new FormData()
                 data.append('title', this.title)
@@ -114,7 +114,7 @@ export default {
                 }
             }
         },
-        uploadFile(e) {
+        uploadImage(e) {
             if (e.target.files) {
                 let reader = new FileReader()
                 reader.onload = (event) => {

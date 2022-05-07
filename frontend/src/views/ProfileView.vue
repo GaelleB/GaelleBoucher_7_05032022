@@ -20,15 +20,15 @@
             <!--Image -->
                 <div class="button modifyImage btnModifyImg" >   
                     <img v-if="user.image" :src="user.image" alt="Photo de profil" class="file" width="150px" height="150px" border-radius="15px">
-                    <label v-if="!user.image" for="file" class="label-file btnModifyImg" aria-label="Inserer votre photo de profil" ><i class="fas fa-upload"></i><br>Insérer <br>votre photo de profil</label>
+                    <label v-if="!user.image" for="file" class="label-file btnModifyImg" aria-label="Insérer votre photo de profil" ><i class="fas fa-upload"></i><br>Insérer <br>votre photo de profil</label>
                     <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer la photo de profil"> <i class="far fa-trash-alt"></i></button>
-                    <input type="file" accept="image/jpeg, image/jpg, image/png, image/webp" v-on:change="uploadFile" id="file" class="input-file" aria-label="Photo de profil">
+                    <input type="file" accept="image/jpeg, image/jpg, image/png, image/webp" v-on:change="uploadImage" id="file" class="input-file" aria-label="Photo de profil">
                 </div>
             </nav>
-                <div class="submit">
-                    <button @click="modifyUser()" class="btnSave" aria-label="Modifier le compte de cet utilisateur"><i class="fas fa-edit"></i> Enregistrer</button>
-                    <button @click="deleteUser()" class="espacement btnDelete" aria-label="Supprimer le compte de cet utilisateur"><i class="far fa-trash-alt"></i> Supprimer le compte</button>
-                </div>
+            <div class="submit">
+                <button @click="modifyUser()" class="btnSave" aria-label="Modifier le compte"><i class="fas fa-edit"></i> Enregistrer</button>
+                <button @click="deleteUser()" class="espacement btnDelete" aria-label="Supprimer le compte"><i class="far fa-trash-alt"></i> Supprimer le compte</button>
+            </div>
         </div>
         <router-link to="/allposts" aria-label="Retour vers Le fil d'actu de Groupomania"><i class="fas fa-home home"></i></router-link>
         <Footer/>
@@ -85,17 +85,17 @@ export default {
                     'Content-Type': 'multipart/form-data',
                 }
             }).then(res => {
-            this.user.id = res.data.id;
-            this.user.nom = res.data.nom;
-            this.user.prenom = res.data.prenom;
-            this.user.email = res.data.email;
-            this.user.image = res.data.image;
-        })
-        .catch(() =>{ 
-            alert("Non autorisé à supprimer ce message!")
-            console.log('Non autorisé à supprimer ce message!')
-        })
-    },
+                this.user.id = res.data.id;
+                this.user.nom = res.data.nom;
+                this.user.prenom = res.data.prenom;
+                this.user.email = res.data.email;
+                this.user.image = res.data.image;
+            })
+            .catch(() =>{ 
+                alert("Non autorisé à supprimer ce message!")
+                console.log('Non autorisé à supprimer ce message!')
+            })
+        },
         modifyUser() {
             const token = localStorage.getItem('token');
             const Id = localStorage.getItem("userId")
@@ -123,7 +123,7 @@ export default {
                 })
                 .then((res) => {
                 this.user = res.data;
-                alert("Votre modification est bien prise en compte")
+                alert("Votre modification a bien été prise en compte")
                     this.$router.push("/profile");
                 })
                 .catch((err) => console.log(err))
@@ -148,7 +148,9 @@ export default {
                     this.$router.push("/profile");
                 })
                 .catch(error => console.log(error))
-            }},
+            }
+        },
+
         deleteUser() {
             const Id = localStorage.getItem("userId")
             if (confirm("Voulez-vous vraiment supprimer le compte?") == true) {
@@ -160,8 +162,8 @@ export default {
                     },
                 })
                 .then(() => {
-                    alert ("compte supprimé")
-                    console.log("compte supprimé");
+                    alert ("Compte supprimé")
+                    console.log("Compte supprimé");
                     let publi = this.posts
                     for ( let i = 0 ; i < publi.length ; i++) {
                         if (publi[i].image) {
@@ -172,8 +174,8 @@ export default {
                             },
                         })
                             .then(() => {
-                                alert("posts suprimés")
-                                console.log("posts supprimés")
+                                alert("Posts suprimés")
+                                console.log("Posts supprimés")
                                 this.$router.push("/")
                             })
                             .catch(alert ("impossilbe de supprimer les posts"))
@@ -198,7 +200,8 @@ export default {
                 .catch(alert)
             }
         },
-        uploadFile(e) {
+
+        uploadImage(e) {
             if (e.target.files) {
                 let reader = new FileReader()
                 reader.onload = (event) => {
@@ -208,12 +211,15 @@ export default {
                 reader.readAsDataURL(e.target.files[0])
             }
         },
+
         deletefile() {
             this.user.image = '';
         },
-    mounted() {
-        this.getOneUser()
-    }}
+
+        mounted() {
+            this.getOneUser()
+        }
+    }
 }
 </script>
 

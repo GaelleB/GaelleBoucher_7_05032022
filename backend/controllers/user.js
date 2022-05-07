@@ -63,6 +63,7 @@ exports.login = (req, res, next) => {
 
 // Affichage d'un utilisateur
 exports.getOneUser = (req, res) => {
+    console.log(getOneUser)
     models.User.findByPk(req.params.id)
     .then(user => res.status(200).json(user))
     .catch(error => res.status(400).json({error}))
@@ -82,6 +83,7 @@ exports.modifyUser = (req, res, next) => {
     const userId = req.params.id;
     const nom = req.body.nom;
     const prenom = req.body.prenom;
+    const email = req.body.email;
     const role = req.body.role;
 
     models.User.findOne({
@@ -91,6 +93,7 @@ exports.modifyUser = (req, res, next) => {
         user.update({
             nom: nom,
             prenom: prenom,
+            email: email,
             role: role,
         })
         .then((user) => {
@@ -133,11 +136,11 @@ exports.uploadImage = (req, res, next) => {
             );
         })
         } else{
-        user.update(
+            user.update(
             {
-            image: `${req.protocol}://${req.get("host")}/images/${
-                req.file.filename
-            }`,
+                image: `${req.protocol}://${req.get("host")}/images/${
+                    req.file.filename
+                }`,
             },
             { where: { id: userId } }
         )
@@ -153,6 +156,7 @@ exports.uploadImage = (req, res, next) => {
         res.status(500).json({ error: "Vérification impossible" });
     });
 };
+
 // Suppression de l'utilisateur
 exports.deleteUser = (req, res, next) => {
     User.findOne ({ where: { id:  req.params.id } })

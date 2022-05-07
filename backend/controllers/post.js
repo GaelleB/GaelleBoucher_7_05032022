@@ -71,8 +71,8 @@ exports.modifyPost = (req, res, next) => {
     : { ...req.body };
     models.Post.update(
         {
-        ...updatePost,
-        id: postId,
+            ...updatePost,
+            id: postId,
         },
         { where: { id: postId } }
     )
