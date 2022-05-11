@@ -14,7 +14,7 @@ exports.createComment = (req, res) => {
 
 // Affichage d'un commentaire
 exports.getOneComment = (req, res) => {
-    models.Comment.findAll({
+    models.Comment.findOne({
         where: { postId: req.body.postId },
         include: [{ model : models.User }],
         order: [["createdAt", "DESC"]]

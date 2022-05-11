@@ -5,10 +5,53 @@ const models = require('../models');
 // Création d'un post
 exports.createPost = (req, res) => {
     // Gestion de l'image
-    let imagePost = null
-    if(req.file) {
-        imagePost = `${req.protocol}://${req.get('host')}/images/post${req.file.filename}`
-    };
+exports.uploadImage = (req, res, next) => {
+    const userId = req.user.userId;
+    const postId = req.params.id;
+    
+    models.Post.findOne({
+        where: { id: userId },
+    })
+        .then((post) => {
+        if (post.image !== null) {
+        const filename = post.image.split("/images/")[1];
+        fs.unlink(`images/${filename}`, () => {
+            models.Post.update(
+            {
+                image: `${req.protocol}://${req.get("host")}/images/${
+                    req.file.filename
+                }`,
+            },
+            { where: { id: userId } }
+        )
+            .then(() =>
+                res.status(200).json({ message: "Photo mise à jour !" })
+            )
+            .catch((error) =>
+                res.status(400).json({ error: "Modification impossible" })
+            );
+        })
+        } else{
+            models.Post.update(
+            {
+                image: `${req.protocol}://${req.get("host")}/images/${
+                    req.file.filename
+                }`,
+            },
+            { where: { id: userId } }
+        )
+            .then(() =>
+                res.status(200).json({ message: "Photo mise à jour !" })
+            )
+            .catch((error) =>
+                res.status(400).json({ error: "Modification impossible" })
+            );
+        }
+    })
+    .catch((error) => {
+        res.status(500).json({ error: "Vérification impossible" });
+    });
+};
     const newPost = {
         UserId: req.tokenUserId,
         title: req.body.title,
@@ -100,53 +143,3 @@ exports.deletePost = (req, res) => {
     })
     .catch(error => res.status(500).json({ error }));
 };
-
-// Like & Dislike
-exports.likeStatus = (req, res) => {
-	const like = req.body.like
-	const userId = req.body.userId
-
-	// Recherche du post sélectionné
-	models.Post.findOne({ _id: req.params.id })
-		.then((post) => {
-			// Vérification de l'ID utilisateur avec .find
-			let userLike = post.usersLiked.find((id) => id === userId)
-			let userDislike = post.usersDisliked.find((id) => id === userId)
-
-			console.log('Statut : ', like)
-
-			// Fonction pour le like/dislike
-			switch (like) {
-				// +1 (like)
-				case 1:
-					post.likes += 1
-					post.usersLiked.push(userId)
-					break
-
-				// Annule -1
-				case 0:
-					if (userLike) {
-						post.likes -= 1
-						post.usersLiked = post.usersLiked.filter((id) => id !== userId)
-					}
-					if (userDislike) {
-						post.dislikes -= 1
-						post.usersDisliked = post.usersDisliked.filter(
-							(id) => id !== userId
-						)
-					}
-					break
-
-				// +1 (dislike)
-				case -1:
-					post.dislikes += 1
-					post.usersDisliked.push(userId)
-			}
-			// Sauvegarde du post avec .save
-			post.save()
-				.then(() => res.status(201).json({ message: 'Post sauvegardé' }))
-				.catch((error) => res.status(400).json({ error }))
-		})
-		// Erreur server
-		.catch((error) => res.status(500).json({ error }))
-}

@@ -21,6 +21,7 @@ export default {
     disconnectUser() {
       localStorage.clear();
       this.$router.push("/")
+      console.log("Utilisateur déconnecté");
     },
     roleUser() {
       this.role = JSON.parse(localStorage.getItem("role"))

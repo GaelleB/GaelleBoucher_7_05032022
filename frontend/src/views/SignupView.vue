@@ -59,8 +59,8 @@ name: 'SignupView',
           
         })
         .then(() => {
-          alert("Inscription acceptée");
           this.$router.push("/login");
+          console.log("Utilisateur créé");
         })
         .catch(alert)
       }

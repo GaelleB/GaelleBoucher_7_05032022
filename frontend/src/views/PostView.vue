@@ -18,15 +18,6 @@
                                 à <b>{{ hourFormat(post.updatedAt) }}</b>
                             </p>
 
-                            <!-- Likes -->
-                            <div class="card--like">
-                            <label class="post-like" for="like">
-                                <span>{{ post.likes }}</span>
-                                <input type="checkbox" id="like" @click="likePost" />
-                                <font-awesome-icon icon="fa-solid fa-thumbs-up" />
-                            </label>
-                            </div>
-
                             <!-- Modification & suppression d'un post -->  
                             <div class="content modif">
                                 <button @click="modifyPost()" class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Modifier la publication</button>
@@ -163,23 +154,6 @@ export default {
             .catch(() => console.log('Impossible de récupérer les posts!'))
         },
 
-        // Like
-        likePost() {
-            let token = localStorage.getItem("token");
-            axios.post("http://localhost:8080/api/posts/" + this.id + "/like",
-                {},
-                {
-                    headers: { 
-                        Authorization: `Bearer ${token}`
-                    },
-                }
-            )
-            .then((response) => {
-                this.onePost();
-            })
-            .catch((error) => {});
-        },
-
         // Affichage d'un commentaire
         getOneComment() {
             const token = localStorage.getItem("token")
@@ -189,7 +163,7 @@ export default {
                 postId: this.id_param,
                 userId: Id
             }                 
-            axios.get(`http://localhost:3000/api/comments/${this.content}`,data,  {
+            axios.get(`http://localhost:3000/api/comments/${this.postId}`,data,  {
                 headers: {
                     'authorization': `Bearer ${token}`
                 },
@@ -281,7 +255,7 @@ export default {
             if (confirm("Voulez-vous vraiment supprimer ce commentaire") === true) {
                 axios.delete(`http://localhost:3000/api/comments/${this.comments[index].id}`, {
                     headers: {
-                        'authorization': `Bearer ${token}`
+                        'authorization': `Bearer ${token}`,
                     },
                 })
                 .then((res) => {

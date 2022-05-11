@@ -51,6 +51,7 @@ export default {
         localStorage.setItem('userId', res.data.userId);
         localStorage.setItem('token', res.data.token);
         this.$router.push('/allposts')
+        console.log("Utilisateur connecté");
       })
       .catch((err) => {
           console.log("erreur vuejs : " + err);

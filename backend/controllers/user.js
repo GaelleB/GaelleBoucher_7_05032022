@@ -63,7 +63,6 @@ exports.login = (req, res, next) => {
 
 // Affichage d'un utilisateur
 exports.getOneUser = (req, res) => {
-    console.log(getOneUser)
     models.User.findByPk(req.params.id)
     .then(user => res.status(200).json(user))
     .catch(error => res.status(400).json({error}))
