@@ -4,7 +4,18 @@ const models = require('../models');
 
 // Création d'un post
 exports.createPost = (req, res) => {
-    // Gestion de l'image
+    const newPost = {
+        UserId: req.tokenUserId,
+        title: req.body.title,
+        content: req.body.content,
+        imageUrl: req.body.imagePost
+    };
+    models.Post.create(newPost) 
+        .then(() => res.status(201).json({ message: "Post créé !" }))
+        .catch(error => res.status(500).json({ error }));
+};
+
+// Gestion de l'image
 exports.uploadImage = (req, res, next) => {
     const userId = req.user.userId;
     const postId = req.params.id;
@@ -52,16 +63,6 @@ exports.uploadImage = (req, res, next) => {
         res.status(500).json({ error: "Vérification impossible" });
     });
 };
-    const newPost = {
-        UserId: req.tokenUserId,
-        title: req.body.title,
-        content: req.body.content,
-        imageUrl: req.body.imagePost
-    };
-    models.Post.create(newPost) 
-        .then(() => res.status(201).json({ message: "Post créé !" }))
-        .catch(error => res.status(500).json({ error }));
-};
 
 // Affichage d'un post
 exports.getOnePost = (req, res) => {
@@ -75,8 +76,8 @@ exports.getAllPosts = (req, res) => {
     models.Post.findAll({  
         order: [["id", "DESC"]],
     })
-    .then( post => res.status(200).json(post))
-    .catch( error => res.status(400).json({error}))
+    .then(post => res.status(200).json(post))
+    .catch(error => res.status(400).json({error}))
 };
 
 // Modification d'un post (contenu et image)

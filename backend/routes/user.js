@@ -6,11 +6,11 @@ const multer = require('../middleware/multer-config')
 const auth = require('../middleware/auth')
 
 router.post('/signup', userCtrl.signup);  
-router.post('/login', userCtrl.login);     
+router.post('/login', userCtrl.login); 
+router.post('/upload', auth, multer, userCtrl.uploadImage);     
 router.get('/profile/:id', auth, userCtrl.getOneUser);  
 router.get('/profile', auth, userCtrl.getAllUsers); 
 router.put('/profile/:id', auth, multer, userCtrl.modifyUser);
-router.post('/upload', auth, multer, userCtrl.uploadImage); 
 router.delete('/profile/:id', auth, multer, userCtrl.deleteUser); 
 
 module.exports = router;

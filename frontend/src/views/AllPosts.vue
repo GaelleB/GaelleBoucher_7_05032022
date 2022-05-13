@@ -38,7 +38,9 @@
                         à <b>{{ hourFormat(post.updatedAt) }}</b>
                     </p>
                 </td>
-                <td><img class="imgPost" v-if="post.image" :src="post.image" alt="Image du post"></td>
+                <td>
+                    <img class="imgPost" v-if="post.image" :src="post.image" alt="Image du post">
+                </td>
             </tr> 
         </table>
 
@@ -121,8 +123,8 @@ export default {
                 })
                 
                 .catch(() =>{ 
-                    alert("Vous n'avez pas d'autorisation de supprimer ce post!!")
-                    console.log('Pas autoriser à supprimer ce post!!')
+                    alert("Non autorisé à supprimer ce post!!")
+                    console.log('Non autorisé à supprimer ce post!!')
                     })
             }
         },

@@ -14,13 +14,18 @@ exports.createComment = (req, res) => {
 
 // Affichage d'un commentaire
 exports.getOneComment = (req, res) => {
-    models.Comment.findOne({
-        where: { postId: req.body.postId },
-        include: [{ model : models.User }],
-        order: [["createdAt", "DESC"]]
+    models.Comment.findByPk(req.params.id)
+    .then(comment => res.status(200).json(comment))
+    .catch(error => res.status(400).json({error}));
+};
+
+// Affichage de tous les commentaires
+exports.getAllComments = (req, res) => {
+    models.Comment.findAll({  
+        
     })
     .then(comment => res.status(200).json(comment))
-    .catch( error => res.status(400).json({error}))
+    .catch(error => res.status(400).json({error}))
 };
 
 // Suppression d'un commentaire
@@ -34,7 +39,6 @@ exports.deleteComment = (req, res) => {
         {
             models.Comment.destroy({ where: { id: req.params.id } })
             res.status(200).json({message : 'Commentaire supprimé !'})
-
         } else {
             res.status(401).json({
                 message: 'Requête non autorisée !'

@@ -57,7 +57,7 @@ export default {
             const fileField = document.querySelector('input[type="file"]');
             const token = (localStorage.getItem("token"))
             if (this.title === '')
-                alert("Veuillez saisir le titre")
+                alert("Veuillez saisir le titre du post")
             if (this.content === '')
                 alert("Veuillez saisir le contenu du post")
             if (this.image === '' && this.title != '' && this.content != ''){ 

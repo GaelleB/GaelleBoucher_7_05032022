@@ -135,7 +135,7 @@ export default {
                 data.append('email', this.user.email)
                 data.append('image', this.image)
                 data.append('image', fileField.files[0])
-                axios.put(`http://localhost:3000/api/auth/profile/${Id}`, data,{
+                axios.post(`http://localhost:3000/api/auth/profile/${Id}`, data,{
                     headers: {
                         'authorization': `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data',

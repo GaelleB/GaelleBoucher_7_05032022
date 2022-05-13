@@ -61,53 +61,6 @@ exports.login = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-// Affichage d'un utilisateur
-exports.getOneUser = (req, res) => {
-    models.User.findByPk(req.params.id)
-    .then(user => res.status(200).json(user))
-    .catch(error => res.status(400).json({error}))
-};
-
-// Affichage de tous les utilisateurs
-exports.getAllUsers = (req, res) => {
-    models.Post.findAll({  
-        order: [["id", "DESC"]],
-    })
-    .then( user => res.status(200).json(user))
-    .catch( error => res.status(400).json({error}))
-};
-
-// Modification de l'utilisateur
-exports.modifyUser = (req, res, next) => {
-    const userId = req.params.id;
-    const nom = req.body.nom;
-    const prenom = req.body.prenom;
-    const email = req.body.email;
-    const role = req.body.role;
-
-    models.User.findOne({
-        where: { id: userId },
-    })
-    .then((user) => {
-        user.update({
-            nom: nom,
-            prenom: prenom,
-            email: email,
-            role: role,
-        })
-        .then((user) => {
-            if (user) return res.status(201).json(user);
-            else return res
-            .status(500)
-            .json({ error: "Mise à jour du profil impossible" });
-        })
-        .catch(() => {
-            res.status(500).json({ error: "Mise à jour impossible" });
-        });
-    })
-    .catch(() => res.status(500).json({ error: "Vérification impossible" }));
-};
-
 // Gestion de l'image
 exports.uploadImage = (req, res, next) => {
     const userId = req.user.userId;
@@ -154,6 +107,53 @@ exports.uploadImage = (req, res, next) => {
     .catch((error) => {
         res.status(500).json({ error: "Vérification impossible" });
     });
+};
+
+// Affichage d'un utilisateur
+exports.getOneUser = (req, res) => {
+    models.User.findByPk(req.params.id)
+    .then(user => res.status(200).json(user))
+    .catch(error => res.status(400).json({error}))
+};
+
+// Affichage de tous les utilisateurs
+exports.getAllUsers = (req, res) => {
+    models.Post.findAll({  
+        order: [["id", "DESC"]],
+    })
+    .then( user => res.status(200).json(user))
+    .catch( error => res.status(400).json({error}))
+};
+
+// Modification de l'utilisateur
+exports.modifyUser = (req, res, next) => {
+    const userId = req.params.id;
+    const nom = req.body.nom;
+    const prenom = req.body.prenom;
+    const email = req.body.email;
+    const role = req.body.role;
+
+    models.User.findOne({
+        where: { id: userId },
+    })
+    .then((user) => {
+        user.update({
+            nom: nom,
+            prenom: prenom,
+            email: email,
+            role: role,
+        })
+        .then((user) => {
+            if (user) return res.status(201).json(user);
+            else return res
+            .status(500)
+            .json({ error: "Mise à jour du profil impossible" });
+        })
+        .catch(() => {
+            res.status(500).json({ error: "Mise à jour impossible" });
+        });
+    })
+    .catch(() => res.status(500).json({ error: "Vérification impossible" }));
 };
 
 // Suppression de l'utilisateur
