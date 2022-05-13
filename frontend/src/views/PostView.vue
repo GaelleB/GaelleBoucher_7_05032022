@@ -43,7 +43,7 @@
                     <table class="header " v-if="displaycomments" >
                         <h2>Les commentaires</h2>
                         <tr class="card displayComment" v-bind:key="index" v-for="(comment, index) in comments" >
-                            <td>Commenté par:<p class="userComment">{{comment.user.nom}}</p></td>
+                            <!-- <td>Commenté par:<p class="userComment">{{comment.user.nom}}</p></td> -->
                             <td>
                                 le <b>{{ dateFormat(comment.createdAt) }}</b>
                                 à <b>{{ hourFormat(comment.createdAt) }}</b>
@@ -51,19 +51,6 @@
                             <td>
                                 <textarea type="text" v-model="comment.content" required aria-label="Commentaire" disabled></textarea>
                             </td>
-
-                            <!-- <input class="inputTitle" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" > 
-                            <textarea type="text" v-model="post.content" required aria-label="Message" disabled ></textarea>
-                            <p>Posté par <b>{{ post.user.nom }}</b> <b>{{ post.user.prenom }} </b>     
-                                le <b>{{ dateFormat(post.createdAt) }}</b>
-                                à <b>{{ hourFormat(post.createdAt) }}</b><br>
-                            </p>
-                            <p v-if="post.createdAt != post.updatedAt">
-                                Modifié 
-                                le <b>{{ dateFormat(post.updatedAt) }}</b>
-                                à <b>{{ hourFormat(post.updatedAt) }}</b>
-                            </p> -->
-
 
                             <!-- Suppression d'un commentaire -->  
                             <div class="content displayComment">
@@ -205,26 +192,6 @@ export default {
             this.$router.push(`/postmodify/${this.id_param}`)
         },
         
-        // Affichage d'un commentaire
-        getOneComment() {
-            const token = localStorage.getItem("token")              
-            axios.get(`http://localhost:3000/api/comments/${this.postId}`, {
-                headers: {
-                    'authorization': `Bearer ${token}`
-                },
-            })
-            .then((res) => {
-                this.posts = res.data;
-                this.users = res.data;
-                this.comments = res.data;
-                this.user.nom = res.data.nom;
-                this.comments.content = res.data.content;
-                this.comments.createdAt = res.data.createdAt;
-                this.comments.updatedAt = res.data.updatedAt;
-            })
-            .catch(() => console.log('Impossible de récupérer le commentaire!'))
-        },
-
         // Création d'un commentaire
         createComment () {
             const token = localStorage.getItem("token")
@@ -254,6 +221,26 @@ export default {
                 })
                 .catch(() => console.log(' err comments'))
             }
+        },
+
+        // Affichage d'un commentaire
+        getOneComment() {
+            const token = localStorage.getItem("token")              
+            axios.get(`http://localhost:3000/api/comments/${this.content}`, {
+                headers: {
+                    'authorization': `Bearer ${token}`
+                },
+            })
+            .then((res) => {
+                this.posts = res.data;
+                this.users = res.data;
+                this.comments = res.data;
+                this.user.nom = res.data.nom;
+                this.comments.content = res.data.content;
+                this.comments.createdAt = res.data.createdAt;
+                this.comments.updatedAt = res.data.updatedAt;
+            })
+            .catch(() => console.log('Impossible de récupérer le commentaire!'))
         },
         
         // Suppression d'un commentaire

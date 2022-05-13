@@ -20,7 +20,7 @@
                         <li> 
                             <label v-if="post.image " for="file" class="button" aria-label="Choisir une photo pour ce post">Modifier l'image</label>
                             <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer cette photo du post"> Supprimer l'image</button>    
-                            <input type="file" accept=".jpeg, .jpg, .png, .webp, .gif" v-on:change="uploadImage" id="file" class="input-file" aria-label="Image du post">
+                            <input type="file" accept=".jpeg, .jpg, .png, .webp, .gif" v-on:change="imgPost" id="file" class="input-file" aria-label="Image du post">
                         </li>
                     </ul>
                 </form>
@@ -61,14 +61,15 @@ export default {
             return this.button = true;
         },
 
-        // Téléchargement d'un fichier image
-        uploadImage(event) {
+        // Gestion de l'image
+        imgPost(event) {
             this.image = event.target.files[0]
         },
         User() {
             this.id = localStorage.getItem("Id")
             this.role = localStorage.getItem("role")
         },
+
         // Affichage d'un post
         getOnePost() {
             const token = localStorage.getItem("token")
@@ -113,7 +114,7 @@ export default {
                 })
                 .then((res) => {
                     alert("Modification du post sans image réussie")
-                    console.log("modification ok");
+                    console.log("Modification ok");
                     this.posts = res.data
                     this.$router.push("/allposts");
                 })

@@ -26,10 +26,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      image: {
-        allowNull: true,
-        type: Sequelize.STRING
-      },
       role: {
         type: Sequelize.BOOLEAN,
         defaultValue: 1 

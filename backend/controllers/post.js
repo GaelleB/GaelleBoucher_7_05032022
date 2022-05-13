@@ -16,7 +16,7 @@ exports.createPost = (req, res) => {
 };
 
 // Gestion de l'image
-exports.uploadImage = (req, res, next) => {
+exports.imgPost = (req, res, next) => {
     const userId = req.user.userId;
     const postId = req.params.id;
     

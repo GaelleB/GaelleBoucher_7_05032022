@@ -16,15 +16,6 @@
                     </li>
                 </ul>
             </form>
-            <nav class="modify" >
-            <!--Image -->
-                <div class="button modifyImage btnModifyImg" >   
-                    <img v-if="user.image" :src="user.image" alt="Photo de profil" class="file" width="150px" height="150px" border-radius="15px">
-                    <label v-if="!user.image" for="file" class="label-file btnModifyImg" aria-label="Insérer votre photo de profil" ><i class="fas fa-upload"></i><br>Insérer <br>votre photo de profil</label>
-                    <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer la photo de profil"> <i class="far fa-trash-alt"></i></button>
-                    <input type="file" accept="image/jpeg, image/jpg, image/png, image/webp" v-on:change="uploadImage" id="file" class="input-file" aria-label="Photo de profil">
-                </div>
-            </nav>
             <div class="submit">
                 <button @click="modifyUser()" class="btnSave" aria-label="Modifier le compte"><i class="fas fa-edit"></i> Enregistrer</button>
                 <button @click="deleteUser()" class="espacement btnDelete" aria-label="Supprimer le compte"><i class="far fa-trash-alt"></i> Supprimer le compte</button>
@@ -52,8 +43,7 @@ export default {
                 id: '',
                 nom: '',
                 prenom: '',
-                email: '',
-                image:''
+                email: ''
             },
             preview: null,
             button : false
@@ -89,7 +79,6 @@ export default {
                 this.user.nom = res.data.nom;
                 this.user.prenom = res.data.prenom;
                 this.user.email = res.data.email;
-                this.user.image = res.data.image;
             })
             .catch(() =>{ 
                 alert("Non autorisé à supprimer ce message!")
@@ -99,7 +88,6 @@ export default {
         modifyUser() {
             const token = localStorage.getItem('token');
             const Id = localStorage.getItem("userId")
-            const fileField = document.querySelector('input[type="file"]');
             const regexText = /^[a-zA-Z-\s]+$/;
             const regexEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/; 
             if (this.user.nom === "") {
@@ -114,7 +102,7 @@ export default {
                 alert("Veuillez saisir votre adresse email");
             } else if (regexEmail.test(this.user.email) === false) {
                 alert("Veuillez saisir une adresse email valide");
-            } else if ((regexText.test(this.user.nom) === true) && regexText.test(this.user.prenom) === true && regexEmail.test(this.user.email) === true && this.user.image === null) {
+            } else if ((regexText.test(this.user.nom) === true) && regexText.test(this.user.prenom) === true && regexEmail.test(this.user.email) === true === null) {
                 axios.put(`http://localhost:3000/api/auth/profile/${Id}`, { 
                     headers: {
                         'authorization': `Bearer ${token}`,           
@@ -128,13 +116,11 @@ export default {
                 })
                 .catch((err) => console.log(err))
         
-            } else if ((regexText.test(this.user.nom) === true) && regexText.test(this.user.prenom) === true && regexEmail.test(this.user.email) === true && this.user.image != null) {
+            } else if ((regexText.test(this.user.nom) === true) && regexText.test(this.user.prenom) === true && regexEmail.test(this.user.email) === true != null) {
                 let data = new FormData()
                 data.append('nom', this.user.nom)
                 data.append('prenom', this.user.prenom)
                 data.append('email', this.user.email)
-                data.append('image', this.image)
-                data.append('image', fileField.files[0])
                 axios.post(`http://localhost:3000/api/auth/profile/${Id}`, data,{
                     headers: {
                         'authorization': `Bearer ${token}`,
@@ -166,20 +152,18 @@ export default {
                     console.log("Compte supprimé");
                     let publi = this.posts
                     for ( let i = 0 ; i < publi.length ; i++) {
-                        if (publi[i].image) {
-                        axios.delete(`http://localhost:3000/api/posts/${publi[i].id}`, {
-                            headers: {
-                                'authorization': `Bearer ${token}`,
-                                'Content-Type': 'multipart/form-data',
-                            },
-                        })
+                            axios.delete(`http://localhost:3000/api/posts/${publi[i].id}`, {
+                                headers: {
+                                    'authorization': `Bearer ${token}`,
+                                    'Content-Type': 'multipart/form-data',
+                                },
+                            })
                             .then(() => {
-                                alert("Posts suprimés")
-                                console.log("Posts supprimés")
+                                alert("Compte suprimé")
+                                console.log("Compte supprimé")
                                 this.$router.push("/")
                             })
-                            .catch(alert ("impossilbe de supprimer les posts"))
-                        }
+                            .catch(alert ("impossible de supprimer l'utilisateur"))
                     }
                 })
                 .then(() => {
@@ -199,21 +183,6 @@ export default {
                 })
                 .catch(alert)
             }
-        },
-
-        uploadImage(e) {
-            if (e.target.files) {
-                let reader = new FileReader()
-                reader.onload = (event) => {
-                    this.preview = event.target.result
-                    this.user.image = event.target.result
-                }
-                reader.readAsDataURL(e.target.files[0])
-            }
-        },
-
-        deletefile() {
-            this.user.image = '';
         },
 
         mounted() {
@@ -270,7 +239,7 @@ input {
 .input-file {
     display: none;
 }
-.button, #modifyImage {
+.button {
     margin: 20px 0 0 0;
     padding: 5px 30px ;
     border: 2px solid black;

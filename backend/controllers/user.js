@@ -61,54 +61,6 @@ exports.login = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-// Gestion de l'image
-exports.uploadImage = (req, res, next) => {
-    const userId = req.user.userId;
-    
-    models.User.findOne({
-        where: { id: userId },
-    })
-        .then((user) => {
-        if (user.image !== null) {
-        const filename = user.image.split("/images/")[1];
-        fs.unlink(`images/${filename}`, () => {
-            user.update(
-            {
-                image: `${req.protocol}://${req.get("host")}/images/${
-                    req.file.filename
-                }`,
-            },
-            { where: { id: userId } }
-        )
-            .then(() =>
-                res.status(200).json({ message: "Photo de profil mise à jour !" })
-            )
-            .catch((error) =>
-                res.status(400).json({ error: "Modification impossible" })
-            );
-        })
-        } else{
-            user.update(
-            {
-                image: `${req.protocol}://${req.get("host")}/images/${
-                    req.file.filename
-                }`,
-            },
-            { where: { id: userId } }
-        )
-            .then(() =>
-                res.status(200).json({ message: "Photo de profil mise à jour !" })
-            )
-            .catch((error) =>
-                res.status(400).json({ error: "Modification impossible" })
-            );
-        }
-    })
-    .catch((error) => {
-        res.status(500).json({ error: "Vérification impossible" });
-    });
-};
-
 // Affichage d'un utilisateur
 exports.getOneUser = (req, res) => {
     models.User.findByPk(req.params.id)
@@ -161,10 +113,6 @@ exports.deleteUser = (req, res, next) => {
     User.findOne ({ where: { id:  req.params.id } })
         .then(user => {
             if(user!= null){
-                if (user.image != null) {
-                    const filename = user.image.split('/images/')[1];
-                    fs.unlink(`images/${filename}`, (error) => {});
-                } 
                 User.destroy({ where: { id: req.params.id } })
                 .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
                 .catch(error =>{ console.log(error); res.status(400).json({ message : error.message })});

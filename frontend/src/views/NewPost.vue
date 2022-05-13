@@ -15,7 +15,7 @@
                             <img :src="image" alt="Image du post" class="file">
                         </li>
                         <li>
-                            <input type="file" accept=".jpeg, .jpg, .png, .webp, .gif" v-on:change="uploadImage" id="file" class="input-file" aria-label="Image du post">
+                            <input type="file" accept=".jpeg, .jpg, .png, .webp, .gif" v-on:change="imgPost" id="file" class="input-file" aria-label="Image du post">
                             <label v-if="!image" for="file" class="label-file" aria-label="Choisir une photo pour ce post"></label>
                             <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer la photo du post"><i class="far fa-trash-alt"></i> Supprimer image</button>
                         </li>
@@ -114,7 +114,7 @@ export default {
                 }
             }
         },
-        uploadImage(e) {
+        imgPost(e) {
             if (e.target.files) {
                 let reader = new FileReader()
                 reader.onload = (event) => {
