@@ -29,7 +29,7 @@
                 </article>
 
                 <!-- Création d'un commentaire -->
-                <button v-if="displayCreateComment === false" v-on:click="show2" class="btnSave" aria-label="Ecrire un commentaire"><i class="far fa-edit"></i>Commenter</button>
+                <button v-if="displayCreateComment === false" v-on:click="show2" class="btnSave" aria-label="Ecrire un commentaire"><i class="far fa-comment"></i>Commenter</button>
                 <article v-if="displayCreateComment" class="createcomment">
                     <textarea v-model="content" placeholder="Ecrire ton commentaire..." cols="60" rows="5" aria-label="Message du commentaire"></textarea>
                     <div class=btnComment>
@@ -55,7 +55,7 @@
                             <!-- Suppression d'un commentaire -->  
                             <div class="content displayComment">
                                 <div class="modif">                                                                   
-                                    <button @click="deleteComment(index)"  class="btnDelete" aria-label="Supprimer ce commentaire"><i class="far fa-trash-alt"></i> Supprimer commentaire</button>
+                                    <button @click="deleteComment(index)" class="btnDelete" aria-label="Supprimer ce commentaire"><i class="far fa-trash-alt"></i> Supprimer commentaire</button>
                                     <button v-on:click="hide" class="btnDelete" aria-label="Masquer les commentaires">Masquer</button>
                                 </div>
                             </div>  
@@ -244,17 +244,18 @@ export default {
         },
         
         // Suppression d'un commentaire
-        deleteComment () {
+        deleteComment (index) {
             const token = localStorage.getItem("token")
-            if (confirm("Voulez-vous vraiment supprimer le commentaire") === true) {
-                axios.delete(`http://localhost:3000/api/comments/${this.comments.id}`, {
+            if (confirm("Voulez-vous vraiment supprimer ce commentaire") === true) {
+                axios.delete(`http://localhost:3000/api/comments/${this.comments[index].id}`, {
                     headers: {
-                        'authorization': `Bearer ${token}`,
+                        'authorization': `Bearer ${token}`
                     },
                 })
                 .then((res) => {
                     alert("Commentaire supprimé")
                     console.log(res.data);
+                    this.posts = res.data
                 })
                 .catch(() => {
                     alert("Non autorisé à supprimer ce commentaire!!")
