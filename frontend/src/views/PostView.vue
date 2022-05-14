@@ -28,6 +28,12 @@
                         </nav>
                         <img class="imgPost" v-if="post.image" :src="post.image" alt="Image du post">
                     </div>
+
+                    <!-- LIKE     -->
+                    <div class="like">
+                        <i class="fas fa-thumbs-up like btnSave likeIcon" @click="createLike()" aria-label="Bouton like"> {{likes}}</i>
+                        <i class="fas fa-thumbs-down like btnDelete likeIcon" @click="createDislike()" aria-label="Bouton dislike"> {{dislikes}}</i>
+                    </div> 
                 </article>
 
                 <!-- Création d'un commentaire -->
@@ -77,7 +83,7 @@ export default {
     name: 'PostView',
     components: {
         HeaderProfile,
-        Footer
+        Footer,
     },
     data () {
         return {
@@ -86,6 +92,8 @@ export default {
             users: [],
             props: ['post'],
             posts: [],
+            // like: this.post.like,
+            // dislike: this.post.dislike,
             preview: null,
             post: {
                 title:'',
@@ -96,7 +104,6 @@ export default {
                 image:'',
                 user: { },
                 userId:'',
-                
             },
             user : {
                 nom: '',
