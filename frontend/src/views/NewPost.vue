@@ -225,12 +225,6 @@ img {
 .content img {
     margin-top: 10px;
 }
-.photo-profil {
-    width: 50px;
-    height: 50px;
-    border: 2px solid #146cbe;
-    border-radius: 30px;
-}
 @media screen and (max-width:1024px){
 .btnDelete{
     width: 50%;

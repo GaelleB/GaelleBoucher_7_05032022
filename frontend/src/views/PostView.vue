@@ -8,7 +8,9 @@
                         <nav class = "blockRespoText">
                             <input class="inputTitle" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" > 
                             <textarea type="text" v-model="post.content" required aria-label="Message" disabled ></textarea>
-                            <p>Posté par <b>{{ post.user.nom }}</b> <b>{{ post.user.prenom }} </b>     
+                            <p>
+                                Posté par 
+                                <b>{{ post.userId }}</b>     
                                 le <b>{{ dateFormat(post.createdAt) }}</b>
                                 à <b>{{ hourFormat(post.createdAt) }}</b><br>
                             </p>
@@ -40,7 +42,7 @@
 
                 <!-- Affichage d'un commentaire -->
                 <button  v-on:click="show" @click="getOneComment()" class="btnSave" aria-label="Voir les commentaires">Afficher: {{ comments.length }} commentaires </button>
-                    <table class="header " v-if="displaycomments" >
+                    <table class="header " v-if="displaycomment" >
                         <h2>Les commentaires</h2>
                         <tr class="card displayComment" v-bind:key="index" v-for="(comment, index) in comments" >
                             <!-- <td>Commenté par:<p class="userComment">{{comment.user.nom}}</p></td> -->
@@ -56,7 +58,7 @@
                             <div class="content displayComment">
                                 <div class="modif">                                                                   
                                     <button @click="deleteComment(index)" class="btnDelete" aria-label="Supprimer ce commentaire"><i class="far fa-trash-alt"></i> Supprimer commentaire</button>
-                                    <button v-on:click="hide" class="btnDelete" aria-label="Masquer les commentaires">Masquer</button>
+                                    <button v-on:click="hide" class="btnDelete" aria-label="Masquer les commentaires">Masquer les commentaires</button>
                                 </div>
                             </div>  
                         </tr>    
@@ -104,29 +106,22 @@ export default {
             id:'',
             content: '',
             role: '',
-            displaycomments: false,
+            displaycomment: false,
             displayCreateComment: false,
-            modifyComment: false,
         }
     },
     methods : {
         show: function () {
-            return this.displaycomments = true;
+            return this.displaycomment = true;
         },
         hide: function () {
-            return this.displaycomments = false;
+            return this.displaycomment = false;
         },
         show2: function () {
             return this.displayCreateComment = true;
         },
         hide2: function () {
             return this.displayCreateComment = false;
-        },
-        show3: function () {
-            return this.modifyComment = true;
-        },
-        hide3: function () {
-            return this.modifyComment = false;
         },
         User() {
             this.id = localStorage.getItem("userId")
@@ -197,7 +192,6 @@ export default {
             const token = localStorage.getItem("token")
             const userId = localStorage.getItem("userId")
             const postId = this.$route.params.id;
-            console.log(postId)
             if( this.commentaire === ""){
                 alert('Saisissez votre commentaire')
             } else {
@@ -255,7 +249,6 @@ export default {
                 .then((res) => {
                     alert("Commentaire supprimé")
                     console.log(res.data);
-                    this.posts = res.data
                 })
                 .catch(() => {
                     alert("Non autorisé à supprimer ce commentaire!!")
@@ -418,12 +411,6 @@ p {
 }
 .content .imgPost {
     margin-top: 10px;
-}
-.photo-profil {
-    width: 50px;
-    height: 50px;
-    border: 2px solid #fd2d01;
-    border-radius: 30px;
 }
 /*--------------------*/
 @media screen and (min-width:768px) {
