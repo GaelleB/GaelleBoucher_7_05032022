@@ -8,18 +8,19 @@
 <script>
 import axios from "axios";
 export default {
-    name: "LikeView",
+    name: "LikeCompo",
     data() {
         return {
-        posts: [],
-        Likes:[],
-        Dislikes:[],
-        id_param: this.$route.params.id,
+            posts: [],
+            Likes:[],
+            Dislikes:[],
+            id_param: this.$route.params.id,
         };
     },
     computed: {
 
     },
+    
     createLike() {
         const token = localStorage.getItem("token")
         const userId = localStorage.getItem("userId")
@@ -44,6 +45,7 @@ export default {
         })
         .catch((error) => {console.log(error) });
     },
+
     createDislike() {
         const token = localStorage.getItem("token")
         const userId = localStorage.getItem("userId")

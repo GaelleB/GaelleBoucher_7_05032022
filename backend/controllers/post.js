@@ -8,7 +8,7 @@ exports.createPost = (req, res) => {
         UserId: req.tokenUserId,
         title: req.body.title,
         content: req.body.content,
-        imageUrl: req.body.imagePost
+        imageUrl: req.body.imgPost
     };
     models.Post.create(newPost) 
         .then(() => res.status(201).json({ message: "Post créé !" }))
@@ -147,10 +147,8 @@ exports.deletePost = (req, res) => {
 
 // Like
 exports.likePost = async (req, res, next) => {
-    console.log("console LIKE  " +(req.body));
 	try {
-        const headerAuth = req.headers['authorization'];
-		const userId = jwt.getUserId(headerAuth);
+		const userId = req.tokenUserId;
 		const postId = req.params.id;
 		const user = await models.Like.findOne({
 			where: { UserId: userId, PostId: postId }
@@ -160,13 +158,13 @@ exports.likePost = async (req, res, next) => {
 				{ where: { UserId: userId, PostId: postId } },
 				{ truncate: true, restartIdentity: true }
 			);
-			res.status(200).send({ messageRetour: "Neutre" });
+			res.status(200).send({ message: "Neutre" });
 		} else {
 			await models.Like.create({
 				UserId: userId,
 				PostId: postId
 			});
-			res.status(201).json({ messageRetour: 'Like :)' });
+			res.status(201).json({ message: 'Like :)' });
 		}
 	} catch (error) {
 		return res.status(500).send({ error: 'Erreur du serveur' });
@@ -176,8 +174,7 @@ exports.likePost = async (req, res, next) => {
 // Dislike 
 exports.dislikePost = async (req, res, next) => {
 	try {
-		const headerAuth = req.headers['authorization'];
-		const userId = jwt.getUserId(headerAuth);
+		const userId = req.tokenUserId;
 		const postId = req.params.id;
 		const user = await models.Dislike.findOne({
 			where: { UserId: userId, PostId: postId }
@@ -187,13 +184,13 @@ exports.dislikePost = async (req, res, next) => {
 				{ where: { UserId: userId, PostId: postId } },
 				{ truncate: true, restartIdentity: true }
 			);
-			res.status(200).send({ messageRetour: "Neutre" });
+			res.status(200).send({ message: "Neutre" });
 		} else {
 			await models.Dislike.create({
 				UserId: userId,
 				PostId: postId
 			});
-			res.status(201).json({ messageRetour: 'Dislike :(' });
+			res.status(201).json({ message: 'Dislike :(' });
 		}
 	} catch (error) {
 		return res.status(500).send({ error: 'Erreur du serveur' });

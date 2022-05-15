@@ -31,7 +31,7 @@ exports.getAllComments = (req, res) => {
 // Suppression d'un commentaire
 exports.deleteComment = (req, res) => {
     models.Comment.findOne({
-        where: { postId: req.body.postId },
+        where: { id: req.params.id },
         include: [{ model : models.User }],
     })
     .then(Comment => {

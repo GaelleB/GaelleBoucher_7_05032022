@@ -29,7 +29,7 @@
                         <img class="imgPost" v-if="post.image" :src="post.image" alt="Image du post">
                     </div>
 
-                    <!-- LIKE     -->
+                    <!-- Like/Dislike -->
                     <div class="like">
                         <i class="fas fa-thumbs-up like btnSave likeIcon" @click="createLike()" aria-label="Bouton like"> {{likes}}</i>
                         <i class="fas fa-thumbs-down like btnDelete likeIcon" @click="createDislike()" aria-label="Bouton dislike"> {{dislikes}}</i>
@@ -248,6 +248,7 @@ export default {
         deleteComment (index) {
             const token = localStorage.getItem("token")
             if (confirm("Voulez-vous vraiment supprimer ce commentaire") === true) {
+                console.log(this.comments[index].id)
                 axios.delete(`http://localhost:3000/api/comments/${this.comments[index].id}`, {
                     headers: {
                         'authorization': `Bearer ${token}`
