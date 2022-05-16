@@ -106,9 +106,7 @@ export default {
                         console.log(res.data);
                         this.posts = res.data
                     })
-                
                     .catch(() => console.log('Impossible de récupérer les informations !'))
-        
                 } else {
                     alert("Uniquement les fichiers jpg, jpeg, png, webp et gif sont acceptés!");
                 }

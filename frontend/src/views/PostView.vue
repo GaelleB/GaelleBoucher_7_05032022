@@ -51,7 +51,9 @@
                     <table class="header " v-if="displaycomment" >
                         <h2>Les commentaires</h2>
                         <tr class="card displayComment" v-bind:key="index" v-for="(comment, index) in comments" >
-                            <!-- <td>Commenté par:<p class="userComment">{{comment.user.nom}}</p></td> -->
+                            <!-- <td>
+                                Commenté par:<p class="userComment">{{comment.user.nom}}</p>
+                            </td> -->
                             <td>
                                 le <b>{{ dateFormat(comment.createdAt) }}</b>
                                 à <b>{{ hourFormat(comment.createdAt) }}</b>

@@ -19,7 +19,17 @@ exports.createPost = (req, res) => {
 
 // Affichage d'un post
 exports.getOnePost = (req, res) => {
-    models.Post.findByPk(req.params.id)
+    const postId = req.params.id;
+    models.Post.findOne({
+        where: { id: postId},
+        include: [
+            {
+                model: models.User,
+                as: "User",
+                attributes: [ "prenom", "nom"],
+            },
+        ]
+    })
     .then(post => res.status(200).json(post))
     .catch(error => res.status(400).json({error}));
 };
@@ -28,6 +38,9 @@ exports.getOnePost = (req, res) => {
 exports.getAllPosts = (req, res) => {
     models.Post.findAll({  
         order: [["id", "DESC"]],
+        include: [
+            { model: models.Comment},
+        ]
     })
     .then(post => res.status(200).json(post))
     .catch(error => res.status(400).json({error}))
