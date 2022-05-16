@@ -114,16 +114,6 @@ export default {
                 }
             }
         },
-        imgPost(e) {
-            if (e.target.files) {
-                let reader = new FileReader()
-                reader.onload = (event) => {
-                    this.preview = event.target.result
-                    this.image = event.target.result
-                }
-                reader.readAsDataURL(e.target.files[0])
-            }
-        },
         deletefile() {
             this.image = '';
         }   

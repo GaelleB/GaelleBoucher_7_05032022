@@ -7,61 +7,14 @@ exports.createPost = (req, res) => {
     const newPost = {
         UserId: req.tokenUserId,
         title: req.body.title,
-        content: req.body.content,
-        imageUrl: req.body.imgPost
+        content: req.body.content
     };
+    if (req.file) {
+        newPost.image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+    }
     models.Post.create(newPost) 
         .then(() => res.status(201).json({ message: "Post créé !" }))
         .catch(error => res.status(500).json({ error }));
-};
-
-// Gestion de l'image
-exports.imgPost = (req, res, next) => {
-    const userId = req.user.userId;
-    const postId = req.params.id;
-    
-    models.Post.findOne({
-        where: { id: userId },
-    })
-        .then((post) => {
-        if (post.image !== null) {
-        const filename = post.image.split("/images/")[1];
-        fs.unlink(`images/${filename}`, () => {
-            models.Post.update(
-            {
-                image: `${req.protocol}://${req.get("host")}/images/${
-                    req.file.filename
-                }`,
-            },
-            { where: { id: userId } }
-        )
-            .then(() =>
-                res.status(200).json({ message: "Photo mise à jour !" })
-            )
-            .catch((error) =>
-                res.status(400).json({ error: "Modification impossible" })
-            );
-        })
-        } else{
-            models.Post.update(
-            {
-                image: `${req.protocol}://${req.get("host")}/images/${
-                    req.file.filename
-                }`,
-            },
-            { where: { id: userId } }
-        )
-            .then(() =>
-                res.status(200).json({ message: "Photo mise à jour !" })
-            )
-            .catch((error) =>
-                res.status(400).json({ error: "Modification impossible" })
-            );
-        }
-    })
-    .catch((error) => {
-        res.status(500).json({ error: "Vérification impossible" });
-    });
 };
 
 // Affichage d'un post
@@ -132,8 +85,8 @@ exports.modifyPost = (req, res, next) => {
 exports.deletePost = (req, res) => {
     models.Post.findOne({ where: { id: req.params.id } })
     .then(post => {
-        if(post.imageUrl != null) {
-            const filename = post.imageUrl.split('/images/')[1];
+        if(post.image != null) {
+            const filename = post.image.split('/images/')[1];
             fs.unlink(`images/${filename}`, (err) => {
                 if(err) throw err;
             })

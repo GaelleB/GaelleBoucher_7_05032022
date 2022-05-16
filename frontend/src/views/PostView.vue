@@ -179,7 +179,7 @@ export default {
                     }
                 })
                 .then((res) => {
-                alert ("Publication supprimée")
+                alert ("Post supprimée")
                 console.log(res.data);
             })
             .catch(() =>{ 

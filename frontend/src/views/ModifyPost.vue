@@ -60,11 +60,6 @@ export default {
         show: function () {
             return this.button = true;
         },
-
-        // Gestion de l'image
-        imgPost(event) {
-            this.image = event.target.files[0]
-        },
         User() {
             this.id = localStorage.getItem("Id")
             this.role = localStorage.getItem("role")
