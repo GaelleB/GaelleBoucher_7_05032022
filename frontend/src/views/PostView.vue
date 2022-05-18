@@ -10,8 +10,8 @@
                         <textarea type="text" v-model="post.content" required aria-label="Message" disabled ></textarea>
                         <p>
                             Posté par 
-                                <b>{{ post.user.prenom }}</b>
-                                <b>{{ post.user.nom }}</b>
+                                <!-- <b>{{ post.prenom }}</b>
+                                <b>{{ post.user.nom }}</b> -->
                             le <b>{{ dateFormat(post.createdAt) }}</b>
                             à <b>{{ hourFormat(post.createdAt) }}</b><br>
                         </p>
