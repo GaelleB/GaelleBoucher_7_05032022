@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
 require('dotenv').config()
 
 // Models
@@ -62,19 +61,26 @@ exports.login = (req, res, next) => {
 };
 
 // Affichage d'un utilisateur
-exports.getOneUser = (req, res) => {
-    models.User.findByPk(req.params.id)
-    .then(user => res.status(200).json(user))
-    .catch(error => res.status(400).json({error}))
-};
+exports.getOneUser = (req, res, next) => {
+    const userId = req.params.id;
+    User.findOne({
+        attributes: ['nom', 'prenom', 'id', 'email'],
+        where: { id: userId }
+    }).then((user) => {
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ 'erreur': 'Utilisateur introuvable !' })
+        }
+    }).catch(err => res.status(500).json({ err }))
+}
 
 // Affichage de tous les utilisateurs
-exports.getAllUsers = (req, res) => {
-    models.Post.findAll({  
-        order: [["id", "DESC"]],
-    })
-    .then( user => res.status(200).json(user))
-    .catch( error => res.status(400).json({error}))
+exports.getAllUsers = (req, res, next) => {
+    const userId = req.params.id;
+    User.findAll()
+        .then((users) => res.status(200).json(users))
+        .catch((error) => res.status(400).json(error))
 };
 
 // Modification de l'utilisateur

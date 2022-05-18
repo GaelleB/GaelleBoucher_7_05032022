@@ -26,7 +26,19 @@ exports.getOnePost = (req, res) => {
             {
                 model: models.User,
                 as: "User",
-                attributes: [ "prenom", "nom"],
+                attributes: [ "prenom", "nom", "id" ],
+            },
+            {model: models.Like,
+                attributes: [ "PostId", "UserId" ]
+            },
+            {model: models.Dislike,
+                attributes: [ "PostId", "UserId"]
+            }, 
+            {model: models.Comment,
+                attributes: [ "content", "id", "updatedAt", "createdAt", "UserId", "PostId" ],
+                include: [ { model: models.User, 
+                    attributes: [ "nom", "prenom", "id" ] 
+                }] 
             },
         ]
     })
@@ -35,15 +47,32 @@ exports.getOnePost = (req, res) => {
 };
 
 // Affichage de tous les posts
-exports.getAllPosts = (req, res) => {
-    models.Post.findAll({  
+exports.getAllPosts = (req, res, next) => {
+    models.Post.findAll({ 
         order: [["id", "DESC"]],
         include: [
-            { model: models.Comment},
+            {
+                model: models.User,
+                as: "User",
+                attributes: [ "prenom", "nom", "id" ],
+            },
+            {model: models.Like,
+                attributes: [ "PostId", "UserId" ]
+            },
+            {model: models.Dislike,
+                attributes: [ "PostId", "UserId"]
+            }, 
+            {model: models.Comment,
+                attributes: [ "content", "id", "updatedAt", "createdAt", "UserId", "PostId" ],
+                include: [ { model: models.User, 
+                    attributes: [ "nom", "prenom", "id" ] 
+                }] 
+            },
         ]
     })
-    .then(post => res.status(200).json(post))
-    .catch(error => res.status(400).json({error}))
+
+    .then( post => res.status(200).json(post))
+    .catch( error => res.status(400).json({error}))
 };
 
 // Modification d'un post (contenu et image)
@@ -122,7 +151,6 @@ exports.likePost = async (req, res, next) => {
 		if (user) {
 			await models.Like.destroy(
 				{ where: { UserId: userId, PostId: postId } },
-				{ truncate: true, restartIdentity: true }
 			);
 			res.status(200).send({ message: "Neutre" });
 		} else {
@@ -148,7 +176,6 @@ exports.dislikePost = async (req, res, next) => {
 		if (user) {
 			await models.Dislike.destroy(
 				{ where: { UserId: userId, PostId: postId } },
-				{ truncate: true, restartIdentity: true }
 			);
 			res.status(200).send({ message: "Neutre" });
 		} else {

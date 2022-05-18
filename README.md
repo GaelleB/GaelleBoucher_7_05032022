@@ -11,4 +11,4 @@ Depuis le dossier backend :
 
 Depuis le dossier frontend :
 - npm install
-- npm run serve pour lancer l'app
+- npm run serve (pour lancer l'app)

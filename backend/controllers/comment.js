@@ -14,18 +14,45 @@ exports.createComment = (req, res) => {
 
 // Affichage d'un commentaire
 exports.getOneComment = (req, res) => {
-    models.Comment.findByPk(req.params.id)
+    const postId = req.params.id;
+    models.Comment.findOne({
+        where: { id: postId},
+        include: [
+            {
+                model: models.User,
+                as: "User",
+                attributes: [ "prenom", "nom"],
+            },
+            {
+                model : models.Post,
+                as: "Post",
+                attributes: [ "title", "content"],
+            }
+        ]
+    })
     .then(comment => res.status(200).json(comment))
     .catch(error => res.status(400).json({error}));
 };
 
 // Affichage de tous les commentaires
-exports.getAllComments = (req, res) => {
-    models.Comment.findAll({  
-        
+exports.getAllComments = (req, res, next) => {
+    models.Comment.findAll({
+        include: [
+            {
+                model: models.User,
+                as: "User",
+                attributes: [ "prenom", "nom"],
+            },
+            {
+                model : models.Post,
+                as: "Post",
+                attributes: [ "title", "content"],
+            }
+        ],
+        order: [["createdAt", "DESC"]],
     })
-    .then(comment => res.status(200).json(comment))
-    .catch(error => res.status(400).json({error}))
+    .then( comments => res.status(200).json(comments))
+    .catch( error => res.status(400).json({error}))
 };
 
 // Suppression d'un commentaire

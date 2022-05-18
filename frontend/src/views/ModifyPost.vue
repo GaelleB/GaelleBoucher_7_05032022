@@ -109,7 +109,7 @@ export default {
                 })
                 .then((res) => {
                     alert("Modification du post sans image réussie")
-                    console.log("Modification ok");
+                    console.log("Modification du post sans image réussie");
                     this.posts = res.data
                     this.$router.push("/allposts");
                 })

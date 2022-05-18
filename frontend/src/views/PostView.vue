@@ -10,7 +10,7 @@
                             <textarea type="text" v-model="post.content" required aria-label="Message" disabled ></textarea>
                             <p>
                                 Posté par 
-                                <b>{{ post.userId }}</b>     
+                                <b>{{ post.nom }}</b>     
                                 le <b>{{ dateFormat(post.createdAt) }}</b>
                                 à <b>{{ hourFormat(post.createdAt) }}</b><br>
                             </p>
@@ -51,13 +51,14 @@
                     <table class="header " v-if="displaycomment" >
                         <h2>Les commentaires</h2>
                         <tr class="card displayComment" v-bind:key="index" v-for="(comment, index) in comments" >
-                            <!-- <td>
-                                Commenté par:<p class="userComment">{{comment.user.nom}}</p>
-                            </td> -->
-                            <td>
+                            <p>
+                                Commenté par
+                                <b>{{ comment.userId }}</b>
+                            </p>
+                            <p>
                                 le <b>{{ dateFormat(comment.createdAt) }}</b>
                                 à <b>{{ hourFormat(comment.createdAt) }}</b>
-                            </td>
+                            </p>
                             <td>
                                 <textarea type="text" v-model="comment.content" required aria-label="Commentaire" disabled></textarea>
                             </td>
@@ -258,6 +259,7 @@ export default {
                 })
                 .then((res) => {
                     alert("Commentaire supprimé")
+                    this.$router.push(`/allposts/`)
                     console.log(res.data);
                 })
                 .catch(() => {

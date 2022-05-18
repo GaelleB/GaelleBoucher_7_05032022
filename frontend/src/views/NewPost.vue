@@ -78,7 +78,7 @@ export default {
                 .then(() => {
                     alert("Post sans image publié")
                     this.$router.push("/allposts");
-                    console.log('Post publié')
+                    console.log('Post publié sans image')
                     
                 })
             } else if (this.title != '' && this.content != '') {
