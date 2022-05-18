@@ -6,19 +6,20 @@
                     <!-- Affichage d'un post --> 
                     <div class = "card info blockRespo" >
                         <nav class = "blockRespoText">
-                            <input class="inputTitle" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" > 
-                            <textarea type="text" v-model="post.content" required aria-label="Message" disabled ></textarea>
-                            <p>
-                                Posté par 
-                                <b>{{ post.nom }}</b>     
-                                le <b>{{ dateFormat(post.createdAt) }}</b>
-                                à <b>{{ hourFormat(post.createdAt) }}</b><br>
-                            </p>
-                            <p v-if="post.createdAt != post.updatedAt">
-                                Modifié 
-                                le <b>{{ dateFormat(post.updatedAt) }}</b>
-                                à <b>{{ hourFormat(post.updatedAt) }}</b>
-                            </p>
+                        <input class="inputTitle" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" >  <!--rows="10" cols="25" -->
+                        <textarea type="text" v-model="post.content" required aria-label="Message" disabled ></textarea>
+                        <p>
+                            Posté par 
+                                <b>{{ post.user.prenom }}</b>
+                                <b>{{ post.user.nom }}</b>
+                            le <b>{{ dateFormat(post.createdAt) }}</b>
+                            à <b>{{ hourFormat(post.createdAt) }}</b><br>
+                        </p>
+                        <p v-if="post.createdAt != post.updatedAt">
+                            Modifié 
+                            le <b>{{ dateFormat(post.updatedAt) }}</b>
+                            à <b>{{ hourFormat(post.updatedAt) }}</b>
+                        </p>
 
                             <!-- Modification & suppression d'un post -->  
                             <div class="content modif">
@@ -53,7 +54,8 @@
                         <tr class="card displayComment" v-bind:key="index" v-for="(comment, index) in comments" >
                             <p>
                                 Commenté par
-                                <b>{{ comment.userId }}</b>
+                                <b>{{ comment.User.prenom }}</b>
+                                <b>{{ comment.User.nom }}</b>
                             </p>
                             <p>
                                 le <b>{{ dateFormat(comment.createdAt) }}</b>
@@ -95,8 +97,6 @@ export default {
             users: [],
             props: ['post'],
             posts: [],
-            // like: this.post.like,
-            // dislike: this.post.dislike,
             preview: null,
             post: {
                 title:'',

@@ -26,7 +26,7 @@ exports.getOnePost = (req, res) => {
             {
                 model: models.User,
                 as: "User",
-                attributes: [ "prenom", "nom", "id" ],
+                attributes: [ "prenom", "nom"],
             },
             {model: models.Like,
                 attributes: [ "PostId", "UserId" ]
@@ -51,7 +51,7 @@ exports.getAllPosts = (req, res, next) => {
             {
                 model: models.User,
                 as: "User",
-                attributes: [ "prenom", "nom", "id" ],
+                attributes: [ "prenom", "nom"],
             },
             {model: models.Like,
                 attributes: [ "PostId", "UserId" ]
@@ -60,7 +60,7 @@ exports.getAllPosts = (req, res, next) => {
                 attributes: [ "PostId", "UserId"]
             }, 
             {model: models.Comment,
-                attributes: [ "content", "id", "updatedAt", "createdAt", "UserId", "PostId" ],
+                attributes: [ "content", "id", "UserId", "PostId" ],
                 include: [ { model: models.User, 
                     attributes: [ "nom", "prenom", "id" ] 
                 }] 

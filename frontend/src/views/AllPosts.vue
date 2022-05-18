@@ -17,8 +17,8 @@
         </router-link>
         <table>
             <tr class = "card cardPost" v-bind:key="index" v-for="(post, index) in posts">
-                <td><input type="text" v-model="post.title" required aria-label="Titre" disabled></td>
-                <td><textarea class="tdHeight" type="text" v-model="post.content" required aria-label="Message" disabled></textarea></td>
+                <td> <input type="text" v-model="post.title" required aria-label="Titre" disabled> </td>
+                <td> <textarea class="tdHeight" type="text" v-model="post.content" required aria-label="Message" disabled></textarea> </td>
                 <td class="icone">
                     <router-link  :to="`/post/${post.id}`" :href="$router.resolve({name: 'Post', params: { id: post.id}}).href" aria-label="Afficher le message">
                     <button class="btnIconeSave" aria-label="Modifier ce post" ><i class="far fa-edit"></i></button>
@@ -28,7 +28,8 @@
                 <td class="info">
                     <p>
                         Posté par 
-                        <b>{{ post.nom }}</b>
+                            <b>{{ post.User.prenom }}</b>
+                            <b>{{ post.User.nom }}</b>
                         le <b>{{ dateFormat(post.createdAt) }}</b>
                         à <b>{{ hourFormat(post.createdAt) }}</b><br>
                     </p>

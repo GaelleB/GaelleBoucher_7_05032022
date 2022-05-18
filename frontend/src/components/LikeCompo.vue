@@ -18,7 +18,15 @@ export default {
         };
     },
     computed: {
+        // Calcul total des likes
+        totalLike() {
+        return this.likes.length
+        },
 
+        // Calcul total des dislikes
+        totalDislike() {
+        return this.dislikes.length
+        },
     },
     
     createLike() {
@@ -38,10 +46,9 @@ export default {
                 body: data 
         })             
         .then((res)=> {
-        console.log(res.data);
-                this.posts = res.data;
-                this.likes = res.data;
-                this.dislikes = res.data;
+            this.posts = res.data;
+            this.likes = res.data;
+            this.dislikes = res.data;
         })
         .catch((error) => {console.log(error) });
     },
@@ -61,8 +68,7 @@ export default {
         },
         body: data 
         })             
-        .then((res)=> { 
-            console.log(res.data);
+        .then((res)=> {
             this.posts = res.data;
             this.likes = res.data;
             this.dislikes = res.data;
