@@ -35,10 +35,7 @@ exports.getOnePost = (req, res) => {
                 attributes: [ "PostId", "UserId"]
             }, 
             {model: models.Comment,
-                attributes: [ "content", "id", "updatedAt", "createdAt", "UserId", "PostId" ],
-                include: [ { model: models.User, 
-                    attributes: [ "nom", "prenom", "id" ] 
-                }] 
+                attributes: [ "content" ,"id", "UserId", "PostId" ],
             },
         ]
     })
