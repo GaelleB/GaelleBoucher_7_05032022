@@ -8,13 +8,14 @@
                         <nav class = "blockRespoText">
                         <input class="inputTitle" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" >  <!--rows="10" cols="25" -->
                         <textarea type="text" v-model="post.content" required aria-label="Message" disabled ></textarea>
-                        <p>
-                            Posté par 
-                                <!-- <b>{{ post.prenom }}</b>
-                                <b>{{ post.user.nom }}</b> -->
-                            le <b>{{ dateFormat(post.createdAt) }}</b>
-                            à <b>{{ hourFormat(post.createdAt) }}</b><br>
-                        </p>
+                        <td> 
+                            <p>
+                                Posté par 
+                                    <b>{{ post.user.prenom }}</b> <b>{{ post.user.nom }}</b>
+                                le <b>{{ dateFormat(post.createdAt) }}</b>
+                                à <b>{{ hourFormat(post.createdAt) }}</b><br>
+                            </p>
+                        </td>
                         <p v-if="post.createdAt != post.updatedAt">
                             Modifié 
                             le <b>{{ dateFormat(post.updatedAt) }}</b>
@@ -48,14 +49,13 @@
                 </article>
 
                 <!-- Affichage d'un commentaire -->
-                <button  v-on:click="show" @click="getOneComment()" class="btnSave" aria-label="Voir les commentaires">Afficher: {{ comments.length }} commentaires </button>
+                <button  v-on:click="show" @click="getPostComment()" class="btnSave" aria-label="Voir les commentaires">Afficher: {{ comments.length }} commentaires </button>
                     <table class="header " v-if="displaycomment" >
                         <h2>Les commentaires</h2>
                         <tr class="card displayComment" v-bind:key="index" v-for="(comment, index) in comments" >
                             <p>
                                 Commenté par
-                                <b>{{ comment.User.prenom }}</b>
-                                <b>{{ comment.User.nom }}</b>
+                                <b>{{ comment.User.prenom }}</b> <b>{{ comment.User.nom }}</b>
                             </p>
                             <p>
                                 le <b>{{ dateFormat(comment.createdAt) }}</b>
@@ -137,7 +137,6 @@ export default {
             this.id = localStorage.getItem("userId")
             this.role = localStorage.getItem("role")
         },
-
         // Affichage d'un post
         getOnePost() {
             const token = localStorage.getItem("token")
@@ -159,7 +158,6 @@ export default {
             })
             .catch(() => console.log('Impossible de récupérer le post!'))
         },
-
         // Date 
         dateFormat (createdDate) {
             const date = new Date(createdDate)
@@ -171,7 +169,6 @@ export default {
             const options = { hour: 'numeric', minute:'numeric', second:'numeric'};
             return hour.toLocaleTimeString('fr-FR', options);
         },
-
         // Suppression d'un post
         deletePost () {
             const token = localStorage.getItem("token")
@@ -191,7 +188,6 @@ export default {
             })
         }
         },
-
         // Modification d'un post
         modifyPost () {
             this.$router.push(`/postmodify/${this.id_param}`)
@@ -226,11 +222,10 @@ export default {
                 .catch(() => console.log(' err comments'))
             }
         },
-
-        // Affichage d'un commentaire
-        getOneComment() {
+        // Affichage des commentaires sur un post
+        getPostComment() {
             const token = localStorage.getItem("token")              
-            axios.get(`http://localhost:3000/api/comments/${this.content}`, {
+            axios.get(`http://localhost:3000/api/comments/${this.postId}`, {
                 headers: {
                     'authorization': `Bearer ${token}`
                 },
@@ -239,6 +234,7 @@ export default {
                 this.posts = res.data;
                 this.users = res.data;
                 this.comments = res.data;
+                this.user.prenom = res.data.prenom 
                 this.user.nom = res.data.nom;
                 this.comments.content = res.data.content;
                 this.comments.createdAt = res.data.createdAt;

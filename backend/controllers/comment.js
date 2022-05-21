@@ -12,46 +12,14 @@ exports.createComment = (req, res) => {
         .catch(error => res.status(500).json({ error }));
 };
 
-// Affichage d'un commentaire
-exports.getOneComment = (req, res) => {
-    const postId = req.params.id;
-    models.Comment.findOne({
-        where: { id: postId},
-        include: [
-            {
-                model: models.User,
-                as: "User",
-                attributes: [ "prenom", "nom"],
-            },
-            {
-                model : models.Post,
-                as: "Post",
-                attributes: [ "title", "content"],
-            }
-        ]
-    })
-    .then(comment => res.status(200).json(comment))
-    .catch(error => res.status(400).json({error}));
-};
-
-// Affichage de tous les commentaires
-exports.getAllComments = (req, res, next) => {
+// Affichage des commentaires sur un post
+exports.getPostComment = (req, res) => {
     models.Comment.findAll({
-        include: [
-            {
-                model: models.User,
-                as: "User",
-                attributes: [ "prenom", "nom"],
-            },
-            {
-                model : models.Post,
-                as: "Post",
-                attributes: [ "title", "content"],
-            }
-        ],
-        order: [["createdAt", "DESC"]],
+        where: { postId : req.params.postId },
+        include: [{  model : models.User}],
+        order: [["createdAt", "DESC"]]
     })
-    .then( comments => res.status(200).json(comments))
+    .then(comments => res.status(200).json(comments))
     .catch( error => res.status(400).json({error}))
 };
 
