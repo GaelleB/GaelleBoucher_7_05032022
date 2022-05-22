@@ -26,7 +26,7 @@ exports.getOnePost = (req, res) => {
             {
                 model: models.User,
                 as: "User",
-                attributes: [ "prenom", "nom"],
+                attributes: [ 'prenom', "nom"],
             },
             {model: models.Like,
                 attributes: [ "PostId", "UserId" ]

@@ -24,8 +24,8 @@
 
                             <!-- Modification & suppression d'un post -->  
                             <div class="content modif">
-                                <button @click="modifyPost()" class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Modifier la publication</button>
-                                <button @click="deletePost()" class="btnDelete" aria-label="Supprimer ce post"><i class="far fa-trash-alt"></i> Supprimer la publication</button>
+                                <button @click="modifyPost()" class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Modifier le post</button>
+                                <button @click="deletePost()" class="btnDelete" aria-label="Supprimer ce post"><i class="far fa-trash-alt"></i> Supprimer le post</button>
                             </div> 
                         </nav>
                         <img class="imgPost" v-if="post.image" :src="post.image" alt="Image du post">
@@ -110,6 +110,7 @@ export default {
             },
             user : {
                 nom: '',
+                prenom: '',
             },
             userId:'',
             comments: [],

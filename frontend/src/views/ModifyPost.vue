@@ -2,8 +2,8 @@
     <div>
         <HeaderProfile/>
             <section>
-                <h1>Modification de votre publication</h1>
-                <p>Vous pouvez modifier l'image et le contenu de la publication</p>
+                <h1>Modification de votre post</h1>
+                <p>Vous pouvez modifier l'image et le contenu du post</p>
                 <form>
                     <ul>
                         <li>
@@ -11,8 +11,8 @@
                             <input class="title" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" >
                         </li>
                         <li>
-                            <label for="content" aria-label="Publication">Publication</label>
-                            <textarea v-model="post.content" placeholder="Vous pouvez modifier la publication..." rows="10" cols="60" required aria-label="Message du post"></textarea>
+                            <label for="content" aria-label="Post">Post</label>
+                            <textarea v-model="post.content" placeholder="Vous pouvez modifier le post..." rows="10" cols="60" required aria-label="Message du post"></textarea>
                         </li>
                         <li v-if="post.image">
                             <img :src="post.image" alt="Image du post" class="file" width="200px" height="200px">
@@ -77,6 +77,7 @@ export default {
             })
             .then((res) => {
                 console.log(res.data);
+                this.users = res.data;
                 this.posts = res.data;
                 this.post.title = res.data.title;
                 this.post.image = fileField.files[0];
@@ -91,11 +92,10 @@ export default {
             const token = localStorage.getItem("token")
             const fileField = document.querySelector('input[type="file"]');
             
-            if (confirm("Voulez-vous vraiment modifier ce post?") === true);
             if (this.post.title === "")
                 alert("Veuillez saisir le titre");
             if (this.post.content === "")
-                alert("Veuillez saisir votre message");
+                alert("Veuillez saisir votre post");
             if (this.post.image === null && this.post.title != "" && this.post.content != "") {
                 let data = new FormData()
                 data.append('image', '')
@@ -108,8 +108,8 @@ export default {
                     body: data
                 })
                 .then((res) => {
-                    alert("Modification du post sans image réussie")
-                    console.log("Modification du post sans image réussie");
+                    alert("Modification du post réussie")
+                    console.log("Modification du post réussie");
                     this.posts = res.data
                     this.$router.push("/allposts");
                 })
@@ -130,7 +130,6 @@ export default {
                 })
                 .then((res) => {
                     console.log(res.data);
-
                     this.posts = res.data;
                     this.post.content = res.data.content;
                     this.post.image = res.data.image;
