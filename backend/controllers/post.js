@@ -83,28 +83,25 @@ exports.modifyPost = (req, res, next) => {
         models.Post.findOne({ where: { id: postId } })
         .then((post) => {
         if (post.userId !== userId) {
-        res.status(400).json({
-            error: new Error("Requête non autorisée"),
-        });
+            res.status(400).json({
+                error: new Error("Requête non autorisée"),
+            });
         }
         const filename = post.image.split("/images/")[1];
         if (post.image !== null) {
-        fs.unlink(`images/${filename}`, (error) => {
-            if (error) throw error;
-        });
+            fs.unlink(`images/${filename}`, (error) => {
+                if (error) throw error;
+            });
         }
         })
         .catch((error) => res.status(500).json({ error }));
     }
-    const updatePost = req.file
-    ? {
-        title: title ? title : post.title,
-        content: content ? content : post.content,
-        image: `${req.protocol}://${req.get("host")}/images/${
-        req.file.filename
-        }`,
-    }
-    : { ...req.body };
+    
+  const updatePost = { content };
+  if (req.file) {
+    updatePost.image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
+  }
+
     models.Post.update(
         {
             ...updatePost,
@@ -137,52 +134,70 @@ exports.deletePost = (req, res) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-// // Like
-// exports.likePost = async (req, res, next) => {
-// 	try {
-// 		const userId = req.tokenUserId;
-// 		const postId = req.params.id;
-// 		const user = await models.Like.findOne({
-// 			where: { UserId: userId, PostId: postId }
-// 		});
-// 		if (user) {
-// 			await models.Like.destroy(
-// 				{ where: { UserId: userId, PostId: postId } },
-// 			);
-// 			res.status(200).send({ message: "Neutre" });
-// 		} else {
-// 			await models.Like.create({
-// 				UserId: userId,
-// 				PostId: postId
-// 			});
-// 			res.status(201).json({ message: 'Like :)' });
-// 		}
-// 	} catch (error) {
-// 		return res.status(500).send({ error: 'Erreur du serveur' });
-// 	}
-// };
+// Like
+exports.likePost = async (req, res, next) => {
+	try {
+		const userId = req.tokenUserId;
+		const postId = req.params.id;
+		const user = await models.Like.findOne({
+			where: { UserId: userId, PostId: postId }
+		});
 
-// // Dislike 
-// exports.dislikePost = async (req, res, next) => {
-// 	try {
-// 		const userId = req.tokenUserId;
-// 		const postId = req.params.id;
-// 		const user = await models.Dislike.findOne({
-// 			where: { UserId: userId, PostId: postId }
-// 		});
-// 		if (user) {
-// 			await models.Dislike.destroy(
-// 				{ where: { UserId: userId, PostId: postId } },
-// 			);
-// 			res.status(200).send({ message: "Neutre" });
-// 		} else {
-// 			await models.Dislike.create({
-// 				UserId: userId,
-// 				PostId: postId
-// 			});
-// 			res.status(201).json({ message: 'Dislike :(' });
-// 		}
-// 	} catch (error) {
-// 		return res.status(500).send({ error: 'Erreur du serveur' });
-// 	}
-// };
+        const findDislike = await models.Dislike.findOne({
+            where: { UserId: userId, PostId: postId }
+        })
+        if (findDislike) {
+            await findDislike.destroy()
+        }
+
+
+
+		if (user) {
+			await models.Like.destroy(
+				{ where: { UserId: userId, PostId: postId } },
+			);
+			res.status(200).send({ message: "Neutre" });
+		} else {
+			await models.Like.create({
+				UserId: userId,
+				PostId: postId
+			});
+			res.status(201).json({ message: 'Like :)' });
+		}
+	} catch (error) {
+		return res.status(500).send({ error: 'Erreur du serveur' });
+	}
+};
+
+// Dislike 
+exports.dislikePost = async (req, res, next) => {
+	try {
+		const userId = req.tokenUserId;
+		const postId = req.params.id;
+		const user = await models.Dislike.findOne({
+			where: { UserId: userId, PostId: postId }
+		});
+
+        const findLike = await models.Like.findOne({
+            where: { UserId: userId, PostId: postId }
+        })
+        if (findLike) {
+            await findLike.destroy()
+        }
+
+		if (user) {
+			await models.Dislike.destroy(
+				{ where: { UserId: userId, PostId: postId } },
+			);
+			res.status(200).send({ message: "Neutre" });
+		} else {
+			await models.Dislike.create({
+				UserId: userId,
+				PostId: postId
+			});
+			res.status(201).json({ message: 'Dislike :(' });
+		}
+	} catch (error) {
+		return res.status(500).send({ error: 'Erreur du serveur' });
+	}
+};

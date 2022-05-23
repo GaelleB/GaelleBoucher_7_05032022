@@ -120,6 +120,7 @@ export default {
                 .then(() => {
                     alert("Post supprimé")
                     console.log("Post supprimé");
+                    this.getAllPosts()
                 })
                 
                 .catch(() =>{ 

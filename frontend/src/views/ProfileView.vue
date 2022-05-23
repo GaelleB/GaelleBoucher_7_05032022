@@ -88,21 +88,19 @@ export default {
         modifyUser() {
             const token = localStorage.getItem('token');
             const Id = localStorage.getItem("userId")
-            const regexText = /^[a-zA-Z-\s]+$/;
-            const regexEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/; 
             if (this.user.nom === "") {
                 alert("Veuillez saisir votre nom");
-            } else if (regexText.test(this.user.nom) === false) {
+            } else if ((this.user.nom) === false) {
                 alert("Veuillez vérifier que l'écriture de votre nom soit uniquement en lettre");}
             if (this.user.prenom === "") {
                 alert("Veuillez saisir votre prénom");
-            } else if (regexText.test(this.user.prenom) === false) {
+            } else if ((this.user.prenom) === false) {
                 alert("Veuillez vérifier que l'écriture de votre prénom soit uniquement en lettre");}
             if (this.user.email === "") {
                 alert("Veuillez saisir votre adresse email");
-            } else if (regexEmail.test(this.user.email) === false) {
+            } else if ((this.user.email) === false) {
                 alert("Veuillez saisir une adresse email valide");
-            } else if ((regexText.test(this.user.nom) === true) && regexText.test(this.user.prenom) === true && regexEmail.test(this.user.email) === true === null) {
+            } else if (((this.user.nom) === true) && (this.user.prenom) === true && (this.user.email) === true === null) {
                 axios.put(`http://localhost:3000/api/auth/profile/${Id}`, { 
                     headers: {
                         'authorization': `Bearer ${token}`,           
@@ -116,7 +114,7 @@ export default {
                 })
                 .catch((err) => console.log(err))
         
-            } else if ((regexText.test(this.user.nom) === true) && regexText.test(this.user.prenom) === true && regexEmail.test(this.user.email) === true != null) {
+            } else if (((this.user.nom) === true) && (this.user.prenom) === true && (this.user.email) === true != null) {
                 let data = new FormData()
                 data.append('nom', this.user.nom)
                 data.append('prenom', this.user.prenom)

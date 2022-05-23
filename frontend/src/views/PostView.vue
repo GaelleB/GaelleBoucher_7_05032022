@@ -31,8 +31,8 @@
 
                     <!-- Like/Dislike -->
                     <div class="like">
-                        <i class="fas fa-thumbs-up like btnSave likeIcon" @click="createLike()" aria-label="Bouton like"> {{likes}}</i>
-                        <i class="fas fa-thumbs-down like btnDelete likeIcon" @click="createDislike()" aria-label="Bouton dislike"> {{dislikes}}</i>
+                        <i class="fas fa-thumbs-up like btnSave likeIcon" @click="createLike()" aria-label="Bouton like"> {{Likes.length}}</i>
+                        <i class="fas fa-thumbs-down like btnDelete likeIcon" @click="createDislike()" aria-label="Bouton dislike"> {{Dislikes.length}}</i>
                     </div> 
                 </article>
 
@@ -112,6 +112,8 @@ export default {
             },
             userId:'',
             comments: [],
+            Likes: [],
+            Dislikes: [],
             id:'',
             content: '',
             role: '',
@@ -146,6 +148,7 @@ export default {
                 },
             })
                 .then((res) => {
+                console.log(res);
                 this.posts = res.data;
                 this.users = res.data;
                 this.post.title = res.data.title;
@@ -155,6 +158,8 @@ export default {
                 this.post.updatedAt = res.data.updatedAt;
                 this.user.nom = res.data.nom ;
                 this.user.prenom = res.data.prenom 
+                this.Likes = res.data.Likes;
+                this.Dislikes = res.data.Dislikes;
             })
             .catch(() => console.log('Impossible de récupérer le post!'))
         },
@@ -220,8 +225,12 @@ export default {
                 .then(() => {
                     alert("Commentaire publié")
                     console.log("Commentaire publié")
-                    this.$router.push("/allposts");
+                    this.getPostComment()
+
+                    this.hide2()
+                    // this.$router.push("/allposts");
                 })
+                
                 .catch(() => console.log(' err comments'))
             }
         },
@@ -259,7 +268,7 @@ export default {
                 })
                 .then((res) => {
                     alert("Commentaire supprimé")
-                    this.$router.push(`/allposts/`)
+                    this.getPostComment()
                     console.log(res.data);
                 })
                 .catch(() => {
@@ -285,7 +294,13 @@ export default {
                 },
                 body: data 
             })             
-            .then((res)=> { console.log(res)})
+            .then((res)=>
+                { 
+                    console.log(res)
+                    this.getOnePost()
+                }
+
+            )
             .catch((error) => {console.log(error) });
         },
 
@@ -306,13 +321,18 @@ export default {
                 },
                 body: data 
             })             
-            .then((res)=> { console.log(res)})
+            .then((res)=> { 
+                console.log(res)
+                this.getOnePost()
+            }
+            )
             .catch((error) => {console.log(error) });
         },
     },
     mounted(){
         this.User()
-        this.getOnePost ()
+        this.getOnePost()
+        this.getPostComment()
     }
 }
 </script>
