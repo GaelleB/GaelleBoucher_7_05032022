@@ -10,7 +10,7 @@
                         <textarea type="text" v-model="post.content" required aria-label="Message" disabled ></textarea>
                         <!-- <p>
                             Posté par 
-                                <b>{{ post.user.prenom }}</b> <b>{{ post.user.nom }}</b>
+                                <b>{{ post.User }}</b> <b>{{ post.User }}</b>
                             le <b>{{ dateFormat(post.createdAt) }}</b> <br>
                             à <b>{{ hourFormat(post.createdAt) }}</b>
                         </p>
@@ -29,11 +29,11 @@
                         <img class="imgPost" v-if="posts.image" :src="post.image" alt="Image du post">
                     </div>
 
-                    <!-- Like/Dislike
+                    <!-- Like/Dislike -->
                     <div class="like">
                         <i class="fas fa-thumbs-up like btnSave likeIcon" @click="createLike()" aria-label="Bouton like"> {{likes}}</i>
                         <i class="fas fa-thumbs-down like btnDelete likeIcon" @click="createDislike()" aria-label="Bouton dislike"> {{dislikes}}</i>
-                    </div>  -->
+                    </div> 
                 </article>
 
                 <!-- Création d'un commentaire -->
@@ -136,6 +136,7 @@ export default {
             this.id = localStorage.getItem("userId")
             this.role = localStorage.getItem("role")
         },
+
         // Affichage d'un post
         getOnePost() {
             const token = localStorage.getItem("token")
@@ -157,6 +158,7 @@ export default {
             })
             .catch(() => console.log('Impossible de récupérer le post!'))
         },
+
         // Date 
         dateFormat (createdDate) {
             const date = new Date(createdDate)
@@ -168,6 +170,7 @@ export default {
             const options = { hour: 'numeric', minute:'numeric', second:'numeric'};
             return hour.toLocaleTimeString('fr-FR', options);
         },
+
         // Suppression d'un post
         deletePost () {
             const token = localStorage.getItem("token")
@@ -187,6 +190,7 @@ export default {
             })
         }
         },
+
         // Modification d'un post
         modifyPost () {
             this.$router.push(`/postmodify/${this.id_param}`)
@@ -221,6 +225,7 @@ export default {
                 .catch(() => console.log(' err comments'))
             }
         },
+
         // Affichage des commentaires sur un post
         getPostComment() {
             const token = localStorage.getItem("token")              
@@ -261,6 +266,48 @@ export default {
                     alert("Non autorisé à supprimer ce commentaire!!")
                     console.log('Non autorisé à supprimer ce commentaire!!')})
             }
+        },
+
+        // Like
+        createLike() {
+            const token = localStorage.getItem("token")
+            const userId = localStorage.getItem("userId")
+            const postId = this.$route.params.id; 
+            
+            let data = {
+                postId: postId,
+                userId: userId,
+            }
+            axios.post(`http://localhost:3000/api/posts/${this.id_param}/like`,data, {
+                headers: {
+                    'authorization': `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+                body: data 
+            })             
+            .then((res)=> { console.log(res)})
+            .catch((error) => {console.log(error) });
+        },
+
+        // Dislike
+        createDislike() {
+                const token = localStorage.getItem("token")
+                const userId = localStorage.getItem("userId")
+                const postId = this.$route.params.id; 
+                
+                let data = {
+                    postId: postId,
+                    userId: userId
+                }
+            axios.post(`http://localhost:3000/api/posts/${this.id_param}/dislike`,data, {
+                headers: {
+                    'authorization': `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+                body: data 
+            })             
+            .then((res)=> { console.log(res)})
+            .catch((error) => {console.log(error) });
         },
     },
     mounted(){
