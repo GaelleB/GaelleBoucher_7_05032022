@@ -136,8 +136,8 @@ export default {
                     this.post.createdAt = res.data.createdAt;
                     this.post.updatedAt = res.data.updatedAt;
 
-                    alert("Modification du post avec image réussie");
-                    console.log("modification ok");
+                    alert("Modification du post réussie");
+                    console.log("Modification du post réussie");
 
                     this.posts = res.data
                     this.$router.push("/allposts");

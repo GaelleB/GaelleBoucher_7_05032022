@@ -7,7 +7,7 @@
                     <ul>
                         <li>
                             <input type="text" v-model="title" placeholder="Titre" size="50" required aria-label="Titre du post">
-                        </li>
+                        </li> 
                         <li>
                             <textarea v-model="content" placeholder="Rédigez votre post" rows="10" cols="60" required aria-label="Post"></textarea>
                         </li>
@@ -16,8 +16,8 @@
                         </li>
                         <li>
                             <input type="file" accept=".jpeg, .jpg, .png, .webp, .gif" v-on:change="imgPost" id="file" class="input-file" aria-label="Image du post">
-                            <label v-if="!image" for="file" class="label-file" aria-label="Choisir une photo pour ce post"></label>
-                            <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer la photo du post"><i class="far fa-trash-alt"></i> Supprimer image</button>
+                            <label v-if="!image" for="file" class="label-file" aria-label="Choisir une image pour ce post"></label>
+                            <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer l'image du post"><i class="far fa-trash-alt"></i> Supprimer image</button>
                         </li>
                     </ul>
                 </form>
@@ -52,47 +52,38 @@ export default {
         }
     },
     methods: {
-        uploadFile(event) {
-            this.image = event.target.files[0]
-        },
+        createPost() {
+            const Id = (localStorage.getItem("userId"))
+            const fileField = document.querySelector('input[type="file"]');
+            const token = (localStorage.getItem("token"))
 
-        createPost () {
-            const token = localStorage.getItem("token")
-            const userId = localStorage.getItem("userId")
-            if( this.title === ""){
-                alert('Saisissez votre titre')
-            } 
-            if( this.content === ""){
-                alert('Saisissez votre contenu')
-            }
-            if( this.image === true){
-                alert('Choisissez votre image')
-            }
-            else {
-                let data = {
-                    title: this.title,
-                    content: this.content,
-                    image: this.image,
+            if (this.title === '')
+                alert("Veuillez saisir le titre du post")
+
+            if (this.content === '')
+                alert("Veuillez saisir le contenu du post")
+
+            if (this.image === '' && this.title) { 
+                let data = new FormData()
+                data.append('title', this.title)
+                data.append('content', this.content)
+                data.append('userId', Id)
+                if (fileField.files[0]) {
+                    data.append('image', fileField.files[0]);
                 }
-                console.log(data)                                     
-                axios.post("http://localhost:3000/api/posts/newpost" ,data, {
+                axios.post("http://localhost:3000/api/posts/newpost", data, {
                     headers: {
-                        'authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'multipart/form-data',
+                        'authorization': `Bearer ${token}`
                     },
-                    body: data
                 })
                 .then(() => {
                     alert("Post publié")
-                    console.log("Post publié")
                     this.$router.push("/allposts");
-                })
-                .catch(() => console.log(' err posts'))
-            }
-        },
-        deletefile() {
-            this.image = '';
-        }   
+                    console.log('Post publié ')
+                });
+            };  
+        }
     },
         mounted(){
     }

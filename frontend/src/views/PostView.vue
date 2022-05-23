@@ -8,19 +8,17 @@
                         <nav class = "blockRespoText">
                         <input class="inputTitle" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" >  <!--rows="10" cols="25" -->
                         <textarea type="text" v-model="post.content" required aria-label="Message" disabled ></textarea>
-                        <td> 
-                            <p>
-                                Posté par 
-                                    <b>{{ post.user.prenom }}</b> <b>{{ post.user.nom }}</b>
-                                le <b>{{ dateFormat(post.createdAt) }}</b>
-                                à <b>{{ hourFormat(post.createdAt) }}</b><br>
-                            </p>
-                        </td>
+                        <!-- <p>
+                            Posté par 
+                                <b>{{ post.user.prenom }}</b> <b>{{ post.user.nom }}</b>
+                            le <b>{{ dateFormat(post.createdAt) }}</b> <br>
+                            à <b>{{ hourFormat(post.createdAt) }}</b>
+                        </p>
                         <p v-if="post.createdAt != post.updatedAt">
                             Modifié 
                             le <b>{{ dateFormat(post.updatedAt) }}</b>
                             à <b>{{ hourFormat(post.updatedAt) }}</b>
-                        </p>
+                        </p> -->
 
                             <!-- Modification & suppression d'un post -->  
                             <div class="content modif">
@@ -28,14 +26,14 @@
                                 <button @click="deletePost()" class="btnDelete" aria-label="Supprimer ce post"><i class="far fa-trash-alt"></i> Supprimer le post</button>
                             </div> 
                         </nav>
-                        <img class="imgPost" v-if="post.image" :src="post.image" alt="Image du post">
+                        <img class="imgPost" v-if="posts.image" :src="post.image" alt="Image du post">
                     </div>
 
-                    <!-- Like/Dislike -->
+                    <!-- Like/Dislike
                     <div class="like">
                         <i class="fas fa-thumbs-up like btnSave likeIcon" @click="createLike()" aria-label="Bouton like"> {{likes}}</i>
                         <i class="fas fa-thumbs-down like btnDelete likeIcon" @click="createDislike()" aria-label="Bouton dislike"> {{dislikes}}</i>
-                    </div> 
+                    </div>  -->
                 </article>
 
                 <!-- Création d'un commentaire -->

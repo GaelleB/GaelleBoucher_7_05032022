@@ -137,52 +137,52 @@ exports.deletePost = (req, res) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-// Like
-exports.likePost = async (req, res, next) => {
-	try {
-		const userId = req.tokenUserId;
-		const postId = req.params.id;
-		const user = await models.Like.findOne({
-			where: { UserId: userId, PostId: postId }
-		});
-		if (user) {
-			await models.Like.destroy(
-				{ where: { UserId: userId, PostId: postId } },
-			);
-			res.status(200).send({ message: "Neutre" });
-		} else {
-			await models.Like.create({
-				UserId: userId,
-				PostId: postId
-			});
-			res.status(201).json({ message: 'Like :)' });
-		}
-	} catch (error) {
-		return res.status(500).send({ error: 'Erreur du serveur' });
-	}
-};
+// // Like
+// exports.likePost = async (req, res, next) => {
+// 	try {
+// 		const userId = req.tokenUserId;
+// 		const postId = req.params.id;
+// 		const user = await models.Like.findOne({
+// 			where: { UserId: userId, PostId: postId }
+// 		});
+// 		if (user) {
+// 			await models.Like.destroy(
+// 				{ where: { UserId: userId, PostId: postId } },
+// 			);
+// 			res.status(200).send({ message: "Neutre" });
+// 		} else {
+// 			await models.Like.create({
+// 				UserId: userId,
+// 				PostId: postId
+// 			});
+// 			res.status(201).json({ message: 'Like :)' });
+// 		}
+// 	} catch (error) {
+// 		return res.status(500).send({ error: 'Erreur du serveur' });
+// 	}
+// };
 
-// Dislike 
-exports.dislikePost = async (req, res, next) => {
-	try {
-		const userId = req.tokenUserId;
-		const postId = req.params.id;
-		const user = await models.Dislike.findOne({
-			where: { UserId: userId, PostId: postId }
-		});
-		if (user) {
-			await models.Dislike.destroy(
-				{ where: { UserId: userId, PostId: postId } },
-			);
-			res.status(200).send({ message: "Neutre" });
-		} else {
-			await models.Dislike.create({
-				UserId: userId,
-				PostId: postId
-			});
-			res.status(201).json({ message: 'Dislike :(' });
-		}
-	} catch (error) {
-		return res.status(500).send({ error: 'Erreur du serveur' });
-	}
-};
+// // Dislike 
+// exports.dislikePost = async (req, res, next) => {
+// 	try {
+// 		const userId = req.tokenUserId;
+// 		const postId = req.params.id;
+// 		const user = await models.Dislike.findOne({
+// 			where: { UserId: userId, PostId: postId }
+// 		});
+// 		if (user) {
+// 			await models.Dislike.destroy(
+// 				{ where: { UserId: userId, PostId: postId } },
+// 			);
+// 			res.status(200).send({ message: "Neutre" });
+// 		} else {
+// 			await models.Dislike.create({
+// 				UserId: userId,
+// 				PostId: postId
+// 			});
+// 			res.status(201).json({ message: 'Dislike :(' });
+// 		}
+// 	} catch (error) {
+// 		return res.status(500).send({ error: 'Erreur du serveur' });
+// 	}
+// };
