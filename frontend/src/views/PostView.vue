@@ -8,17 +8,7 @@
                         <nav class = "blockRespoText">
                         <input class="inputTitle" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" >  <!--rows="10" cols="25" -->
                         <textarea type="text" v-model="post.content" required aria-label="Message" disabled ></textarea>
-                        <!-- <p>
-                            Posté par 
-                                <b>{{ post.User }}</b> <b>{{ post.User }}</b>
-                            le <b>{{ dateFormat(post.createdAt) }}</b> <br>
-                            à <b>{{ hourFormat(post.createdAt) }}</b>
-                        </p>
-                        <p v-if="post.createdAt != post.updatedAt">
-                            Modifié 
-                            le <b>{{ dateFormat(post.updatedAt) }}</b>
-                            à <b>{{ hourFormat(post.updatedAt) }}</b>
-                        </p> -->
+                    
 
                             <!-- Modification & suppression d'un post -->  
                             <div class="content modif">
@@ -344,23 +334,18 @@ section {
     align-items: center;
     margin: 0 auto 0 auto;
 }
+
+article {
+    margin: 0 0 0 50px;
+}
+
 .card {
-    width: 95%;
     display: flex;
     flex-direction: column;
     margin-top: 15px;
+    font-size: 13px;
 }
-h2{
-    margin-top: 15px;
-}
-.cardComment {
-    display: flex;
-    flex-direction: row;
-    margin-top: 15px;
-}
-table{
-    margin-top: 15px; 
-}
+
 input{
     width: 60%;
     height: 30px;
@@ -371,82 +356,60 @@ input{
     font-weight: bolder;
     border-radius: 20px;
 }
+
 .inputTitle{
     margin: 10px auto 10px auto ;
     width: 70%;
     font-size: 15px;
     text-align: center;
 }
-h1 {
-    font-size: 15px;
-    margin: 30px 0 10px 0;
-}
+
 textarea {
     width: 90%;
     height: 150px;
     font-size: 15px;
     margin: 10px auto 10px auto;
-}
-.userComment{
-    font-size: 20px;
-    font-weight: bolder;
-}
-.header,
-.content {
-    width: 95%;
-    background:grey;
-    border-radius: 20px ;
-}
-.header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     border-radius: 20px;
 }
-.content {
-    border-radius: 0 0 20px 20px;
-}
-.info {
-    font-size: 13px;
-}
-.commentaire {
-    font-size: 20px;
-    margin-right: 10px;
-}
-p {
-    padding-left: 0.5em;
-}
+
+
+
+
 .Icon:hover {
     cursor: pointer;
 }
+
 .modif {
     margin: 0;
 }
+
 .btnDelete{
     margin-bottom: 10px;
 }
+
 .btn{
     text-align: center;
     width: 30%;
 }
-.content {
-    margin: auto;
-}
+
 .createcomment {
     display: flex;
     flex-direction: column;
 }
+
 .displayComment{
     border-radius: 20px;
     margin: 10px auto 10px auto ;
     background: rgba(207, 203, 203, 0.877);
 }
+
 .btnComment{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     
 }
+
 .button-comment {
     margin: 10px 0 0 0;
     padding: 5px 5px ;
@@ -456,10 +419,12 @@ p {
     font-size: 1rem;
     cursor: pointer;
 }
+
 .link {
     text-decoration: none;
     color: #000000;
 }
+
 .comment-button {
     margin: 10px 0 30px 0;
     padding: 5px 30px ;
@@ -469,16 +434,19 @@ p {
     font-size: 1rem;
     cursor: pointer;
 }
+
 .comment {
     border: 2px solid #000000;
     border-radius: 20px;
     margin-bottom: 20px;
 }
-.comment-info,
-.comment-content {
+
+.comment-info, .comment-content {
     padding: 0 30px 0 30px;
 }
+
 .imgPost {
+    display: flex;
     width: 70%;
     margin: auto;
     border-radius: 30px;
@@ -486,6 +454,7 @@ p {
 .content .imgPost {
     margin-top: 10px;
 }
+
 /*--------------------*/
 @media screen and (min-width:768px) {
     .blockRespo{

@@ -14,14 +14,7 @@
                             <label for="content" aria-label="Post">Post</label>
                             <textarea v-model="post.content" placeholder="Vous pouvez modifier le post..." rows="10" cols="60" required aria-label="Message du post"></textarea>
                         </li>
-                        <li v-if="post.image">
-                            <img :src="post.image" alt="Image du post" class="file" width="200px" height="200px">
-                        </li>
-                        <li> 
-                            <label v-if="post.image " for="file" class="button" aria-label="Choisir une photo pour ce post">Modifier l'image</label>
-                            <button v-else @click="deletefile()" class="label-file btnDelete" aria-label="Supprimer cette photo du post"> Supprimer l'image</button>    
-                            <input type="file" accept=".jpeg, .jpg, .png, .webp, .gif" v-on:change="imgPost" id="file" class="input-file" aria-label="Image du post">
-                        </li>
+                        
                     </ul>
                 </form>
                 <button @click="modifyPost()" class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Enregistrer</button>

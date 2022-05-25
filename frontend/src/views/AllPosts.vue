@@ -21,9 +21,9 @@
                 <td> <textarea class="tdHeight" type="text" v-model="post.content" required aria-label="Message" disabled></textarea> </td>
                 <td class="icone">
                     <router-link  :to="`/post/${post.id}`" :href="$router.resolve({name: 'Post', params: { id: post.id}}).href" aria-label="Afficher le message">
-                    <button class="btnIconeSave" aria-label="Modifier ce post" ><i class="far fa-edit"></i></button>
+                    <button class="btnIconeSave" aria-label="Modifier ce post" ><i class="far fa-edit"></i> Modifier</button>
                     </router-link>
-                    <button @click="deletePost(index)" class="btnIconeDelete" aria-label="Supprimer ce post"><i class="far fa-trash-alt"></i></button>
+                    <button @click="deletePost(index)" class="btnIconeDelete" aria-label="Supprimer ce post"><i class="far fa-trash-alt"></i> Supprimer</button>
                 </td>
                 <td class="info">
                     <p>
@@ -143,17 +143,16 @@ export default {
 h1 {
     font-size: 30px;
 }
+
 h2 {
     font-size: 15px;
     margin: 0 auto 0 auto;
 }
+
 .info {
     font-size: 15px;
 }
-.image {
-    height: 20px;
-    border-radius: 30px;
-}
+
 .article {
     display: flex;
     flex-direction: column;
@@ -161,39 +160,41 @@ h2 {
     text-decoration: none;
     color: #000000;
 }
+
 p {
     font-weight: bold;
     font-size: 20px;
 }
-td{
+
+td {
     margin-top:10px;
 }
-.tdHeight{
-    height:100px;
+
+.tdHeight {
+    width: 85%;
+    height: 100px;
+    border: 2px 1px;
+    border-radius: 20px;
 }
-.header, .content {
-    width: 40%;
-    background: #ffd7d7;
-    border: 2px solid black;
-}
-.cardPost{
-    width: 60%;
+
+.cardPost {
+    width: 50%;
+    height: auto;
     margin: 10px auto 10px auto;
     display: flex;
     flex-direction: column;
     border: 2px solid black;
     border-radius: 15px;
 }
-table{
+
+table {
     margin: 0 auto 0 auto ;
 }
+
 .header {
     border-radius: 20px 20px 0 0;
 }
-.content {
-    margin-bottom: 30px;
-    border-radius: 0 0 20px 20px;
-}
+
 .search {
     margin-bottom: 50px;
     margin-top: 50px;
@@ -202,51 +203,48 @@ table{
     border: 2px solid black;
     border-radius: 15px;
 }
+
 ::placeholder {
     text-align: center;
     font-size: 14px;
 }
+
 input {
-    width: 40%;
-    font-size: 16px;
+    width: 50%;
+    height: 20%;
+    font-size: 20px;
     text-align: center;
+    border: black;
+    border: 2px 1px;
+    border-radius: 20px;
 }
-textarea{
-    width: 90%
-}
-.imgProfile {
-    width: 50px;
-    height: 50px;
-    border: 2px solid black;
-    border-radius: 30px;
-}
-.imgPost {
-    width: 80%;
-    height: 60%;
-    margin : auto;
-    border-radius: 30px;
-}
+
 .icone{
     display: flex;
     justify-content: centre;
     margin: 15px auto 15px auto;
 }
+
 .btnIconeSave, .btnIconeDelete, .btnSave{
     width: 30px ;
     height: 30px ;
-    margin: 5px;
+    margin: 10px;
     padding: 0px;
     border-radius: 10px;
 }
-.btnIconeDelete{
-    background-color: rgb(218, 83, 83);
-}
+
 .btnIconeSave{
-    background-color: rgb(9, 140, 163);
+    background-color: #fac4cf;
 }
+
+.btnIconeDelete{
+    background-color: #fac4cf;
+}
+
 .text {
     font-size: 14px;
 }
+
 @media screen and (min-width:768px){
     table {
         width: 100%;

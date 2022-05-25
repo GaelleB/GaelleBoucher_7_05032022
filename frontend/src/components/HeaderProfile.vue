@@ -1,6 +1,6 @@
 <template>
   <header class="nav">
-    <img class="imgLogo" src="/icon-left-font-monochrome-white.png" alt="Logo Groupomania" />
+    <img class="imgLogo" src="/icon-left-font.png" alt="Logo Groupomania" />
     <nav>
       <router-link class="link" to="/profile"  aria-label="Profil">Mon profil</router-link>
       <router-link class="link" to="/allposts" aria-label="Retour vers Le fil d'actu de Groupomania"><i class="fas fa-home home"></i></router-link>

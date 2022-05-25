@@ -74,38 +74,44 @@ name: 'SignupView',
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
+
 h2{
   color: black;
 }
+
 p{
   color: black;
   font-size: 20px;
   margin: 0;
 }
+
 form{
-  width: 50%;
-  margin: 10px auto 10px auto;
+  width: 40%;
 }
+
 ul {
   list-style: none;
   padding: 0;
 }
+
 li {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   margin: 0 auto 0 auto;
 }
+
 input {
   border-radius: 15px;
   text-align: center;
   margin: 12px auto;
 }
-::placeholder {
-  text-align: center;
+
+button {
+  background-color: #fac4cf;
 }
+
 footer{
   padding: 0;
 }

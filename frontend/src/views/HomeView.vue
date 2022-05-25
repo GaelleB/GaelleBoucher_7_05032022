@@ -29,9 +29,11 @@ export default {
 body{
   margin-bottom: 100px;
 }
+
 p{
   font-size: 30px;
 }
+
 h2 {
   width: 70%;
   color: black;
@@ -39,16 +41,19 @@ h2 {
   padding: 25px 0 0 0;
   margin:0 auto 50px auto;
 }
+
 .tab{
     display: flex;
     justify-content: center;
 }
+
 .routerLink{
     width: 70%;
     margin: auto;
     padding-top: 50px;
 }
-.link, .linkAdmin {
+
+.link {
   height: 20px;
   color: black;
   font-weight: bolder;
@@ -56,13 +61,11 @@ h2 {
   padding : 10px 10px 10px 10px;
   font-size: 1.2rem;
   text-decoration: none;
-  background: grey;
+  background: #fac4cf;
   border: 1px solid black;
   border-radius: 20px;
 }
-.linkAdmin{
-  margin-top: 60px;
-}
+
 .link:hover {
   color: black;
 }
@@ -72,11 +75,9 @@ nav {
   font-size: 1vw;
   margin-bottom: 60px;
 }
+
 .nav a {
   font-weight: bold;
-  color: #000000;
-}
-.nav a.router-link-exact-active {
   color: black;
 }
 </style>

@@ -68,35 +68,43 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+
 p {
   color: black;
   font-size: 20px;
 }
+
 form{
-  width: 30%;
+  width: 35%;
 }
+
 ul {
 list-style: none;
 padding: 0;
 }
+
 li {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   margin-bottom: 30px;
 }
+
 input {
   border-radius: 15px;
   font-size: 20px;
   text-align: center;
 }
-::placeholder {
-  text-align: center;
+
+button {
+  background-color: #fac4cf;
 }
+
 .alert{
   color:red;
   font-weight: bolder;
 }
+
 /* DESKTOP*/
 @media screen and (min-width: 950px) {
   h1{
