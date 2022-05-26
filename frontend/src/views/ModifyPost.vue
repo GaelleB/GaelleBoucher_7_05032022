@@ -82,7 +82,7 @@ export default {
         // Modification d'un post
         modifyPost() {
             const token = localStorage.getItem("token")
-
+            
             if (this.post.content === "")
                 alert("Veuillez saisir votre post");
             if (this.post.title != "" && this.post.content != "") {

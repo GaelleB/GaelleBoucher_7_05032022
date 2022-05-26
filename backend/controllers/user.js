@@ -89,7 +89,6 @@ exports.modifyUser = (req, res, next) => {
     const nom = req.body.nom;
     const prenom = req.body.prenom;
     const email = req.body.email;
-    const role = req.body.role;
 
     models.User.findOne({
         where: { id: userId },
@@ -99,7 +98,6 @@ exports.modifyUser = (req, res, next) => {
             nom: nom,
             prenom: prenom,
             email: email,
-            role: role,
         })
         .then((user) => {
             if (user) return res.status(201).json(user);

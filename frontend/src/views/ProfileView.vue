@@ -66,7 +66,6 @@ export default {
             this.id = localStorage.getItem("Id")
             this.role = localStorage.getItem("role")
         },
-
         // Affichage d'un utilisateur
         getOneUser() {
             const Id = localStorage.getItem("userId");
@@ -91,49 +90,32 @@ export default {
         // Modification d'un utilisateur
         modifyUser() {
             const token = localStorage.getItem('token');
+            console.log(token)
             const Id = localStorage.getItem("userId")
-
-            if (this.user.nom === "") {
+            
+            if (this.user.nom === "" || this.user.prenom === "" || this.user.email === "" ) {
                 alert("Veuillez saisir votre nom");
-            } 
-            if (this.user.prenom === "") {
-                alert("Veuillez saisir votre prénom");
-            } 
-            if (this.user.email === "") {
-                alert("Veuillez saisir votre adresse email");
-            } else if (((this.user.nom) === true) && (this.user.prenom) === true && (this.user.email) === true === null) {
-                axios.put(`http://localhost:3000/api/auth/profile/${Id}`, { 
+                alert("Veuillez saisir une adresse email valide");
+            } else if (this.user.nom !== "" && this.user.prenom !== ""  && this.user.email !== "" ) {
+                axios.put(`http://localhost:3000/api/auth/profile/${Id}`, 
+                {
+                    nom: this.user.nom,
+                    prenom: this.user.prenom ,
+                    email: this.user.email 
+                },
+                { 
                     headers: {
-                        'authorization': `Bearer ${token}`,           
-                        'Content-Type': 'multipart/form-data',
+                        'authorization': `Bearer ${token}`,    
                     },
                 })
                 .then((res) => {
                 this.user = res.data;
-                alert("Votre modification a bien été prise en compte")
-                    this.$router.push("/profile");
+                    console.log ("Utilisateur modifié")
+                    this.$router.push("/allposts");
                 })
                 .catch((err) => console.log(err))
         
-            } else if (((this.user.nom) === true) && (this.user.prenom) === true && (this.user.email) === true != null) {
-                let data = new FormData()
-                data.append('nom', this.user.nom)
-                data.append('prenom', this.user.prenom)
-                data.append('email', this.user.email)
-                axios.post(`http://localhost:3000/api/auth/profile/${Id}`, data,{
-                    headers: {
-                        'authorization': `Bearer ${token}`,
-                        'Content-Type': 'multipart/form-data',
-                    },
-                    body: data
-                })
-                .then(() => {
-                    alert("Profil modifié")
-                    console.log("Profil modifié");
-                    this.$router.push("/allposts");
-                })
-                .catch(error => console.log(error))
-            }
+            } 
         },
 
         // Suppression d'un utilisateur

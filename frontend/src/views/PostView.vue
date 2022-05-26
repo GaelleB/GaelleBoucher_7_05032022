@@ -14,7 +14,7 @@
                                 <button @click="modifyPost()" class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Modifier le post</button>
                             </div> 
                         </nav>
-                        <img class="imgPost" v-if="posts.image" :src="post.image" alt="Image du post">
+                        <img class="imgPost" v-if="post.image" :src="post.image" alt="Image du post">
                     </div>
 
                     <!-- Like/Dislike -->
@@ -136,6 +136,7 @@ export default {
             })
                 .then((res) => {
                 console.log(res);
+                console.log(res.data.image);
                 this.posts = res.data;
                 this.users = res.data;
                 this.post.title = res.data.title;

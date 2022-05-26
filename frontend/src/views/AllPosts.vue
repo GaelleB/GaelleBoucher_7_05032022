@@ -28,7 +28,7 @@
                 <td class="info">
                     <p>
                         Posté par 
-                            <!-- <b>{{ post.User.prenom }}</b> <b>{{ post.User.nom }}</b> -->
+                            <b>{{ post.User.prenom }}</b> <b>{{ post.User.nom }}</b>
                         le <b>{{ dateFormat(post.createdAt) }}</b>
                         à <b>{{ hourFormat(post.createdAt) }}</b><br>
                     </p>
@@ -66,9 +66,10 @@ export default {
     data () {
         return {
             id_param: this.$route.params.id,
-            props: ['post.id'],
-            posts: [],
+            postId: this.$route.params.id,
             users: [],
+            props: ['post'],
+            posts: [],
         }
     },
     computed : {
@@ -118,15 +119,13 @@ export default {
                     }
                 })
                 .then(() => {
-                    alert("Post supprimé")
                     console.log("Post supprimé");
                     this.getAllPosts()
                 })
                 
                 .catch(() =>{ 
-                    alert("Non autorisé à supprimer ce post!!")
                     console.log('Non autorisé à supprimer ce post!!')
-                    })
+                })
             }
         },
         post () {
