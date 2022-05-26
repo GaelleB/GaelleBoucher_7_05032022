@@ -76,7 +76,6 @@ exports.getAllPosts = (req, res, next) => {
 exports.modifyPost = (req, res, next) => {
     const userId = req.userId;
     const postId = req.params.id;
-    const title = req.body.title;
     const content = req.body.content;
 
     if (req.file) {
@@ -97,10 +96,10 @@ exports.modifyPost = (req, res, next) => {
         .catch((error) => res.status(500).json({ error }));
     }
     
-  const updatePost = { content };
-  if (req.file) {
-    updatePost.image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
-  }
+    const updatePost = { content };
+    if (req.file) {
+        updatePost.image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
+    }
 
     models.Post.update(
         {

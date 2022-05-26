@@ -66,6 +66,8 @@ export default {
             this.id = localStorage.getItem("Id")
             this.role = localStorage.getItem("role")
         },
+
+        // Affichage d'un utilisateur
         getOneUser() {
             const Id = localStorage.getItem("userId");
             const token = localStorage.getItem('token');
@@ -85,21 +87,20 @@ export default {
                 console.log('Non autorisé à supprimer ce message!')
             })
         },
+
+        // Modification d'un utilisateur
         modifyUser() {
             const token = localStorage.getItem('token');
             const Id = localStorage.getItem("userId")
+
             if (this.user.nom === "") {
                 alert("Veuillez saisir votre nom");
-            } else if ((this.user.nom) === false) {
-                alert("Veuillez vérifier que l'écriture de votre nom soit uniquement en lettre");}
+            } 
             if (this.user.prenom === "") {
                 alert("Veuillez saisir votre prénom");
-            } else if ((this.user.prenom) === false) {
-                alert("Veuillez vérifier que l'écriture de votre prénom soit uniquement en lettre");}
+            } 
             if (this.user.email === "") {
                 alert("Veuillez saisir votre adresse email");
-            } else if ((this.user.email) === false) {
-                alert("Veuillez saisir une adresse email valide");
             } else if (((this.user.nom) === true) && (this.user.prenom) === true && (this.user.email) === true === null) {
                 axios.put(`http://localhost:3000/api/auth/profile/${Id}`, { 
                     headers: {
@@ -129,12 +130,13 @@ export default {
                 .then(() => {
                     alert("Profil modifié")
                     console.log("Profil modifié");
-                    this.$router.push("/profile");
+                    this.$router.push("/allposts");
                 })
                 .catch(error => console.log(error))
             }
         },
 
+        // Suppression d'un utilisateur
         deleteUser() {
             const Id = localStorage.getItem("userId")
             if (confirm("Voulez-vous vraiment supprimer le compte?") == true) {

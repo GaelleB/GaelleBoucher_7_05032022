@@ -391,13 +391,13 @@ table {
 }
 
 .createcomment {
-    display: flex;
-    flex-direction: column;
     border: none;
     margin: 20px 0;
 }
 
 .displayComment {
+    display: flex;
+    flex-direction: column;
     border: 2px solid black;
     border-radius: 20px;
     margin: 10px auto 10px auto;

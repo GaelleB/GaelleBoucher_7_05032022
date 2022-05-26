@@ -82,15 +82,11 @@ export default {
         // Modification d'un post
         modifyPost() {
             const token = localStorage.getItem("token")
-            const fileField = document.querySelector('input[type="file"]');
-            
-            if (this.post.title === "")
-                alert("Veuillez saisir le titre");
+
             if (this.post.content === "")
                 alert("Veuillez saisir votre post");
-            if (this.post.image === null && this.post.title != "" && this.post.content != "") {
+            if (this.post.title != "" && this.post.content != "") {
                 let data = new FormData()
-                data.append('image', '')
                 data.append('content', this.post.content)
                 axios.put(`http://localhost:3000/api/posts/${this.id_param}`, data,  {
                     headers: {
@@ -111,7 +107,6 @@ export default {
                 } )
             } else if (this.post.title != "" && this.post.content != "") {
                 let data = new FormData()
-                data.append('image', fileField.files[0])
                 data.append('content', this.post.content)
                 axios.put(`http://localhost:3000/api/posts/${this.id_param}`, data ,{
                     headers: {
@@ -124,7 +119,6 @@ export default {
                     console.log(res.data);
                     this.posts = res.data;
                     this.post.content = res.data.content;
-                    this.post.image = res.data.image;
                     this.post.createdAt = res.data.createdAt;
                     this.post.updatedAt = res.data.updatedAt;
 

@@ -28,7 +28,7 @@
                 <td class="info">
                     <p>
                         Posté par 
-                            <b>{{ post.User.prenom }}</b> <b>{{ post.User.nom }}</b>
+                            <!-- <b>{{ post.User.prenom }}</b> <b>{{ post.User.nom }}</b> -->
                         le <b>{{ dateFormat(post.createdAt) }}</b>
                         à <b>{{ hourFormat(post.createdAt) }}</b><br>
                     </p>
@@ -145,8 +145,13 @@ h1 {
 }
 
 h2 {
+    color: black;
     font-size: 15px;
     margin: 0 auto 0 auto;
+}
+
+button {
+    background-color: #fac4cf;
 }
 
 .info {
