@@ -22,9 +22,6 @@
                     </ul>
                 </form>
                 <button @click="createPost()" class="btnSave" aria-label="Créer ce post">Publier</button>
-                <div>
-                    <router-link to="/allposts" aria-label="Retour vers Le fil d'actu de Groupomania"><i class="fas fa-home home"></i></router-link>
-                </div>
             </section>
         <Footer/>
     </div>
@@ -92,106 +89,71 @@ export default {
 
 <style scoped>
 section {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-form{
-    width: 80%;
+
+h1 {
+    font-size: 20px;
 }
+
+form {
+    padding-left: 430px;
+    width: 60%;
+}
+
 ul {
-list-style: none;
-padding: 0;
+    list-style: none;
+    padding: 0;
 }
+
 li {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    align-content: center;
     margin-bottom: 30px;
 }
-textarea {
-    font-size: 1.2rem;
-}
-.header,
-.content {
+
+input, textarea {
     width: 50%;
-    background: #146cbe;
-    border: 2px solid #486ce0;
-}
-.header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-radius: 20px 20px 0 0;
-}
-.content {
-    border-radius: 0 0 20px 20px;
-}
-.info {
-    font-size: 0.8rem;
-}
-.modif {
-    margin: 0;
-}
-.content {
-    margin-bottom: 30px;
-}
-.createcomment {
-    display: flex;
-    flex-direction: column;
-}
-.button-comment {
-    margin: 10px 0 0 0;
-    padding: 5px 5px ;
-    border: 2px solid #146cbe;
-    border-radius: 10px;
-    background: #486ce0;
-    font-size: 1rem;
-    cursor: pointer;
-}
-.espacement {
-    margin: 5px 0 0 10px;
-}
-.link {
-    text-decoration: none;
-    color: #000000;
-}
-.comment-button {
-    margin: 10px 0 30px 0;
-    padding: 5px 30px ;
-    border: 2px solid #146cbe;
-    border-radius: 10px;
-    background: #486ce0;
-    font-size: 1rem;
-    cursor: pointer;
-}
-.comment {
-    border: 2px solid #000000;
+    font-size: 15px;
+    border: 2px solid black;
     border-radius: 20px;
-    margin-bottom: 20px;
+    text-align: center;
 }
-.comment-info,
-.comment-content {
-    padding: 0 30px 0 30px;
-}
+
 img {
     width: 70%;
     border-radius: 30px;
     margin: auto;
 }
-.content img {
-    margin-top: 10px;
+
+#file {
+    border: none;
 }
+
+.btnSave {
+    background-color: #fac4cf;
+}
+
+.link {
+    text-decoration: none;
+    color: #000000;
+}
+
 @media screen and (max-width:1024px){
-.btnDelete{
-    width: 50%;
-    margin: 0 auto 0 auto;
+    .btnDelete{
+        width: 50%;
+        margin: 0 auto 0 auto;
+    }
 }
-}
+
 @media screen and (max-width:768px){
-.btnDelete{
-    width: 50%;
-    margin: 0 auto 0 auto;
-}
+    .btnDelete{
+        width: 50%;
+        margin: 0 auto 0 auto;
+    }
 }
 </style>

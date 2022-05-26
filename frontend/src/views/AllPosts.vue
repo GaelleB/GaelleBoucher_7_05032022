@@ -222,7 +222,7 @@ input {
 .icone{
     display: flex;
     justify-content: centre;
-    margin: 15px auto 15px auto;
+    margin: 10px auto 10px auto;
 }
 
 .btnIconeSave, .btnIconeDelete, .btnSave{

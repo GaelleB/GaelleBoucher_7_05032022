@@ -191,10 +191,11 @@ export default {
 </script>
 
 <style scoped>
-form{
+form {
     width: 100%;
     margin: auto;
 }
+
 ul {
     display: flex;
     flex-direction: column;
@@ -203,9 +204,11 @@ ul {
     margin: 0;
     padding: 0;
 }
+
 label {
     font-size: 15px;
 }
+
 li {
     display: flex;
     margin-top: 7px;
@@ -213,30 +216,14 @@ li {
     align-items: center;
     width: 100%;
 }
+
 input {
-    width: 31%;
+    width: 20%;
     border-radius: 15px;
     font-size: 20px;
     text-align: center;
 }
-.modify{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 0 10px 0 10px;
-    margin: auto;
-    width: 70%;
-}
-.file {
-    width: 200px;
-    height: 200px;
-    border: 2px solid black;
-    border-radius: 100px;
-    margin: auto;
-}
-.input-file {
-    display: none;
-}
+
 .button {
     margin: 20px 0 0 0;
     padding: 5px 30px ;
@@ -247,17 +234,15 @@ input {
     min-width: 220px;
     width: 40%;
     margin: 30px auto 15px auto;
-    background: grey;
     font-size: 15px;
     cursor: pointer;
 }
+
 .espacement {
     margin-left: 10px;
 }
+
 .submit {
     margin-bottom: 30px;
-}
-.password {
-    margin-top: 5px;
 }
 </style>

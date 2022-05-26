@@ -40,17 +40,13 @@ header {
   align-items: center;
   justify-content: space-between;
 }
-nav{
+
+nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.imgProfile {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-}
+
 .imgLogo {
   width: 60%;
   padding-top: 10px;
@@ -59,29 +55,36 @@ nav{
   object-fit: cover;
   background-size: cover;
 }
+
 .link {
   padding-left: 30px;
   font-size: 1.1rem;
   text-decoration: none;
   cursor: pointer;
 }
+
 .link:hover {
   color: black;
 }
+
 .nav {
-  padding: 20px 5vw;
-  font-size: 1vw;
+  padding: 20px 90px;
+  font-size: 20px;
 }
+
 .nav a {
   font-weight: bold;
   color: #000000;
 }
+
 .nav a.router-link-exact-active {
   color: black;
 }
+
 i {
   font-size: 1.5rem;
 }
+
 .fa-home {
   width: 50px;
   height: 50px;

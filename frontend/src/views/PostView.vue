@@ -9,11 +9,9 @@
                         <input class="inputTitle" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" >  <!--rows="10" cols="25" -->
                         <textarea type="text" v-model="post.content" required aria-label="Message" disabled ></textarea>
                     
-
                             <!-- Modification & suppression d'un post -->  
                             <div class="content modif">
                                 <button @click="modifyPost()" class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Modifier le post</button>
-                                <button @click="deletePost()" class="btnDelete" aria-label="Supprimer ce post"><i class="far fa-trash-alt"></i> Supprimer le post</button>
                             </div> 
                         </nav>
                         <img class="imgPost" v-if="posts.image" :src="post.image" alt="Image du post">
@@ -54,8 +52,8 @@
                             </td>
 
                             <!-- Suppression d'un commentaire -->  
-                            <div class="content displayComment">
-                                <div class="modif">                                                                   
+                            <div class="content-displayComment">
+                                <div class="modifComment">                                                                   
                                     <button @click="deleteComment(index)" class="btnDelete" aria-label="Supprimer ce commentaire"><i class="far fa-trash-alt"></i> Supprimer commentaire</button>
                                     <button v-on:click="hide" class="btnDelete" aria-label="Masquer les commentaires">Masquer les commentaires</button>
                                 </div>
@@ -63,7 +61,6 @@
                         </tr>    
                     </table>
             </section>
-        <router-link to="/allposts" aria-label="Retour vers Le fil d'actu de Groupomania"><i class="fas fa-home home"></i></router-link>
         <Footer/>
     </div>
 </template>
@@ -329,6 +326,7 @@ export default {
 
 <style scoped>
 section {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -336,18 +334,16 @@ section {
 }
 
 article {
-    margin: 0 0 0 50px;
-}
-
-.card {
     display: flex;
     flex-direction: column;
-    margin-top: 15px;
-    font-size: 13px;
+    align-items: center;
+    border: 2px solid black;
+    border-radius: 20px;
+    margin: 0 auto 0 auto;
 }
 
-input{
-    width: 60%;
+.inputTitle {
+    width: 80%;
     height: 30px;
     margin-top: 10px;
     color: #000000;
@@ -355,104 +351,65 @@ input{
     font-size: 20px;
     font-weight: bolder;
     border-radius: 20px;
-}
-
-.inputTitle{
-    margin: 10px auto 10px auto ;
-    width: 70%;
-    font-size: 15px;
-    text-align: center;
+    margin: 10px auto 10px auto;
 }
 
 textarea {
-    width: 90%;
-    height: 150px;
+    width: 80%;
+    height: 100px;
     font-size: 15px;
-    margin: 10px auto 10px auto;
+    margin: auto;
     border-radius: 20px;
-}
-
-
-
-
-.Icon:hover {
-    cursor: pointer;
 }
 
 .modif {
     margin: 0;
 }
 
-.btnDelete{
+.btnSave, .btnDelete {
     margin-bottom: 10px;
+    background-color: #fac4cf;
 }
 
-.btn{
-    text-align: center;
+.imgPost {
     width: 30%;
+    margin: auto;
+    padding-right: 50px;
+    border-radius: 20px;
+}
+
+.like {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin: 0 10px;
+    padding: 10px 10px;
+}
+
+table {
+    widows: 100%;
 }
 
 .createcomment {
     display: flex;
     flex-direction: column;
+    border: none;
+    margin: 20px 0;
 }
 
-.displayComment{
+.displayComment {
+    border: 2px solid black;
     border-radius: 20px;
-    margin: 10px auto 10px auto ;
-    background: rgba(207, 203, 203, 0.877);
+    margin: 10px auto 10px auto;
 }
 
+.content-displayComment {
+    border: none;
+}
 .btnComment{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    
-}
-
-.button-comment {
-    margin: 10px 0 0 0;
-    padding: 5px 5px ;
-    border: 2px solid #fd2d01;
-    border-radius: 10px;
-    background: #ffd7d7;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-.link {
-    text-decoration: none;
-    color: #000000;
-}
-
-.comment-button {
-    margin: 10px 0 30px 0;
-    padding: 5px 30px ;
-    border: 2px solid #fd2d01;
-    border-radius: 10px;
-    background: #ffd7d7;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-.comment {
-    border: 2px solid #000000;
-    border-radius: 20px;
-    margin-bottom: 20px;
-}
-
-.comment-info, .comment-content {
-    padding: 0 30px 0 30px;
-}
-
-.imgPost {
-    display: flex;
-    width: 70%;
-    margin: auto;
-    border-radius: 30px;
-}
-.content .imgPost {
-    margin-top: 10px;
 }
 
 /*--------------------*/
@@ -462,32 +419,35 @@ textarea {
         flex-direction: row;
         justify-content: center;
     }
+    
     .blockRespoText{
         display: flex;
         flex-direction: column;
         margin: 20px;
     }
-    .header,
+    
     .content {
-        width: 98%;
+        width: 100%;
     }
+
+    .header {
+        width: 50%;
+    }
+
     section{
         width: 95%;
     }
-    .modif{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+
     .button {
         width: 50%;
     }
+    
     .imgPost {
         width: 20%;
         height: 30%;
-        margin: 20px;
-        border-radius: 30px;
+        border-radius: 10px;
     }
+
     .createcomment {
         width: 100%;
     }

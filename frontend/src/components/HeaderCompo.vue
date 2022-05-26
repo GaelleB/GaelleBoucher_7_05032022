@@ -11,10 +11,12 @@ header {
   align-items: center;
   justify-content: space-between;
 }
+
 .imgLogo {
   width: 60%;
   display: block;
   padding-top: 10px;
+  padding-right: 25px;
   margin-left: auto;
   margin-right: auto;
 }

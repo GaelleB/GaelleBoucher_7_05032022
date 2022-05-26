@@ -3,7 +3,7 @@
         <HeaderProfile/>
             <section>
                 <h1>Modification de votre post</h1>
-                <p>Vous pouvez modifier l'image et le contenu du post</p>
+                <p>Vous pouvez modifier le contenu du post</p>
                 <form>
                     <ul>
                         <li>
@@ -14,7 +14,6 @@
                             <label for="content" aria-label="Post">Post</label>
                             <textarea v-model="post.content" placeholder="Vous pouvez modifier le post..." rows="10" cols="60" required aria-label="Message du post"></textarea>
                         </li>
-                        
                     </ul>
                 </form>
                 <button @click="modifyPost()" class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Enregistrer</button>
@@ -85,9 +84,11 @@ export default {
             const token = localStorage.getItem("token")
             const fileField = document.querySelector('input[type="file"]');
             
+            if (this.post.title === "")
+                alert("Veuillez saisir le titre");
             if (this.post.content === "")
                 alert("Veuillez saisir votre post");
-            if (this.post.image === null && this.post.content != "") {
+            if (this.post.image === null && this.post.title != "" && this.post.content != "") {
                 let data = new FormData()
                 data.append('image', '')
                 data.append('content', this.post.content)
@@ -160,65 +161,58 @@ export default {
 </script>
 
 <style scoped>
-label {
-    font-size: 16px;
-    color:rgb(5, 5, 100);
-}
-.title{
-    width: 60%;
-    height: 30px;
-    text-align: center;
-    margin: 0 auto 0 auto;
-    font-size: 20px;
-    font-weight: bolder;
-}
-form{
+form {
     width: 80% ; 
     margin: auto;
+    display: flex;
+    flex-direction: column;
 }
+
 ul {
-    
-    
     list-style: none;
     padding: 0;
 }
+
 li {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     margin-bottom: 30px;
 }
-.title{
-    width: 60%;
+
+.title {
+    width: 30%;
     height: 30px;
-    margin-top: 10px;
-    color: #000000;
-    text-align: center ;
+    text-align: center;
+    margin: 10px auto 0 auto;
     font-size: 20px;
     font-weight: bolder;
+    color: black;
+    text-align: center;
+    border-radius: 20px;
 }
+
 textarea {
-    font-size: 1.2rem;
+    width: 50%;
+    height: 150px;
+    margin: 15px auto 0 auto;
+    font-size: 20px;
+    font-weight: bolder;
+    color: black;
+    border-radius: 20px;
 }
-.input-file {
-    display: none;
-}
-.lien {
-    text-decoration: none;
-    color: #000000;
-}
-img {
-    width: 70%;
-    border-radius: 30px;
-    margin: auto;
-}
+
 .btnDelete{
     margin-top: 20px;
+    background-color: #fac4cf;
 }
+
 .btnSave{
     margin-top:0;
     margin-bottom: 10px;
+    background-color: #fac4cf;
 }
+
 @media screen and (min-width:768px) {
 .btnDelete{
     width: 20%;
