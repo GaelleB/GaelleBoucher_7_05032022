@@ -70,6 +70,10 @@ export default {
             users: [],
             props: ['post'],
             posts: [],
+            user: {
+                nom: '',
+                prenom: ''
+            }
         }
     },
     computed : {
