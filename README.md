@@ -7,11 +7,9 @@ Clonez le repository
 
 Depuis le dossier backend :
 - npm install
-- sequelize init
-- sequelize db:create (pour créer la base de donnée en la nommant groupomania)
-- sequelize db:migrate (pour créer les migrations)
+- npx sequelize db:create (pour créer la base de donnée en la nommant groupomania)
+- npx sequelize db:migrate (pour créer les migrations)
 
-- Installer MySQL
 - Retrouver dans le fichier .env (backend) le nom de l'utilisateur et le mot de passe pour se connecter à la base de données
 
 Puis lancer le server (toujours dans le dossier backend)
