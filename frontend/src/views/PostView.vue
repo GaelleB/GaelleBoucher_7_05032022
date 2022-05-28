@@ -335,6 +335,7 @@ section {
 }
 
 article {
+    width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -361,6 +362,7 @@ textarea {
     font-size: 15px;
     margin: auto;
     border-radius: 20px;
+    padding-left: 15px;
 }
 
 .modif {
@@ -368,8 +370,9 @@ textarea {
 }
 
 .btnSave, .btnDelete {
-    margin-bottom: 10px;
+    margin: 10px 0 10px 20px;
     background-color: #fac4cf;
+    padding: 10px;
 }
 
 .imgPost {
@@ -384,7 +387,7 @@ textarea {
     flex-direction: row;
     justify-content: flex-start;
     margin: 0 10px;
-    padding: 10px 10px;
+    padding: 10px 20px;
 }
 
 table {
@@ -394,6 +397,7 @@ table {
 .createcomment {
     border: none;
     margin: 20px 0;
+
 }
 
 .displayComment {
@@ -401,7 +405,6 @@ table {
     flex-direction: column;
     border: 2px solid black;
     border-radius: 20px;
-    margin: 10px auto 10px auto;
 }
 
 .content-displayComment {
@@ -415,16 +418,15 @@ table {
 
 /*--------------------*/
 @media screen and (min-width:768px) {
-    .blockRespo{
+    .blockRespo {
         display: flex;
         flex-direction: row;
         justify-content: center;
     }
     
-    .blockRespoText{
+    .blockRespoText {
         display: flex;
         flex-direction: column;
-        margin: 20px;
     }
     
     .content {

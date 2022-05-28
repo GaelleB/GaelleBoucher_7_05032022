@@ -183,6 +183,7 @@ td {
     height: 100px;
     border: 2px 1px;
     border-radius: 20px;
+    padding-left: 10px;
 }
 
 .cardPost {
@@ -257,17 +258,21 @@ input {
     table {
         width: 100%;
     }
+
     .btnIconeDelete, .btnIconeSave{
         width: 200px;
     }
+
     textarea{
         width: 90%
     }
+    
     .imgPost {
         width: 20%;
         height: 30%;
         border-radius: 10px;
     }
+
     .icone{
         display: flex;
         justify-content: centre;

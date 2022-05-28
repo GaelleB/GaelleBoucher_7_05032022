@@ -194,6 +194,7 @@ textarea {
     font-weight: bolder;
     color: black;
     border-radius: 20px;
+    padding-left: 10px;
 }
 
 .btnDelete{

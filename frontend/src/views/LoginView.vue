@@ -75,7 +75,7 @@ p {
 }
 
 form{
-  width: 35%;
+  width: 50%;
 }
 
 ul {
@@ -107,6 +107,9 @@ button {
 
 /* DESKTOP*/
 @media screen and (min-width: 950px) {
+  form{
+    width: 30%;
+  }
   h1{
     width: 25%;
   }

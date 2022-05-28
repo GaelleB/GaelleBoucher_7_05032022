@@ -73,21 +73,19 @@ name: 'SignupView',
 .signup {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
-h2{
+h2 {
   color: black;
 }
 
-p{
+p {
   color: black;
   font-size: 20px;
   margin: 0;
-}
-
-form{
-  width: 40%;
 }
 
 ul {
@@ -95,32 +93,24 @@ ul {
   padding: 0;
 }
 
-li {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  margin: 0 auto 0 auto;
-}
-
 input {
   border-radius: 15px;
   text-align: center;
-  margin: 12px auto;
+  margin: 10px auto;
 }
 
 button {
   background-color: #fac4cf;
 }
 
-footer{
+footer {
   padding: 0;
 }
+
 /* Version desktop */
-@media screen and (min-width: 950px) {
-  input {
-    width: 50%;
-    font-size: 15px;
-    text-align: center;
+@media (min-width: 1025px) and (max-width: 1280px) {
+  form{
+    width: 60%;
   }
 }
 </style>

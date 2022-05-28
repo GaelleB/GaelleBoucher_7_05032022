@@ -229,4 +229,11 @@ input {
 .submit {
     margin-bottom: 30px;
 }
+
+@media screen and (max-width:767px) {
+    form {
+        width: 100%;
+        margin: 0;
+    }
+}
 </style>

@@ -100,8 +100,8 @@ h1 {
 }
 
 form {
-    padding-left: 430px;
-    width: 60%;
+    padding-left: 800px;
+    width: 100%;
 }
 
 ul {
@@ -121,7 +121,7 @@ input, textarea {
     font-size: 15px;
     border: 2px solid black;
     border-radius: 20px;
-    text-align: center;
+    padding-left: 15px;
 }
 
 img {
@@ -151,6 +151,11 @@ img {
 }
 
 @media screen and (max-width:768px){
+    form {
+        padding-left: 110px;
+        width: 60%;
+    }
+
     .btnDelete{
         width: 50%;
         margin: 0 auto 0 auto;
