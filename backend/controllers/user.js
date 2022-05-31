@@ -8,6 +8,29 @@ const User = models.User;
 
 // Enregistrement d'un compte
 exports.signup = (req, res, next) => {
+    // Vérifier si les données sont correcte
+    const regexText = /^[a-zA-Z-\s]{2,}$/;
+    const regexEmail = /^([a-zA-Z0-9.-_]+)@((?:[a-zA-Z0-9.-_]+.)+)([a-zA-Z]{2,4})/;
+
+    if (regexText.test(req.body.nom) === false) {
+        return res.status(401).json({message: "Votre nom doit comporter au minimum 2 lettre et ne doit pas comporter de chiffres ou de caractères spéciaux autre que -"})
+    }
+    else if (regexText.test(req.body.prenom) === false) {
+        return res.status(401).json({message: "Votre prenom doit comporter au minimum 2 lettre et ne doit pas comporter de chiffres ou de caractères spéciaux autre que -"})
+    }
+    else if (regexEmail.test(req.body.email) === false) {
+        return res.status(401).json({message: "Ce format d'email n'est pas valide"})
+    } 
+
+    if(
+        req.body.password.length < 6 
+        ||/[a-z]/.test(req.body.password) === false 
+        || /[A-Z]/.test(req.body.password) === false 
+        || /\d/.test(req.body.password) === false
+    ){
+        return res.status(401).json({message: "Votre mot de passe doit contenir au minimum une majuscule, une minuscule, un chiffre et doit faire 6 caractères de long"})
+    }
+
     // Crypte le mot de passe
     bcrypt.hash(req.body.password, 10)
     .then(hash => {

@@ -23,7 +23,7 @@
                     <router-link  :to="`/post/${post.id}`" :href="$router.resolve({name: 'Post', params: { id: post.id}}).href" aria-label="Afficher le message">
                     <button class="btnIconeSave" aria-label="Modifier ce post" ><i class="far fa-edit"></i> Modifier</button>
                     </router-link>
-                    <button @click="deletePost(index)" class="btnIconeDelete" aria-label="Supprimer ce post"><i class="far fa-trash-alt"></i> Supprimer</button>
+                    <button v-if="userIdToken === post.UserId" @click="deletePost(index)" class="btnIconeDelete" aria-label="Supprimer ce post"><i class="far fa-trash-alt"></i> Supprimer</button>
                 </td>
                 <td class="info">
                     <p>
@@ -65,6 +65,7 @@ export default {
     },
     data () {
         return {
+            userIdToken: JSON.parse(localStorage.getItem("userId")),
             id_param: this.$route.params.id,
             postId: this.$route.params.id,
             users: [],

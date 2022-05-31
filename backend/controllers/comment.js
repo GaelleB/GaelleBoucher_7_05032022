@@ -30,7 +30,7 @@ exports.deleteComment = (req, res) => {
         include: [{ model : models.User }],
     })
     .then(Comment => {
-        if (Comment.userId || role === 0) 
+        if (Comment.userId === req.tokenUserId) 
         {
             models.Comment.destroy({ where: { id: req.params.id } })
             res.status(200).json({message : 'Commentaire supprimé !'})
