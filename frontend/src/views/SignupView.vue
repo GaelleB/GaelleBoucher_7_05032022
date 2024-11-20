@@ -48,6 +48,30 @@ name: 'SignupView',
   methods: {
     // Enregistrement d'un compte
     signup() {
+      const regexText = /^[a-zA-Z-\s]{2,}$/;
+      const regexEmail = /^([a-zA-Z0-9.-_]+)@((?:[a-zA-Z0-9.-_]+.)+)([a-zA-Z]{2,4})/;
+      if (regexText.test(this.nom) === false) {
+        alert("Votre nom doit comporter au minimum 2 lettre et ne doit pas comporter de chiffres ou de caractères spéciaux autre que -");
+        return
+      }
+      else if (regexText.test(this.prenom) === false) {
+        alert("Votre prenom doit comporter au minimum 2 lettre et ne doit pas comporter de chiffres ou de caractères spéciaux autre que -");
+        return
+      }
+      else if (regexEmail.test(this.email) === false) {
+        alert("Ce format d'email n'est pas valide")
+        return
+      } 
+
+      if(
+        this.password.length < 6 
+        ||/[a-z]/.test(this.password) === false 
+        || /[A-Z]/.test(this.password) === false 
+        || /\d/.test(this.password) === false
+      ){
+        alert("Votre mot de passe doit contenir au minimum une majuscule, une minuscule, un chiffre et doit faire 6 caractères de long")
+        return;
+      }
       let data = {
           nom: this.nom,
           prenom: this.prenom,
@@ -56,13 +80,13 @@ name: 'SignupView',
       };
       {   
         axios.post("http://localhost:3000/api/auth/signup", data, {
-          
+            headers: { }
         })
         .then(() => {
-          this.$router.push("/login");
-          console.log("Utilisateur créé");
-        })
-        .catch(alert)
+              alert("Utilisateur créé");
+              this.$router.push("/login");
+          })
+          .catch(alert)
       }
     }
   }

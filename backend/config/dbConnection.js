@@ -1,9 +1,4 @@
-const { Sequelize } = require('sequelize');
-
-const sequelize = new Sequelize('groupomania', 'root', 'Kiline23', {
-  host: 'localhost',
-  dialect: 'mysql'
-});
+const { sequelize } = require("../models/index.js");
 
 exports.authSequelize = async () => {
   try {

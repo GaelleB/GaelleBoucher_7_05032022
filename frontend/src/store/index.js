@@ -26,7 +26,6 @@ import axios from 'axios'
         state.currentUser.nom = res.data.nom;
         state.currentUser.prenom = res.data.prenom;
         state.currentUser.email = res.data.email;
-        state.currentUser.image = res.data.image;
       }).catch(err => console.log(err))
     }, 
     actions: {   

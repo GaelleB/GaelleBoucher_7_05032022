@@ -9,9 +9,9 @@
                         <input class="inputTitle" type="text" v-model="post.title" required aria-label="Titre" disabled size="50" >  <!--rows="10" cols="25" -->
                         <textarea type="text" v-model="post.content" required aria-label="Message" disabled ></textarea>
                     
-                            <!-- Modification & suppression d'un post -->  
+                            <!-- Modification d'un post -->  
                             <div class="content modif">
-                                <button @click="modifyPost()" class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Modifier le post</button>
+                                <button v-if="userIdToken === UserId" @click="modifyPost()" class="btnSave" aria-label="Modifier ce post"><i class="fas fa-edit"></i> Modifier le post</button>
                             </div> 
                         </nav>
                         <img class="imgPost" v-if="post.image" :src="post.image" alt="Image du post">
@@ -54,7 +54,7 @@
                             <!-- Suppression d'un commentaire -->  
                             <div class="content-displayComment">
                                 <div class="modifComment">                                                                   
-                                    <button @click="deleteComment(index)" class="btnDelete" aria-label="Supprimer ce commentaire"><i class="far fa-trash-alt"></i> Supprimer commentaire</button>
+                                    <button v-if="userIdToken == comment.userId" @click="deleteComment(index)" class="btnDelete" aria-label="Supprimer ce commentaire"><i class="far fa-trash-alt"></i> Supprimer commentaire</button>
                                     <button v-on:click="hide" class="btnDelete" aria-label="Masquer les commentaires">Masquer les commentaires</button>
                                 </div>
                             </div>  
@@ -77,6 +77,7 @@ export default {
     },
     data () {
         return {
+            userIdToken: JSON.parse(localStorage.getItem("userId")),
             id_param: this.$route.params.id,
             postId: this.$route.params.id,
             users: [],
@@ -148,6 +149,7 @@ export default {
                 this.user.prenom = res.data.prenom 
                 this.Likes = res.data.Likes;
                 this.Dislikes = res.data.Dislikes;
+                this.UserId = res.data.UserId;
             })
             .catch(() => console.log('Impossible de récupérer le post!'))
         },
@@ -213,12 +215,10 @@ export default {
                 .then(() => {
                     alert("Commentaire publié")
                     console.log("Commentaire publié")
+                    this.content=""
                     this.getPostComment()
-
                     this.hide2()
-                    // this.$router.push("/allposts");
                 })
-                
                 .catch(() => console.log(' err comments'))
             }
         },
